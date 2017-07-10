@@ -1,0 +1,99 @@
+{
+    "feed" : {
+        "title": "Code Hangout with Duc - DucTran.io",
+        "link": "http://www.ductran.io/blog/",
+        "author": "Duc Tran"
+    },
+    
+    "episodes" : [
+        {
+            "title": "63 - 65: Search APIs in iOS",
+            "link": "http://www.ductran.io/codehangout/63",
+            "pubDate": "Mon, 28 Mar 2016",
+            "author": "Duc Tran",
+            "description": "Have you wanted to make more people discover your apps? How about your users can access the app's content any where in iPhone, via Spotlight? These episodes give you the answer to them!",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56f965a827d4bdeb602705cf/1459185497225/1500w/searchapi_thumbnail.png"
+        },
+        
+        {
+            "title": "57-61: Introduction to 3D Touch",
+            "link": "http://www.ductran.io/codehangout/58",
+            "pubDate": "Mon, 28 Mar 2016",
+            "author": "Duc Tran",
+            "description": "3D touch is the future of multi-touch! It adds a whole new experience and layer of interaction to your app. In this episode, we are going to learn how to use Peek in 3D touch to display a preview for our app. ",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56f5ace32b8dde937b464922/1459184307384/1500w/57_thumbnail.png"
+        },
+        
+        {
+            "title": "57 - Build News Reader with UICollectionView and WebView",
+            "link": "http://www.ductran.io/codehangout/57",
+            "pubDate": "Mon, 28 Mar 2016",
+            "author": "Duc Tran",
+            "description" : "Learn everything you need to know about UICollectionView in iOS and WebView. Build a news reader app with them in iOS and Swift",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56eb0bb6f699bbf1a20344f2/1458245226725/1500w/dV1cMnuKTB2w3x6VwDY9_All%20Things%20UICollectionView.png"
+        },
+        
+        {
+            "title": "56 - Use Camera to Take Photo &amp; Video in iOS",
+            "link": "http://www.ductran.io/codehangout/56",
+            "pubDate": "Thu, 17 Mar 2016",
+            "author": "Duc Tran",
+            "description": "Learn how to use the camera in iOS devices to take photo and video.",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56eb0480b6aa60c776bc2020/1458920523458/1500w/thumbnail_56.png"
+        },
+        
+        {
+            "title": "43 - 14 Days of Swift Livecast",
+            "link": "http://www.ductran.io/codehangout/43",
+            "pubDate": "Tue, 15 Mar 2016",
+            "author": "Duc Tran",
+            "description": "In this special livecast of Code Hangout #43, we talked all things about Swift from installing the tools to array. This is just part 1 of the series, if you would like to join me in part 2.",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56e84ad6e3214009cc612f84/1458064525664/1500w/freemium-1.png"
+        },
+        
+        {
+            "title": "42 - How to Play Audio in iOS",
+            "link": "http://www.ductran.io/codehangout/42",
+            "pubDate": "Sun, 13 Mar 2016",
+            "author": "Duc Tran",
+                  "description" : "Playing sound and audio files in your app? That's not very hard. In this episode, Duc will show you how to have this feature in your app.",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56e4c950d51cd48392dada03/1457834508792/1500w/thumbnail_42.png"
+        },
+        
+        {
+            "title": "41 - How to Play Sounds and Vibrate in iOS App",
+            "link": "http://www.ductran.io/codehangout/41",
+            "pubDate": "Sun, 13 Mar 2016",
+            "author": "Duc Tran",
+                  "description" : "Playing sound and audio files in your app? That's not very hard. In this episode, Duc will show you how to have this feature in your app.",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56e4c7d0d51cd48392dad207/1457834208316/1500w/thumbnail_41.png"
+        },
+        
+        {
+            "title": "40 - Create Parallax Effect Wallpaper in iOS",
+            "link": "http://www.ductran.io/codehangout/40",
+            "pubDate": "Sun, 13 Mar 2016",
+            "author": "Duc Tran",
+                  "description" : "Have you looked at the parallax effect all around iOS? It adds a sense of playfulness and depth into the system. Why don't we have this in our app too? Let's dive in.",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56e4c34945bf2119aa56a34d/1457833134216/1500w/thumbnail_40.png"
+        },
+        
+        {
+            "title": "39 - New Code Hangout Broadcast Schedule",
+            "link": "http://www.ductran.io/codehangout/39",
+            "pubDate": "Sat, 12 Mar 2016",
+            "author": "Duc Tran",
+                  "description" : "In this special episode, Duc talked about how he will be broadcasting and publishing Code Hangout episodes in the future and how you can interact with him even more.",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56e455a722482e1d899df2b4/1457833910409/1500w/thumbnail_39.png"
+        },
+        
+        {
+            "title": "36 - Core Data: Create a Journal App",
+            "link": "http://www.ductran.io/codehangout/36",
+            "pubDate": "Sat, 12 Mar 2016",
+            "author": "Duc Tran",
+                  "description" : "Save data permanently in your app? Are you creating a todo list, social network app with offline features? Core Data is the way to go!",
+            "thumbnailURL": "http://static1.squarespace.com/static/56e43d1420c647b40ef1aef4/56e453f19f726641586a3b26/56e4544d60b5e97c53033b9f/1457822541889/1500w/thumbnail_36.png"
+        }
+    ]
+}

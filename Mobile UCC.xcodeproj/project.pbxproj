@@ -7,14 +7,78 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4600A26C1ECC89AE0068C58D /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4600A26B1ECC89AE0068C58D /* Bookmark.swift */; };
+		4600A26E1ECC8F6E0068C58D /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4600A26D1ECC8F6E0068C58D /* About.swift */; };
+		46195DEE1EC560870075AD3C /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46195DED1EC560870075AD3C /* Merchant.swift */; };
+		461A48811EFBAD7200B54313 /* Vacancy2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461A48801EFBAD7200B54313 /* Vacancy2.swift */; };
+		46310C501F0116C800598BD7 /* Vacancy3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46310C4F1F0116C800598BD7 /* Vacancy3.swift */; };
+		4634F8411F13BEC300CD4EA4 /* ProfileSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4634F8401F13BEC300CD4EA4 /* ProfileSummary.swift */; };
+		4634F8431F13C26F00CD4EA4 /* Education.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4634F8421F13C26F00CD4EA4 /* Education.swift */; };
+		46367C1A1EFD09EA0057121D /* DetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46367C191EFD09EA0057121D /* DetailEvent.swift */; };
+		46367C1C1EFD19810057121D /* UCCNews2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46367C1B1EFD19810057121D /* UCCNews2.swift */; };
+		46367C1E1EFD1E700057121D /* CompanyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46367C1D1EFD1E700057121D /* CompanyInfo.swift */; };
+		465368FB1EDAC24600D233E2 /* vacancyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465368FA1EDAC24600D233E2 /* vacancyCell.swift */; };
+		465368FD1EDAD1B800D233E2 /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465368FC1EDAD1B800D233E2 /* Quote.swift */; };
+		465368FF1EDAD22300D233E2 /* QuotesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465368FE1EDAD22300D233E2 /* QuotesDataSource.swift */; };
+		465A7CD01EE3F84600043F41 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465A7CCF1EE3F84600043F41 /* NetworkService.swift */; };
+		465A7CD21EE3F9C600043F41 /* DucBlog.json in Resources */ = {isa = PBXBuildFile; fileRef = 465A7CD11EE3F9C600043F41 /* DucBlog.json */; };
+		465A7CD51EE4036800043F41 /* newsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465A7CD41EE4036800043F41 /* newsCell.swift */; };
+		465A7CD71EE4068C00043F41 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465A7CD61EE4068C00043F41 /* News.swift */; };
+		46D43F131ED96C8E0065A3C2 /* ContactUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D43F121ED96C8E0065A3C2 /* ContactUs.swift */; };
+		46D43F151ED971120065A3C2 /* MyCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D43F141ED971120065A3C2 /* MyCV.swift */; };
+		46E1E0FF1F13D8A800E6F79C /* Experience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E0FE1F13D8A800E6F79C /* Experience.swift */; };
+		46E1E1011F13E0DF00E6F79C /* LanguageSkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E1001F13E0DF00E6F79C /* LanguageSkills.swift */; };
+		46E1E1031F13E25900E6F79C /* KemampuanBahasaInggris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E1021F13E25900E6F79C /* KemampuanBahasaInggris.swift */; };
+		46E1E1051F13E3C700E6F79C /* OrganizationExperience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E1041F13E3C700E6F79C /* OrganizationExperience.swift */; };
+		46E1E1071F13E56B00E6F79C /* AwardsAndAchievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E1061F13E56B00E6F79C /* AwardsAndAchievements.swift */; };
+		46E1E1091F13E6B800E6F79C /* Recommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E1081F13E6B800E6F79C /* Recommendation.swift */; };
+		46E1E10B1F13E80400E6F79C /* KelebihanDanKekurangan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E10A1F13E80400E6F79C /* KelebihanDanKekurangan.swift */; };
+		46E1E10D1F13E8DD00E6F79C /* Expertise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E10C1F13E8DD00E6F79C /* Expertise.swift */; };
+		46E1E10F1F13EC1E00E6F79C /* CTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E10E1F13EC1E00E6F79C /* CTC.swift */; };
+		46E1E1111F13ED0400E6F79C /* Portofolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E1101F13ED0400E6F79C /* Portofolio.swift */; };
+		46E1E1131F13F04200E6F79C /* PublicInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E1121F13F04200E6F79C /* PublicInformation.swift */; };
 		46F702E91EC4574600C2DE86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F702E81EC4574600C2DE86 /* AppDelegate.swift */; };
 		46F702EB1EC4574600C2DE86 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F702EA1EC4574600C2DE86 /* ViewController.swift */; };
 		46F702EE1EC4574600C2DE86 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46F702EC1EC4574600C2DE86 /* Main.storyboard */; };
 		46F702F01EC4574600C2DE86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46F702EF1EC4574600C2DE86 /* Assets.xcassets */; };
 		46F702F31EC4574600C2DE86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46F702F11EC4574600C2DE86 /* LaunchScreen.storyboard */; };
+		46F702FC1EC46E7400C2DE86 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F702FA1EC46E7400C2DE86 /* BaseViewController.swift */; };
+		46F702FD1EC46E7400C2DE86 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F702FB1EC46E7400C2DE86 /* MenuViewController.swift */; };
+		46F702FF1EC4828900C2DE86 /* UpcomingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F702FE1EC4828900C2DE86 /* UpcomingEvent.swift */; };
+		46F703011EC48A3E00C2DE86 /* UCCNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F703001EC48A3E00C2DE86 /* UCCNews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4600A26B1ECC89AE0068C58D /* Bookmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
+		4600A26D1ECC8F6E0068C58D /* About.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
+		46195DED1EC560870075AD3C /* Merchant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
+		461A48801EFBAD7200B54313 /* Vacancy2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vacancy2.swift; sourceTree = "<group>"; };
+		46310C4F1F0116C800598BD7 /* Vacancy3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vacancy3.swift; sourceTree = "<group>"; };
+		4634F8401F13BEC300CD4EA4 /* ProfileSummary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSummary.swift; sourceTree = "<group>"; };
+		4634F8421F13C26F00CD4EA4 /* Education.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Education.swift; sourceTree = "<group>"; };
+		46367C191EFD09EA0057121D /* DetailEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailEvent.swift; sourceTree = "<group>"; };
+		46367C1B1EFD19810057121D /* UCCNews2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCCNews2.swift; sourceTree = "<group>"; };
+		46367C1D1EFD1E700057121D /* CompanyInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyInfo.swift; sourceTree = "<group>"; };
+		465368FA1EDAC24600D233E2 /* vacancyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vacancyCell.swift; sourceTree = "<group>"; };
+		465368FC1EDAD1B800D233E2 /* Quote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
+		465368FE1EDAD22300D233E2 /* QuotesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuotesDataSource.swift; sourceTree = "<group>"; };
+		465A7CCF1EE3F84600043F41 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		465A7CD11EE3F9C600043F41 /* DucBlog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DucBlog.json; sourceTree = "<group>"; };
+		465A7CD41EE4036800043F41 /* newsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newsCell.swift; sourceTree = "<group>"; };
+		465A7CD61EE4068C00043F41 /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
+		46D43F121ED96C8E0065A3C2 /* ContactUs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUs.swift; sourceTree = "<group>"; };
+		46D43F141ED971120065A3C2 /* MyCV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCV.swift; sourceTree = "<group>"; };
+		46E1E0FE1F13D8A800E6F79C /* Experience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experience.swift; sourceTree = "<group>"; };
+		46E1E1001F13E0DF00E6F79C /* LanguageSkills.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageSkills.swift; sourceTree = "<group>"; };
+		46E1E1021F13E25900E6F79C /* KemampuanBahasaInggris.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KemampuanBahasaInggris.swift; sourceTree = "<group>"; };
+		46E1E1041F13E3C700E6F79C /* OrganizationExperience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrganizationExperience.swift; sourceTree = "<group>"; };
+		46E1E1061F13E56B00E6F79C /* AwardsAndAchievements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwardsAndAchievements.swift; sourceTree = "<group>"; };
+		46E1E1081F13E6B800E6F79C /* Recommendation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recommendation.swift; sourceTree = "<group>"; };
+		46E1E10A1F13E80400E6F79C /* KelebihanDanKekurangan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KelebihanDanKekurangan.swift; sourceTree = "<group>"; };
+		46E1E10C1F13E8DD00E6F79C /* Expertise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expertise.swift; sourceTree = "<group>"; };
+		46E1E10E1F13EC1E00E6F79C /* CTC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CTC.swift; sourceTree = "<group>"; };
+		46E1E1101F13ED0400E6F79C /* Portofolio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Portofolio.swift; sourceTree = "<group>"; };
+		46E1E1121F13F04200E6F79C /* PublicInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicInformation.swift; sourceTree = "<group>"; };
 		46F702E51EC4574600C2DE86 /* Mobile UCC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mobile UCC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		46F702E81EC4574600C2DE86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46F702EA1EC4574600C2DE86 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +86,10 @@
 		46F702EF1EC4574600C2DE86 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		46F702F21EC4574600C2DE86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		46F702F41EC4574600C2DE86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46F702FA1EC46E7400C2DE86 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		46F702FB1EC46E7400C2DE86 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		46F702FE1EC4828900C2DE86 /* UpcomingEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpcomingEvent.swift; sourceTree = "<group>"; };
+		46F703001EC48A3E00C2DE86 /* UCCNews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCCNews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +103,69 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		465A7CCC1EE3F28A00043F41 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				465A7CD11EE3F9C600043F41 /* DucBlog.json */,
+				465A7CCF1EE3F84600043F41 /* NetworkService.swift */,
+				465368FC1EDAD1B800D233E2 /* Quote.swift */,
+				465A7CD61EE4068C00043F41 /* News.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		465A7CCD1EE3F29D00043F41 /* Model Controller */ = {
+			isa = PBXGroup;
+			children = (
+				465368FE1EDAD22300D233E2 /* QuotesDataSource.swift */,
+			);
+			name = "Model Controller";
+			sourceTree = "<group>";
+		};
+		465A7CCE1EE3F66D00043F41 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				46F702FA1EC46E7400C2DE86 /* BaseViewController.swift */,
+				46F702FB1EC46E7400C2DE86 /* MenuViewController.swift */,
+				46F702EA1EC4574600C2DE86 /* ViewController.swift */,
+				46F702FE1EC4828900C2DE86 /* UpcomingEvent.swift */,
+				46F703001EC48A3E00C2DE86 /* UCCNews.swift */,
+				46195DED1EC560870075AD3C /* Merchant.swift */,
+				4600A26B1ECC89AE0068C58D /* Bookmark.swift */,
+				46D43F141ED971120065A3C2 /* MyCV.swift */,
+				46D43F121ED96C8E0065A3C2 /* ContactUs.swift */,
+				4600A26D1ECC8F6E0068C58D /* About.swift */,
+				461A48801EFBAD7200B54313 /* Vacancy2.swift */,
+				46367C191EFD09EA0057121D /* DetailEvent.swift */,
+				46367C1B1EFD19810057121D /* UCCNews2.swift */,
+				46367C1D1EFD1E700057121D /* CompanyInfo.swift */,
+				46310C4F1F0116C800598BD7 /* Vacancy3.swift */,
+				4634F8401F13BEC300CD4EA4 /* ProfileSummary.swift */,
+				4634F8421F13C26F00CD4EA4 /* Education.swift */,
+				46E1E0FE1F13D8A800E6F79C /* Experience.swift */,
+				46E1E1001F13E0DF00E6F79C /* LanguageSkills.swift */,
+				46E1E1021F13E25900E6F79C /* KemampuanBahasaInggris.swift */,
+				46E1E1041F13E3C700E6F79C /* OrganizationExperience.swift */,
+				46E1E1061F13E56B00E6F79C /* AwardsAndAchievements.swift */,
+				46E1E1081F13E6B800E6F79C /* Recommendation.swift */,
+				46E1E10A1F13E80400E6F79C /* KelebihanDanKekurangan.swift */,
+				46E1E10C1F13E8DD00E6F79C /* Expertise.swift */,
+				46E1E10E1F13EC1E00E6F79C /* CTC.swift */,
+				46E1E1101F13ED0400E6F79C /* Portofolio.swift */,
+				46E1E1121F13F04200E6F79C /* PublicInformation.swift */,
+			);
+			name = "View Controller";
+			sourceTree = "<group>";
+		};
+		465A7CD31EE3FA0300043F41 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				465368FA1EDAC24600D233E2 /* vacancyCell.swift */,
+				465A7CD41EE4036800043F41 /* newsCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		46F702DC1EC4574600C2DE86 = {
 			isa = PBXGroup;
 			children = (
@@ -54,8 +185,11 @@
 		46F702E71EC4574600C2DE86 /* Mobile UCC */ = {
 			isa = PBXGroup;
 			children = (
+				465A7CD31EE3FA0300043F41 /* View */,
+				465A7CCE1EE3F66D00043F41 /* View Controller */,
+				465A7CCD1EE3F29D00043F41 /* Model Controller */,
+				465A7CCC1EE3F28A00043F41 /* Model */,
 				46F702E81EC4574600C2DE86 /* AppDelegate.swift */,
-				46F702EA1EC4574600C2DE86 /* ViewController.swift */,
 				46F702EC1EC4574600C2DE86 /* Main.storyboard */,
 				46F702EF1EC4574600C2DE86 /* Assets.xcassets */,
 				46F702F11EC4574600C2DE86 /* LaunchScreen.storyboard */,
@@ -96,7 +230,6 @@
 				TargetAttributes = {
 					46F702E41EC4574600C2DE86 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 6HJ9GVUD4Z;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -124,6 +257,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				465A7CD21EE3F9C600043F41 /* DucBlog.json in Resources */,
 				46F702F31EC4574600C2DE86 /* LaunchScreen.storyboard in Resources */,
 				46F702F01EC4574600C2DE86 /* Assets.xcassets in Resources */,
 				46F702EE1EC4574600C2DE86 /* Main.storyboard in Resources */,
@@ -137,8 +271,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46E1E1091F13E6B800E6F79C /* Recommendation.swift in Sources */,
+				46D43F131ED96C8E0065A3C2 /* ContactUs.swift in Sources */,
 				46F702EB1EC4574600C2DE86 /* ViewController.swift in Sources */,
+				46E1E10D1F13E8DD00E6F79C /* Expertise.swift in Sources */,
+				46E1E1071F13E56B00E6F79C /* AwardsAndAchievements.swift in Sources */,
 				46F702E91EC4574600C2DE86 /* AppDelegate.swift in Sources */,
+				465368FF1EDAD22300D233E2 /* QuotesDataSource.swift in Sources */,
+				46E1E1051F13E3C700E6F79C /* OrganizationExperience.swift in Sources */,
+				46367C1E1EFD1E700057121D /* CompanyInfo.swift in Sources */,
+				46F702FF1EC4828900C2DE86 /* UpcomingEvent.swift in Sources */,
+				46E1E1131F13F04200E6F79C /* PublicInformation.swift in Sources */,
+				46D43F151ED971120065A3C2 /* MyCV.swift in Sources */,
+				465A7CD51EE4036800043F41 /* newsCell.swift in Sources */,
+				465368FD1EDAD1B800D233E2 /* Quote.swift in Sources */,
+				46310C501F0116C800598BD7 /* Vacancy3.swift in Sources */,
+				465368FB1EDAC24600D233E2 /* vacancyCell.swift in Sources */,
+				4634F8411F13BEC300CD4EA4 /* ProfileSummary.swift in Sources */,
+				46195DEE1EC560870075AD3C /* Merchant.swift in Sources */,
+				46F703011EC48A3E00C2DE86 /* UCCNews.swift in Sources */,
+				4634F8431F13C26F00CD4EA4 /* Education.swift in Sources */,
+				46E1E10B1F13E80400E6F79C /* KelebihanDanKekurangan.swift in Sources */,
+				465A7CD01EE3F84600043F41 /* NetworkService.swift in Sources */,
+				4600A26C1ECC89AE0068C58D /* Bookmark.swift in Sources */,
+				46367C1A1EFD09EA0057121D /* DetailEvent.swift in Sources */,
+				46E1E1031F13E25900E6F79C /* KemampuanBahasaInggris.swift in Sources */,
+				46E1E0FF1F13D8A800E6F79C /* Experience.swift in Sources */,
+				46F702FC1EC46E7400C2DE86 /* BaseViewController.swift in Sources */,
+				46367C1C1EFD19810057121D /* UCCNews2.swift in Sources */,
+				461A48811EFBAD7200B54313 /* Vacancy2.swift in Sources */,
+				4600A26E1ECC8F6E0068C58D /* About.swift in Sources */,
+				46E1E10F1F13EC1E00E6F79C /* CTC.swift in Sources */,
+				46E1E1111F13ED0400E6F79C /* Portofolio.swift in Sources */,
+				465A7CD71EE4068C00043F41 /* News.swift in Sources */,
+				46F702FD1EC46E7400C2DE86 /* MenuViewController.swift in Sources */,
+				46E1E1011F13E0DF00E6F79C /* LanguageSkills.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,7 +430,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6HJ9GVUD4Z;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Mobile UCC/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "siskom.Mobile-UCC";
@@ -276,7 +443,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6HJ9GVUD4Z;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Mobile UCC/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "siskom.Mobile-UCC";
@@ -304,6 +471,7 @@
 				46F702F91EC4574600C2DE86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
