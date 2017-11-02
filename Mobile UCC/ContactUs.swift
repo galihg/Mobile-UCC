@@ -12,6 +12,11 @@ class ContactUs: BaseViewController, UITableViewDataSource, UITableViewDelegate 
     
     @IBOutlet weak var btnSubject: UIButton!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var telpTextField: UITextField!
+    @IBOutlet weak var messageTextField: UITextField!
+    
     
     
     
@@ -25,6 +30,11 @@ class ContactUs: BaseViewController, UITableViewDataSource, UITableViewDelegate 
         // Do any additional setup after loading the view.
         self.addSlideMenuButton()
         self.title = "Contact Us"
+        btnSubject.isHidden = true
+        nameTextField.isHidden = true
+        emailTextField.isHidden = true
+        telpTextField.isHidden = true
+        messageTextField.isHidden = true
         
         tableView.estimatedRowHeight = 113
         tableView.rowHeight = UITableViewAutomaticDimension

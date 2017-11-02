@@ -21,6 +21,11 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
     }
     
     func slideMenuItemSelectedAtIndex(_ index: Int32) {
+        let defaults = UserDefaults.standard
+        
+        if(defaults.object(forKey: "session") != nil)
+        {
+        
         let topViewController : UIViewController = self.navigationController!.topViewController!
         print("View Controller is : \(topViewController) \n", terminator: "")
         switch(index){
@@ -50,16 +55,16 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
             break
             
         case 4:
-            print("Bookmark\n", terminator: "")
+            print("Notification\n", terminator: "")
             
-            self.openViewControllerBasedOnIdentifier("Bookmark")
+            self.openViewControllerBasedOnIdentifier("Notification")
             
             break
             
         case 5:
-            print("My CV\n", terminator: "")
+            print("Application History\n", terminator: "")
             
-            self.openViewControllerBasedOnIdentifier("My CV")
+            self.openViewControllerBasedOnIdentifier("Application History")
             
             break
 
@@ -75,9 +80,114 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
             self.openViewControllerBasedOnIdentifier("About")
             
             break
+            
+        case 8:
+            print("Login Screen\n", terminator: "")
+            
+            let url = URL(string: "http://uat.career.undip.ac.id/restapi/auth/logout")
+            let session = URLSession.shared
+            
+            let request = NSMutableURLRequest(url: url!)
+            request.httpMethod = "GET"
+            
+            let task = session.dataTask(with: request as URLRequest, completionHandler: {
+                (data, response, error) in
+                
+                guard let _:Data = data else
+                {
+                    return
+                }
+                
+                let json:Any?
+                
+                do
+                {
+                    json = try JSONSerialization.jsonObject(with: data!, options: [])
+                }
+                catch
+                {
+                    return
+                }
+                
+                
+                guard let server_response = json as? [String:Any] else
+                {
+                    return
+                }
+                
+                if let data_block = server_response["status"] as? String
+                {
+                    if (data_block=="ok") {
+                        let preferences = UserDefaults.standard
+                        preferences.removeObject(forKey: "session")
+                        DispatchQueue.main.async {
+                            self.openViewControllerBasedOnIdentifier("Home")
+                        }
+                    }
+                }
+                
+            })
+            task.resume()
+
+            break
         default:
             print("default\n", terminator: "")
+            }
+        } else {
+            let topViewController : UIViewController = self.navigationController!.topViewController!
+            print("View Controller is : \(topViewController) \n", terminator: "")
+            switch(index){
+            case 0:
+                print("Home\n", terminator: "")
+                
+                self.openViewControllerBasedOnIdentifier("Home")
+                
+                break
+            case 1:
+                print("Upcoming Event\n", terminator: "")
+                
+                self.openViewControllerBasedOnIdentifier("Upcoming Event")
+                
+                break
+            case 2:
+                print("UCC News\n", terminator: "")
+                
+                self.openViewControllerBasedOnIdentifier("UCC News")
+                
+                break
+            case 3:
+                print("Merchant\n", terminator: "")
+                
+                self.openViewControllerBasedOnIdentifier("Merchant")
+                
+                break
+            
+            case 4:
+                print("About\n", terminator: "")
+                
+                self.openViewControllerBasedOnIdentifier("About")
+                
+                break
+                
+            case 5:
+                print("Login Screen\n", terminator: "")
+                
+                self.openViewControllerBasedOnIdentifier("Login Screen")
+                
+                break
+                
+                
+            default:
+                print("default\n", terminator: "")
+            }
+            
         }
+        
+    }
+    
+    func backtoLogin()
+    {
+        self.openViewControllerBasedOnIdentifier("Login Screen")
     }
     
     func openViewControllerBasedOnIdentifier(_ strIdentifier:String){

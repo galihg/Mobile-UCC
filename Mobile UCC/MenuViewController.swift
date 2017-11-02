@@ -13,6 +13,10 @@ protocol SlideMenuDelegate {
 }
 
 class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    // Profile
+    @IBOutlet weak var profPic: UIImageView!
+    @IBOutlet weak var fullName: UILabel!
+    @IBOutlet weak var email: UILabel!
     
     /**
     *  Array to display menu options
@@ -43,8 +47,31 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         tblMenuOptions.tableFooterView = UIView()
         // Do any additional setup after loading the view.
+        let defaults = UserDefaults.standard
+        if(defaults.object(forKey: "session") != nil)
+        {
+            let preference_block = defaults.object(forKey: "session")
+            var preferences = preference_block as! [String]
+            
+            fullName.text = preferences[2]
+            email.text = preferences[3]
+            
+            let urlPic = URL(string: preferences[4])
+            if let Pic = urlPic {
+                let networkService = NetworkService(url: Pic)
+                networkService.downloadImage({ (imageData) in
+                    let image = UIImage(data: imageData as Data)
+                    DispatchQueue.main.async(execute: {
+                        self.profPic.image = image
+                    })
+                })
+            }
+        }
+        else {
+            fullName.text = "Login untuk melihat Profil"
+            email.isHidden = true
+        }
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -56,18 +83,33 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func updateArrayMenuOptions(){
-        arrayMenuOptions.append(["title":"Vacancy", "icon":"HomeIcon"])
-        arrayMenuOptions.append(["title":"Upcoming Event", "icon":"PlayIcon"])
-        arrayMenuOptions.append(["title":"UCC News", "icon":"PlayIcon"])
-        arrayMenuOptions.append(["title":"Merchant", "icon":"PlayIcon"])
-        arrayMenuOptions.append(["title":"Bookmark", "icon":"PlayIcon"])
-        arrayMenuOptions.append(["title":"My CV", "icon":"PlayIcon"])
-        arrayMenuOptions.append(["title":"Contact Us", "icon":"PlayIcon"])
-        arrayMenuOptions.append(["title":"About", "icon":"PlayIcon"])
-        arrayMenuOptions.append(["title":"Logout", "icon":"PlayIcon"])
+        let defaults = UserDefaults.standard
+        
+        if(defaults.object(forKey: "session") != nil)
+        {
+            arrayMenuOptions.append(["title":"Vacancy", "icon":"vacancy_icon"])
+            arrayMenuOptions.append(["title":"Upcoming Event", "icon":"event_icon"])
+            arrayMenuOptions.append(["title":"UCC News", "icon":"news_icon"])
+            arrayMenuOptions.append(["title":"Merchant", "icon":"merchant_icon"])
+            arrayMenuOptions.append(["title":"Notification", "icon":"notif_icon"])
+            arrayMenuOptions.append(["title":"Application History", "icon":"history_icon"])
+            //arrayMenuOptions.append(["title":"My CV", "icon":"PlayIcon"])
+            arrayMenuOptions.append(["title":"Contact Us", "icon":"contact_icon"])
+            arrayMenuOptions.append(["title":"About", "icon":"about_icon"])
+            arrayMenuOptions.append(["title":"Logout", "icon":"logout_icon"])
         
         
-        tblMenuOptions.reloadData()
+            tblMenuOptions.reloadData()
+        } else {
+            arrayMenuOptions.append(["title":"Vacancy", "icon":"vacancy_icon"])
+            arrayMenuOptions.append(["title":"Upcoming Event", "icon":"event_icon"])
+            arrayMenuOptions.append(["title":"UCC News", "icon":"news_icon"])
+            arrayMenuOptions.append(["title":"Merchant", "icon":"merchant_icon"])
+            arrayMenuOptions.append(["title":"About", "icon":"about_icon"])
+            arrayMenuOptions.append(["title":"Login", "icon":"logout_icon"])
+            
+            tblMenuOptions.reloadData()
+        }
     }
     
     @IBAction func onCloseMenuClick(_ button:UIButton!){
@@ -92,6 +134,34 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        /*if indexPath.section == 0 {
+            if let cell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cellProfile")!
+            
+         
+            cell.layoutMargins = UIEdgeInsets.zero
+            cell.preservesSuperviewLayoutMargins = false
+            cell.backgroundColor = UIColor.clear
+            
+            return cell
+            
+           }
+        else {
+            let cell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cellMenu")!
+            
+            
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.layoutMargins = UIEdgeInsets.zero
+            cell.preservesSuperviewLayoutMargins = false
+            cell.backgroundColor = UIColor.clear
+            
+            let lblTitle : UILabel = cell.contentView.viewWithTag(101) as! UILabel
+            let imgIcon : UIImageView = cell.contentView.viewWithTag(100) as! UIImageView
+            
+            imgIcon.image = UIImage(named: arrayMenuOptions[indexPath.row]["icon"]!)
+            lblTitle.text = arrayMenuOptions[indexPath.row]["title"]!
+            
+            return cell
+        }*/
         let cell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cellMenu")!
         
         cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -107,6 +177,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         return cell
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let btn = UIButton(type: UIButtonType.custom)

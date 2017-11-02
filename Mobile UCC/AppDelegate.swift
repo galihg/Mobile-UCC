@@ -16,6 +16,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        //self.window = UIWindow(frame: UIScreen.main.bounds)
+        /*let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        //var initialViewController: UIViewController
+        //var initialViewController2: BaseViewController
+        
+        
+        let preferences = UserDefaults.standard
+        
+        if(preferences.object(forKey: "session") != nil) //your condition if user is already logged in or not
+        {
+            // if already logged in then redirect to MainViewController
+            let initialViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as! ViewController
+            self.window?.rootViewController = initialViewController
+        }
+        else
+        {
+            //If not logged in then show LoginViewController
+            let initialViewController2 = mainStoryboard.instantiateViewController(withIdentifier: "Login Screen") as! LoginScreen
+            self.window?.rootViewController = initialViewController2
+        }*/
+        
+        
+        UINavigationBar.appearance().barTintColor = UIColor(red: 0, green: 0/255, blue: 90/255, alpha: 1)
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        
         return true
     }
 

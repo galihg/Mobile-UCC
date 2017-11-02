@@ -9,21 +9,35 @@
 /* Begin PBXBuildFile section */
 		4600A26C1ECC89AE0068C58D /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4600A26B1ECC89AE0068C58D /* Bookmark.swift */; };
 		4600A26E1ECC8F6E0068C58D /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4600A26D1ECC8F6E0068C58D /* About.swift */; };
-		46195DEE1EC560870075AD3C /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46195DED1EC560870075AD3C /* Merchant.swift */; };
+		46030D5D1F9F5B4900CA3346 /* MerchantView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46030D5C1F9F5B4900CA3346 /* MerchantView2.swift */; };
+		460FB7D51F58282200408AB7 /* ApplyVacancy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460FB7D41F58282200408AB7 /* ApplyVacancy.swift */; };
 		461A48811EFBAD7200B54313 /* Vacancy2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461A48801EFBAD7200B54313 /* Vacancy2.swift */; };
+		461BE73F1F7A6CA30000ADF8 /* ApplicationHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461BE73E1F7A6CA30000ADF8 /* ApplicationHistory.swift */; };
+		461BE7411F7A6D0B0000ADF8 /* historyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461BE7401F7A6D0B0000ADF8 /* historyCell.swift */; };
+		462559D81F35BE7C00C0C9B3 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462559D71F35BE7C00C0C9B3 /* Events.swift */; };
+		462559DA1F35C5D800C0C9B3 /* eventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462559D91F35C5D800C0C9B3 /* eventCell.swift */; };
 		46310C501F0116C800598BD7 /* Vacancy3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46310C4F1F0116C800598BD7 /* Vacancy3.swift */; };
+		463216C91F6A5E4300E8C781 /* NetworkTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463216C81F6A5E4300E8C781 /* NetworkTest.swift */; };
 		4634F8411F13BEC300CD4EA4 /* ProfileSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4634F8401F13BEC300CD4EA4 /* ProfileSummary.swift */; };
 		4634F8431F13C26F00CD4EA4 /* Education.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4634F8421F13C26F00CD4EA4 /* Education.swift */; };
 		46367C1A1EFD09EA0057121D /* DetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46367C191EFD09EA0057121D /* DetailEvent.swift */; };
 		46367C1C1EFD19810057121D /* UCCNews2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46367C1B1EFD19810057121D /* UCCNews2.swift */; };
 		46367C1E1EFD1E700057121D /* CompanyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46367C1D1EFD1E700057121D /* CompanyInfo.swift */; };
+		4636E8DF1F385C1D003C53D7 /* Vacancy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4636E8DE1F385C1D003C53D7 /* Vacancy.swift */; };
+		464B743F1FA331B3002E07DD /* MerchantView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464B743E1FA331B3002E07DD /* MerchantView3.swift */; };
 		465368FB1EDAC24600D233E2 /* vacancyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465368FA1EDAC24600D233E2 /* vacancyCell.swift */; };
-		465368FD1EDAD1B800D233E2 /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465368FC1EDAD1B800D233E2 /* Quote.swift */; };
-		465368FF1EDAD22300D233E2 /* QuotesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465368FE1EDAD22300D233E2 /* QuotesDataSource.swift */; };
+		4658AE651F52B4E000396157 /* vacancy2Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4658AE641F52B4E000396157 /* vacancy2Cell.swift */; };
 		465A7CD01EE3F84600043F41 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465A7CCF1EE3F84600043F41 /* NetworkService.swift */; };
 		465A7CD21EE3F9C600043F41 /* DucBlog.json in Resources */ = {isa = PBXBuildFile; fileRef = 465A7CD11EE3F9C600043F41 /* DucBlog.json */; };
 		465A7CD51EE4036800043F41 /* newsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465A7CD41EE4036800043F41 /* newsCell.swift */; };
 		465A7CD71EE4068C00043F41 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465A7CD61EE4068C00043F41 /* News.swift */; };
+		46609D4C1F5E70A300C7EC5E /* DetailNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46609D4B1F5E70A300C7EC5E /* DetailNotif.swift */; };
+		4665F26A1F24764D00BCFABC /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4665F2691F24764D00BCFABC /* LoginScreen.swift */; };
+		4673461A1F35E35600C7C1A1 /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467346191F35E35600C7C1A1 /* Merchant.swift */; };
+		4673461C1F35E68700C7C1A1 /* merchantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4673461B1F35E68700C7C1A1 /* merchantCell.swift */; };
+		4673461E1F35E8D000C7C1A1 /* MerchantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4673461D1F35E8D000C7C1A1 /* MerchantView.swift */; };
+		4673BD5D1F5D5F56000815AB /* notifCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4673BD5C1F5D5F56000815AB /* notifCell.swift */; };
+		4673BD631F5D65B9000815AB /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4673BD621F5D65B9000815AB /* NotificationViewController.swift */; };
 		46D43F131ED96C8E0065A3C2 /* ContactUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D43F121ED96C8E0065A3C2 /* ContactUs.swift */; };
 		46D43F151ED971120065A3C2 /* MyCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D43F141ED971120065A3C2 /* MyCV.swift */; };
 		46E1E0FF1F13D8A800E6F79C /* Experience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E0FE1F13D8A800E6F79C /* Experience.swift */; };
@@ -51,21 +65,35 @@
 /* Begin PBXFileReference section */
 		4600A26B1ECC89AE0068C58D /* Bookmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
 		4600A26D1ECC8F6E0068C58D /* About.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
-		46195DED1EC560870075AD3C /* Merchant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
+		46030D5C1F9F5B4900CA3346 /* MerchantView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerchantView2.swift; sourceTree = "<group>"; };
+		460FB7D41F58282200408AB7 /* ApplyVacancy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyVacancy.swift; sourceTree = "<group>"; };
 		461A48801EFBAD7200B54313 /* Vacancy2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vacancy2.swift; sourceTree = "<group>"; };
+		461BE73E1F7A6CA30000ADF8 /* ApplicationHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationHistory.swift; sourceTree = "<group>"; };
+		461BE7401F7A6D0B0000ADF8 /* historyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = historyCell.swift; sourceTree = "<group>"; };
+		462559D71F35BE7C00C0C9B3 /* Events.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
+		462559D91F35C5D800C0C9B3 /* eventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = eventCell.swift; sourceTree = "<group>"; };
 		46310C4F1F0116C800598BD7 /* Vacancy3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vacancy3.swift; sourceTree = "<group>"; };
+		463216C81F6A5E4300E8C781 /* NetworkTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkTest.swift; sourceTree = "<group>"; };
 		4634F8401F13BEC300CD4EA4 /* ProfileSummary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSummary.swift; sourceTree = "<group>"; };
 		4634F8421F13C26F00CD4EA4 /* Education.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Education.swift; sourceTree = "<group>"; };
 		46367C191EFD09EA0057121D /* DetailEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailEvent.swift; sourceTree = "<group>"; };
 		46367C1B1EFD19810057121D /* UCCNews2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCCNews2.swift; sourceTree = "<group>"; };
 		46367C1D1EFD1E700057121D /* CompanyInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyInfo.swift; sourceTree = "<group>"; };
+		4636E8DE1F385C1D003C53D7 /* Vacancy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vacancy.swift; sourceTree = SOURCE_ROOT; };
+		464B743E1FA331B3002E07DD /* MerchantView3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerchantView3.swift; sourceTree = "<group>"; };
 		465368FA1EDAC24600D233E2 /* vacancyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vacancyCell.swift; sourceTree = "<group>"; };
-		465368FC1EDAD1B800D233E2 /* Quote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
-		465368FE1EDAD22300D233E2 /* QuotesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuotesDataSource.swift; sourceTree = "<group>"; };
+		4658AE641F52B4E000396157 /* vacancy2Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vacancy2Cell.swift; sourceTree = "<group>"; };
 		465A7CCF1EE3F84600043F41 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		465A7CD11EE3F9C600043F41 /* DucBlog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DucBlog.json; sourceTree = "<group>"; };
 		465A7CD41EE4036800043F41 /* newsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newsCell.swift; sourceTree = "<group>"; };
 		465A7CD61EE4068C00043F41 /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
+		46609D4B1F5E70A300C7EC5E /* DetailNotif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailNotif.swift; sourceTree = "<group>"; };
+		4665F2691F24764D00BCFABC /* LoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		467346191F35E35600C7C1A1 /* Merchant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
+		4673461B1F35E68700C7C1A1 /* merchantCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = merchantCell.swift; sourceTree = "<group>"; };
+		4673461D1F35E8D000C7C1A1 /* MerchantView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerchantView.swift; sourceTree = "<group>"; };
+		4673BD5C1F5D5F56000815AB /* notifCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = notifCell.swift; sourceTree = "<group>"; };
+		4673BD621F5D65B9000815AB /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		46D43F121ED96C8E0065A3C2 /* ContactUs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUs.swift; sourceTree = "<group>"; };
 		46D43F141ED971120065A3C2 /* MyCV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCV.swift; sourceTree = "<group>"; };
 		46E1E0FE1F13D8A800E6F79C /* Experience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experience.swift; sourceTree = "<group>"; };
@@ -107,19 +135,12 @@
 			isa = PBXGroup;
 			children = (
 				465A7CD11EE3F9C600043F41 /* DucBlog.json */,
-				465A7CCF1EE3F84600043F41 /* NetworkService.swift */,
-				465368FC1EDAD1B800D233E2 /* Quote.swift */,
 				465A7CD61EE4068C00043F41 /* News.swift */,
+				462559D71F35BE7C00C0C9B3 /* Events.swift */,
+				467346191F35E35600C7C1A1 /* Merchant.swift */,
+				4636E8DE1F385C1D003C53D7 /* Vacancy.swift */,
 			);
 			name = Model;
-			sourceTree = "<group>";
-		};
-		465A7CCD1EE3F29D00043F41 /* Model Controller */ = {
-			isa = PBXGroup;
-			children = (
-				465368FE1EDAD22300D233E2 /* QuotesDataSource.swift */,
-			);
-			name = "Model Controller";
 			sourceTree = "<group>";
 		};
 		465A7CCE1EE3F66D00043F41 /* View Controller */ = {
@@ -130,20 +151,19 @@
 				46F702EA1EC4574600C2DE86 /* ViewController.swift */,
 				46F702FE1EC4828900C2DE86 /* UpcomingEvent.swift */,
 				46F703001EC48A3E00C2DE86 /* UCCNews.swift */,
-				46195DED1EC560870075AD3C /* Merchant.swift */,
-				4600A26B1ECC89AE0068C58D /* Bookmark.swift */,
+				46E1E1001F13E0DF00E6F79C /* LanguageSkills.swift */,
 				46D43F141ED971120065A3C2 /* MyCV.swift */,
 				46D43F121ED96C8E0065A3C2 /* ContactUs.swift */,
 				4600A26D1ECC8F6E0068C58D /* About.swift */,
 				461A48801EFBAD7200B54313 /* Vacancy2.swift */,
 				46367C191EFD09EA0057121D /* DetailEvent.swift */,
+				4600A26B1ECC89AE0068C58D /* Bookmark.swift */,
 				46367C1B1EFD19810057121D /* UCCNews2.swift */,
 				46367C1D1EFD1E700057121D /* CompanyInfo.swift */,
 				46310C4F1F0116C800598BD7 /* Vacancy3.swift */,
 				4634F8401F13BEC300CD4EA4 /* ProfileSummary.swift */,
 				4634F8421F13C26F00CD4EA4 /* Education.swift */,
 				46E1E0FE1F13D8A800E6F79C /* Experience.swift */,
-				46E1E1001F13E0DF00E6F79C /* LanguageSkills.swift */,
 				46E1E1021F13E25900E6F79C /* KemampuanBahasaInggris.swift */,
 				46E1E1041F13E3C700E6F79C /* OrganizationExperience.swift */,
 				46E1E1061F13E56B00E6F79C /* AwardsAndAchievements.swift */,
@@ -153,6 +173,14 @@
 				46E1E10E1F13EC1E00E6F79C /* CTC.swift */,
 				46E1E1101F13ED0400E6F79C /* Portofolio.swift */,
 				46E1E1121F13F04200E6F79C /* PublicInformation.swift */,
+				4665F2691F24764D00BCFABC /* LoginScreen.swift */,
+				4673461D1F35E8D000C7C1A1 /* MerchantView.swift */,
+				460FB7D41F58282200408AB7 /* ApplyVacancy.swift */,
+				4673BD621F5D65B9000815AB /* NotificationViewController.swift */,
+				46609D4B1F5E70A300C7EC5E /* DetailNotif.swift */,
+				461BE73E1F7A6CA30000ADF8 /* ApplicationHistory.swift */,
+				46030D5C1F9F5B4900CA3346 /* MerchantView2.swift */,
+				464B743E1FA331B3002E07DD /* MerchantView3.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -162,6 +190,11 @@
 			children = (
 				465368FA1EDAC24600D233E2 /* vacancyCell.swift */,
 				465A7CD41EE4036800043F41 /* newsCell.swift */,
+				462559D91F35C5D800C0C9B3 /* eventCell.swift */,
+				4673461B1F35E68700C7C1A1 /* merchantCell.swift */,
+				4658AE641F52B4E000396157 /* vacancy2Cell.swift */,
+				4673BD5C1F5D5F56000815AB /* notifCell.swift */,
+				461BE7401F7A6D0B0000ADF8 /* historyCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -187,13 +220,14 @@
 			children = (
 				465A7CD31EE3FA0300043F41 /* View */,
 				465A7CCE1EE3F66D00043F41 /* View Controller */,
-				465A7CCD1EE3F29D00043F41 /* Model Controller */,
 				465A7CCC1EE3F28A00043F41 /* Model */,
 				46F702E81EC4574600C2DE86 /* AppDelegate.swift */,
+				465A7CCF1EE3F84600043F41 /* NetworkService.swift */,
 				46F702EC1EC4574600C2DE86 /* Main.storyboard */,
 				46F702EF1EC4574600C2DE86 /* Assets.xcassets */,
 				46F702F11EC4574600C2DE86 /* LaunchScreen.storyboard */,
 				46F702F41EC4574600C2DE86 /* Info.plist */,
+				463216C81F6A5E4300E8C781 /* NetworkTest.swift */,
 			);
 			path = "Mobile UCC";
 			sourceTree = "<group>";
@@ -230,7 +264,8 @@
 				TargetAttributes = {
 					46F702E41EC4574600C2DE86 = {
 						CreatedOnToolsVersion = 8.3.2;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = AP245C845P;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -272,38 +307,52 @@
 			buildActionMask = 2147483647;
 			files = (
 				46E1E1091F13E6B800E6F79C /* Recommendation.swift in Sources */,
+				461BE73F1F7A6CA30000ADF8 /* ApplicationHistory.swift in Sources */,
 				46D43F131ED96C8E0065A3C2 /* ContactUs.swift in Sources */,
 				46F702EB1EC4574600C2DE86 /* ViewController.swift in Sources */,
 				46E1E10D1F13E8DD00E6F79C /* Expertise.swift in Sources */,
+				462559DA1F35C5D800C0C9B3 /* eventCell.swift in Sources */,
+				4673BD631F5D65B9000815AB /* NotificationViewController.swift in Sources */,
+				462559D81F35BE7C00C0C9B3 /* Events.swift in Sources */,
 				46E1E1071F13E56B00E6F79C /* AwardsAndAchievements.swift in Sources */,
 				46F702E91EC4574600C2DE86 /* AppDelegate.swift in Sources */,
-				465368FF1EDAD22300D233E2 /* QuotesDataSource.swift in Sources */,
 				46E1E1051F13E3C700E6F79C /* OrganizationExperience.swift in Sources */,
 				46367C1E1EFD1E700057121D /* CompanyInfo.swift in Sources */,
+				46609D4C1F5E70A300C7EC5E /* DetailNotif.swift in Sources */,
+				46030D5D1F9F5B4900CA3346 /* MerchantView2.swift in Sources */,
+				4673BD5D1F5D5F56000815AB /* notifCell.swift in Sources */,
 				46F702FF1EC4828900C2DE86 /* UpcomingEvent.swift in Sources */,
+				4636E8DF1F385C1D003C53D7 /* Vacancy.swift in Sources */,
 				46E1E1131F13F04200E6F79C /* PublicInformation.swift in Sources */,
+				464B743F1FA331B3002E07DD /* MerchantView3.swift in Sources */,
 				46D43F151ED971120065A3C2 /* MyCV.swift in Sources */,
 				465A7CD51EE4036800043F41 /* newsCell.swift in Sources */,
-				465368FD1EDAD1B800D233E2 /* Quote.swift in Sources */,
 				46310C501F0116C800598BD7 /* Vacancy3.swift in Sources */,
 				465368FB1EDAC24600D233E2 /* vacancyCell.swift in Sources */,
 				4634F8411F13BEC300CD4EA4 /* ProfileSummary.swift in Sources */,
-				46195DEE1EC560870075AD3C /* Merchant.swift in Sources */,
 				46F703011EC48A3E00C2DE86 /* UCCNews.swift in Sources */,
 				4634F8431F13C26F00CD4EA4 /* Education.swift in Sources */,
+				4658AE651F52B4E000396157 /* vacancy2Cell.swift in Sources */,
 				46E1E10B1F13E80400E6F79C /* KelebihanDanKekurangan.swift in Sources */,
+				4673461C1F35E68700C7C1A1 /* merchantCell.swift in Sources */,
 				465A7CD01EE3F84600043F41 /* NetworkService.swift in Sources */,
 				4600A26C1ECC89AE0068C58D /* Bookmark.swift in Sources */,
 				46367C1A1EFD09EA0057121D /* DetailEvent.swift in Sources */,
 				46E1E1031F13E25900E6F79C /* KemampuanBahasaInggris.swift in Sources */,
 				46E1E0FF1F13D8A800E6F79C /* Experience.swift in Sources */,
+				463216C91F6A5E4300E8C781 /* NetworkTest.swift in Sources */,
 				46F702FC1EC46E7400C2DE86 /* BaseViewController.swift in Sources */,
 				46367C1C1EFD19810057121D /* UCCNews2.swift in Sources */,
 				461A48811EFBAD7200B54313 /* Vacancy2.swift in Sources */,
+				4665F26A1F24764D00BCFABC /* LoginScreen.swift in Sources */,
+				460FB7D51F58282200408AB7 /* ApplyVacancy.swift in Sources */,
 				4600A26E1ECC8F6E0068C58D /* About.swift in Sources */,
 				46E1E10F1F13EC1E00E6F79C /* CTC.swift in Sources */,
+				4673461E1F35E8D000C7C1A1 /* MerchantView.swift in Sources */,
 				46E1E1111F13ED0400E6F79C /* Portofolio.swift in Sources */,
+				4673461A1F35E35600C7C1A1 /* Merchant.swift in Sources */,
 				465A7CD71EE4068C00043F41 /* News.swift in Sources */,
+				461BE7411F7A6D0B0000ADF8 /* historyCell.swift in Sources */,
 				46F702FD1EC46E7400C2DE86 /* MenuViewController.swift in Sources */,
 				46E1E1011F13E0DF00E6F79C /* LanguageSkills.swift in Sources */,
 			);
@@ -430,12 +479,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = AP245C845P;
 				INFOPLIST_FILE = "Mobile UCC/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "siskom.Mobile-UCC";
+				PRODUCT_BUNDLE_IDENTIFIER = "siskom.Mobile-UCC2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7525594d-b82f-4687-8ee6-e0fdccf36901";
+				PROVISIONING_PROFILE_SPECIFIER = "Undip Career Center";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -443,12 +497,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = AP245C845P;
 				INFOPLIST_FILE = "Mobile UCC/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "siskom.Mobile-UCC";
+				PRODUCT_BUNDLE_IDENTIFIER = "siskom.Mobile-UCC2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7525594d-b82f-4687-8ee6-e0fdccf36901";
+				PROVISIONING_PROFILE_SPECIFIER = "Undip Career Center";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

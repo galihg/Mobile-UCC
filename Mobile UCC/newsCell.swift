@@ -25,13 +25,13 @@ class newsCell: UITableViewCell {
     
     func updateUI()
     {
-        newsTitle.text = String(describing: news.id)
-        newsContent.text = news.name
-        newsDate.text = news.name
+        newsTitle.text = news.title
+        newsContent.text = news.ringkasan
+        newsDate.text = news.tgl_post
         
         
-        if let logo = news.logo {
-            let networkService = NetworkService(url: logo)
+        if let thumb_image = news.thumb_image {
+            let networkService = NetworkService(url: thumb_image)
             networkService.downloadImage({ (imageData) in
                 let image = UIImage(data: imageData as Data)
                 DispatchQueue.main.async(execute: {
