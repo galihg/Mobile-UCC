@@ -136,7 +136,11 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
                     let data4 = data3?["fullname"] as? String ?? "(Empty)"
                     let data5 = data3?["email"] as? String ?? "(Empty)"
                     let data6 = data3?["avatar"] as? String ?? "(Empty)"
-                    let data_block1 = [user, data2!, data4, data5, data6] as [String]
+                    let data7 = data3?["email_verified"] as? Bool
+                    let data8 = data3?["phone"] as? String ?? "(Empty)"
+                    let data9 = data3?["phone_verified"] as? Bool
+                    
+                    let data_block1 = [user, data2!, data4, data5, data6, data7!, data8, data9!] as [Any] 
                     
                     let preferences = UserDefaults.standard
                     preferences.set(data_block1, forKey: "session")
@@ -218,7 +222,7 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
             let rect:CGRect = info["UIKeyboardFrameEndUserInfoKey"] as! CGRect
             
             // Find our target Y
-            let targetY = view.frame.size.height - rect.height - 30 - _username.frame.size.height
+            let targetY = view.frame.size.height - rect.height - 30 //- _username.frame.size.height
             
             // Find out where the stackview is relative to the frame
             let textFieldY = OuterStackView.frame.origin.y + textFieldStackView.frame.origin.y 

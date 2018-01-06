@@ -76,6 +76,12 @@ class Vacancy3: BaseViewController {
             applyOnline.text = "No"
         }
         
+        if (applyOnline.text == "No"){
+            btn_apply.isHidden = true
+        } else {
+            btn_apply.isHidden = false
+        }
+        
         let rawClosed = "\(passedData[9])"
         if (rawClosed == "true") {
             jobClosed.text = "Yes"

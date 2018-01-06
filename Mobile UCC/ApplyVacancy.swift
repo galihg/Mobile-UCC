@@ -187,10 +187,10 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
         if(defaults.object(forKey: "session") != nil)
         {
             let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [String]
+            var preferences = preference_block as! [Any]
             
-            let username = preferences[0]
-            let token = preferences[1]
+            let username = (preferences[0] as! String)
+            let token = (preferences[1] as! String)
             
             let loginString = String(format: "%@:%@", username, token)
             let loginData = loginString.data(using: String.Encoding.utf8)!
@@ -352,15 +352,6 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
                 createAlert(title: "WARNING!", message: "Pilih provinsi terlebih dahulu!")
             }
             
-            
-            
-            /*if let indexPath = provinceTable.indexPathForSelectedRow {
-                let rawId = self.provinsi[(indexPath.row)]
-                let id = rawId.id_provinsi
-                print (id!)
-                let urlString = "http://uat.career.undip.ac.id/restapi/location/cities/" + id!
-                downloadAllCity(urlString)
-            }*/
         }
         else {
             cityTable.isHidden = true
@@ -415,10 +406,10 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
         if(defaults.object(forKey: "session") != nil)
         {
             let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [String]
+            var preferences = preference_block as! [Any]
             
-            let username = preferences[0]
-            let token = preferences[1]
+            let username = (preferences[0] as! String)
+            let token = (preferences[1] as! String)
             
             let loginString = String(format: "%@:%@", username, token)
             let loginData = loginString.data(using: String.Encoding.utf8)!

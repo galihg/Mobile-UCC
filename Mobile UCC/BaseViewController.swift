@@ -67,21 +67,28 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
             self.openViewControllerBasedOnIdentifier("Application History")
             
             break
-
+            
         case 6:
+            print("My CV\n", terminator: "")
+            
+            self.openViewControllerBasedOnIdentifier("My CV")
+            
+            break
+        
+        case 7:
             print("Contact Us\n", terminator: "")
             
             self.openViewControllerBasedOnIdentifier("Contact Us")
             
             break
-        case 7:
+        case 8:
             print("About\n", terminator: "")
             
             self.openViewControllerBasedOnIdentifier("About")
             
             break
             
-        case 8:
+        case 9:
             print("Login Screen\n", terminator: "")
             
             let url = URL(string: "http://uat.career.undip.ac.id/restapi/auth/logout")

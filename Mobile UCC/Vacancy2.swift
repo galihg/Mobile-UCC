@@ -345,7 +345,7 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailCompany" {
-            //var selectedRow = self.tableView.indexPathForSelectedRow
+        
             removeLoadingScreen()
             UIApplication.shared.endIgnoringInteractionEvents()
             let CompanyVC = segue.destination as! CompanyInfo
@@ -354,7 +354,7 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
             navigationItem.title = nil
             
         } else if segue.identifier == "detailVacancy" {
-            //var selectedRow = self.tableView.indexPathForSelectedRow
+           
             removeLoadingScreen()
             UIApplication.shared.endIgnoringInteractionEvents()
             let Vacancy3VC = segue.destination as! Vacancy3

@@ -1,19 +1,19 @@
 //
-//  OrganizationExperience.swift
+//  WorkExperience.swift
 //  Mobile UCC
 //
-//  Created by LabSE Siskom on 12/27/17.
+//  Created by LabSE Siskom on 12/20/17.
 //  Copyright © 2017 LabSE Siskom. All rights reserved.
 //
 
 import UIKit
 
-class OrganizationExperience: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var tableView: UITableView!
     
     
-    var organisasi = [Organisasi]()
+    var work = [Work]()
     
     // View which contains the loading text and the spinner
     let loadingView = UIView()
@@ -26,11 +26,12 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
     
     let addButton = UIButton()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
-        self.title = "Organization Experience"
+        self.title = "Work Experience"
         
         //create a new button
         let button = UIButton.init(type: .custom)
@@ -52,7 +53,7 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
         tableView.delegate = self
         
         setLoadingScreen()
-        downloadAllOrganization()
+        downloadAllExperience()
     }
     
     func newButtonAction(sender: UIBarButtonItem){
@@ -100,11 +101,11 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
     
     private func setAddButton() {
         
-        addButton.frame = CGRect(x: 8, y: 86, width: 330, height: 63)
+        addButton.frame = CGRect(x: 8, y: 86, width: 300, height: 63)
         //addButton.setImage(UIImage(named: "add2"),for: UIControlState())
         addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControlState())
-        addButton.addTarget(self, action: #selector(addOrganization), for: .touchUpInside)
-        addButton.setTitle("         ADD ORGANIZATION EXPERIENCE", for: [])
+        addButton.addTarget(self, action: #selector(addWork), for: .touchUpInside)
+        addButton.setTitle("         ADD WORK EXPERIENCE", for: [])
         self.view.addSubview(addButton)
     }
     
@@ -114,11 +115,11 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
         
     }
     
-    func downloadAllOrganization () {
+    func downloadAllExperience () {
         
-        organisasi = []
+        work = []
         
-        let url = URL(string: "http://api.career.undip.ac.id/v1/jobseekers/cv_part/organization")
+        let url = URL(string: "http://api.career.undip.ac.id/v1/jobseekers/cv_part/work")
         
         let defaults = UserDefaults.standard
         if(defaults.object(forKey: "session") != nil)
@@ -174,22 +175,20 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
                     
                     if (data_block=="ok") {
                         do {
-                            let orgDictionaries = server_response["data"] as! NSArray
+                            let workDictionaries = server_response["data"] as! NSArray
                             
-                            for orgDictionary in orgDictionaries {
-                                let eachOrg = orgDictionary as! [String:Any]
-                                let id_org = eachOrg ["id_org"] as? String
-                                let id_member = eachOrg ["id_member"] as? String
-                                let namaOrg = eachOrg ["nama_org"] as? String
-                                let posisi = eachOrg ["posisi"] as? String
-                                let deskripsi = eachOrg ["deskripsi"] as? String
-                                let tglMasuk = eachOrg ["tgl_masuk"] as? String
-                                let tglKeluar = eachOrg ["tgl_keluar"] as? String
+                            for workDictionary in workDictionaries {
+                                let eachWork = workDictionary as! [String:Any]
+                                let id_pekerjaan = eachWork ["id_pekerjaan"] as? String
+                                let id_member = eachWork ["id_member"] as? String
+                                let perusahaan = eachWork ["perusahaan"] as? String
+                                let posisi = eachWork ["posisi"] as? String
+                                let deskripsi = eachWork ["deskripsi"] as? String
+                              
                                 
-                                
-                                self.organisasi.append(Organisasi(id_organisasi: id_org!, id_member: id_member!, nama_organisasi: namaOrg!, posisi: posisi!, deskripsi: deskripsi!, year_in: tglMasuk!, year_out: tglKeluar!))
+                                self.work.append(Work(id_pekerjaan: id_pekerjaan!, id_member: id_member!, perusahaan: perusahaan!, posisi: posisi!, deskripsi: deskripsi!))
                             }
-                            print(self.organisasi)
+                            print(self.work)
                             DispatchQueue.main.async {
                                 self.tableView.reloadData()
                                 self.removeLoadingScreen()
@@ -227,57 +226,56 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if organisasi.count == 0 {
+        if work.count == 0 {
             tableView.isHidden = true
             setAddButton()
             return 0
         }   else {
             tableView.isHidden = false
             removeAddButton()
-            return organisasi.count
+            return work.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "organizationCell", for: indexPath) as! organizationCell
-        let organisasi = self.organisasi[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "workCell", for: indexPath) as! workCell
+        let work = self.work[indexPath.row]
         
-        cell.organisasi = organisasi
+        cell.work = work
         cell.btn_edit.tag = indexPath.row
-        cell.btn_edit.addTarget(self, action: #selector(OrganizationExperience.edit_org(_:)), for: .touchUpInside)
+        cell.btn_edit.addTarget(self, action: #selector(WorkExperience.edit_work(_:)), for: .touchUpInside)
         
         cell.btn_delete.tag = indexPath.row
-        cell.btn_delete.addTarget(self, action: #selector(OrganizationExperience.delete_org(_:)), for: .touchUpInside)
+        cell.btn_delete.addTarget(self, action: #selector(WorkExperience.delete_work(_:)), for: .touchUpInside)
         
         return cell
     }
     
-    func addOrganization(_ button: UIButton) {
+    func addWork(_ button: UIButton) {
         print("Button pressed 👍")
     }
     
-
-    @IBAction func edit_org(_ sender: Any) {
-        
-    }
-    
-    
-    @IBAction func delete_org(_ sender: Any) {
-        let data = organisasi[(sender as AnyObject).tag]
-        let buttonPosition : CGPoint = (sender as AnyObject).convert((sender as AnyObject).bounds.origin, to: tableView)
-        let indexPath = tableView.indexPathForRow(at: buttonPosition)
-        
-        let orgId = data.id_organisasi
-        
-        let urlString4 = "http://api.career.undip.ac.id/v1/jobseekers/delete_cv_part/organization/"
-        
-        deleteOrg(urlString4, indexPath!, orgId!)
+    @IBAction func edit_work(_ sender: Any) {
     }
   
     
+    @IBAction func delete_work(_ sender: Any) {
+        let data = work[(sender as AnyObject).tag]
+        let buttonPosition : CGPoint = (sender as AnyObject).convert((sender as AnyObject).bounds.origin, to: tableView)
+        let indexPath = tableView.indexPathForRow(at: buttonPosition)
+        
+        let workId = data.id_pekerjaan
+        
+        let urlString4 = "http://api.career.undip.ac.id/v1/jobseekers/delete_cv_part/work/"
+        
+        //setLoadingScreen()
+        //UIApplication.shared.beginIgnoringInteractionEvents()
+        deleteWork(urlString4, indexPath!, workId!)
+    }
+  
     
-    func deleteOrg(_ url:String, _ row:IndexPath,_ id:String) {
+    func deleteWork (_ url:String, _ row:IndexPath,_ id:String) {
         
         
         let url = URL(string: url)
@@ -340,7 +338,7 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
                         let message = server_response["message"] as? String
                         self.createAlert(title: "WARNING!", message: message!)
                         DispatchQueue.main.async {
-                            self.organisasi.remove(at: row.row)
+                            self.work.remove(at: row.row)
                             self.tableView.deleteRows(at: [row], with: .fade)
                         }
                         
@@ -376,25 +374,24 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
     
 }
 
-class Organisasi
+class Work
 {
-    var id_organisasi: String?
+    var id_pekerjaan: String?
     var id_member: String?
-    var nama_organisasi: String?
+    var perusahaan: String?
     var posisi: String?
     var deskripsi: String?
     var year_in: String?
     var year_out: String?
+    var ipk: String?
     
-    init(id_organisasi: String, id_member: String, nama_organisasi: String, posisi: String, deskripsi: String, year_in: String, year_out: String)
+    init(id_pekerjaan: String, id_member: String, perusahaan: String, posisi: String, deskripsi: String)
     {
-        self.id_organisasi = id_organisasi
+        self.id_pekerjaan = id_pekerjaan
         self.id_member = id_member
-        self.nama_organisasi = nama_organisasi
+        self.perusahaan = perusahaan
         self.posisi = posisi
         self.deskripsi = deskripsi
-        self.year_in = year_in
-        self.year_out = year_out
     }
     
 }

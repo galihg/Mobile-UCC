@@ -51,12 +51,12 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if(defaults.object(forKey: "session") != nil)
         {
             let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [String]
+            var preferences = preference_block as! [Any]
             
-            fullName.text = preferences[2]
-            email.text = preferences[3]
+            fullName.text = (preferences[2] as! String)
+            email.text = (preferences[3] as! String)
             
-            let urlPic = URL(string: preferences[4])
+            let urlPic = URL(string: preferences[4] as! String)
             if let Pic = urlPic {
                 let networkService = NetworkService(url: Pic)
                 networkService.downloadImage({ (imageData) in
@@ -93,7 +93,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
             arrayMenuOptions.append(["title":"Merchant", "icon":"merchant_icon"])
             arrayMenuOptions.append(["title":"Notification", "icon":"notif_icon"])
             arrayMenuOptions.append(["title":"Application History", "icon":"history_icon"])
-            //arrayMenuOptions.append(["title":"My CV", "icon":"PlayIcon"])
+            arrayMenuOptions.append(["title":"My CV", "icon":"myCV_icon"])
             arrayMenuOptions.append(["title":"Contact Us", "icon":"contact_icon"])
             arrayMenuOptions.append(["title":"About", "icon":"about_icon"])
             arrayMenuOptions.append(["title":"Logout", "icon":"logout_icon"])
