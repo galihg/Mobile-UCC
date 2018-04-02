@@ -54,10 +54,6 @@ class MerchantView3: UIViewController {
             webIcon.isHidden = true
         }
         
-        
-        
     }
-
-
 
 }

@@ -17,24 +17,22 @@ class MerchantView2: UIViewController {
     @IBOutlet weak var merchantBanner: UIImageView!
     @IBOutlet weak var merchantPromo: UITextView!
     
-    
     var passedData : [Any] = []
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.title = "Merchant Details"
+       
         merchantName.text = (passedData[0] as! String)
         
         let merchantAddressRaw = (passedData[1] as! String)
-        merchantAddress.text = merchantAddressRaw.html2String
+        merchantAddress.text = merchantAddressRaw.htmlString
         
         valid_date.text = (passedData[3] as! String)
         
         let merchantPromoRaw = (passedData[9] as! String)
-        merchantPromo.text = merchantPromoRaw.html2String
+        merchantPromo.text = merchantPromoRaw.htmlString
         
         let passedURL1 = passedData[2]
         let networkService = NetworkService(url: passedURL1 as! URL)
@@ -53,6 +51,10 @@ class MerchantView2: UIViewController {
                 self.merchantBanner.image = image
             })
         })
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+         self.title = "Merchant Details"
     }
     @IBAction func passInfo(_ sender: Any) {
         

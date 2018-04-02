@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import PKHUD
 
-class EnglishSkill: UIViewController {
+class EnglishSkill: BaseViewController {
     
     @IBOutlet var ContentView: [UILabel]!
     @IBOutlet var ImageView: [UIImageView]!
@@ -20,16 +21,14 @@ class EnglishSkill: UIViewController {
     @IBOutlet var ieltsYear: UILabel!
     @IBOutlet var toeicScore: UILabel!
     @IBOutlet var toeicYear: UILabel!
-    
-    var passedData : [String] = []
+
     let editButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.title = "English Skill"
-        
+       
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
@@ -38,50 +37,75 @@ class EnglishSkill: UIViewController {
         button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControlEvents.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        
+        button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         let barButton = UIBarButtonItem(customView: button)
+        
         //assign button to navigationbar
         self.navigationItem.rightBarButtonItem = barButton
         
-        
-        let rawType = passedData[2]
-        if rawType == "1" {
-            toeflType.text = "PBT"
-        } else if rawType == "2" {
-            toeflType.text = "CBT"
-        } else if rawType == "3" {
-            toeflType.text = "iBT"
-        } else {
-            toeflType.text = "(empty)"
-        }
-        
-        toeflScore.text = passedData[3]
-        toeflYear.text = passedData[4]
-        ieltsScore.text = passedData[5]
-        ieltsYear.text = passedData[6]
-        toeicScore.text = passedData[7]
-        toeicYear.text = passedData[8]
-        
-        
-        
-        /*for contents in ContentView {
-            if (contents.text == "(empty)") {
-                contents.isHidden = true
-                for images in ImageView {
-                    images.isHidden = true
-                }
-                setEditButton()
-            } else {
-                contents.isHidden = false
-                for images in ImageView {
-                    images.isHidden = false
-                }
-                removeEditButton()
-                
-            }
-        }*/
-        
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+         self.title = "English Skill"
+         ambilEnglish()
+    }
+    
+    
+    func ambilEnglish() {
+        HUD.show(.progress)
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/cv_part/english"
+        
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let data_dictionary = server_response["data"] as? NSDictionary
+                    let id_english = data_dictionary?["id_bhs_inggris"] as? String ?? "(empty)"
+                    let id_member = data_dictionary?["id_member"] as? String ?? "(empty)"
+                    let tipe_toefl = data_dictionary?["tipe_toefl"] as? String ?? "(empty)"
+                    let nilai_toefl = data_dictionary?["nilai_toefl"] as? String ?? "(empty)"
+                    let tahun_toefl = data_dictionary?["thn_toefl"] as? String ?? "(empty)"
+                    let nilai_ielts = data_dictionary?["nilai_ielts"] as? String ?? "(empty)"
+                    let tahun_ielts = data_dictionary?["thn_ielts"] as? String ?? "(empty)"
+                    let nilai_toeic = data_dictionary?["nilai_toeic"] as? String ?? "(empty)"
+                    let tahun_toeic = data_dictionary?["thn_toeic"] as? String ?? "(empty)"
+                    
+                    
+                    DispatchQueue.main.async {
+                        
+                        if tipe_toefl == "1" {
+                            self.toeflType.text = "PBT"
+                        } else if tipe_toefl == "2" {
+                            self.toeflType.text = "CBT"
+                        } else if tipe_toefl == "3" {
+                            self.toeflType.text = "iBT"
+                        } else {
+                            self.toeflType.text = "(empty)"
+                        }
+                        
+                        self.toeflScore.text = nilai_toefl
+                        self.toeflYear.text = tahun_toefl
+                        self.ieltsScore.text = nilai_ielts
+                        self.ieltsYear.text = tahun_ielts
+                        self.toeicScore.text = nilai_toeic
+                        self.toeicYear.text = tahun_toeic
+                        
+                        HUD.hide()
+                    }
+                } else if (status == "invalid-session"){
+                    
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                        self.openViewControllerBasedOnIdentifier("Home")
+                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                    }
+                }
+            }
+        }
+    }
+    
     
     func editButtonAction(sender: UIBarButtonItem){
         
@@ -105,6 +129,8 @@ class EnglishSkill: UIViewController {
     func editEnglish(_ button: UIButton) {
         print("Button pressed 👍")
     }
+    
+    
 
 
 }

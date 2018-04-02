@@ -7,19 +7,19 @@
 //
 
 import UIKit
+import PKHUD
 
-class ProfileSummary: UIViewController {
+class ProfileSummary: BaseViewController {
 
     @IBOutlet var profileSum: UITextView!
     @IBOutlet var addProfileSum: UIButton!
-    
-    var passedData : String = ""
+    @IBOutlet var contentView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.title = "Profile Summary"
+
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
@@ -28,12 +28,12 @@ class ProfileSummary: UIViewController {
         button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControlEvents.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        
+        button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         let barButton = UIBarButtonItem(customView: button)
+        
         //assign button to navigationbar
         self.navigationItem.rightBarButtonItem = barButton
-        
-        profileSum.text = passedData
         
         if (profileSum.text != "(empty)") {
             addProfileSum.isHidden = true
@@ -44,8 +44,58 @@ class ProfileSummary: UIViewController {
         }
         
     }
+   
+    override func viewWillAppear(_ animated: Bool) {
+        //ViewControllers view ist still not in the window hierarchy
+        //This is the right place to do for instance animations on your views subviews
+        self.title = "Profile Summary"
+        ambilProfil()
+    }
+    
+    func ambilProfil() {
+        HUD.show(.progress)
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/cv_part/shortprofile"
+       
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let data_dictionary = server_response["data"] as? NSDictionary
+                    let data = data_dictionary?["profil"] as? String ?? "(empty)"
+                    
+                    let passedData = data as String
+                    
+                    DispatchQueue.main.async {
+                        self.profileSum.text = passedData
+                        HUD.hide()
+                    }
+                } else if (status == "invalid-session") {
+                    
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                        self.openViewControllerBasedOnIdentifier("Home")
+                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                    }
+                }
+            }
+        }
+    }
     
     func editButtonAction(sender: UIBarButtonItem){
+        let passedData = profileSum.text
+        self.performSegue(withIdentifier: "showEditProfileSum", sender: passedData)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "showEditProfileSum") {
+            navigationItem.title = nil
+            let Profile2VC = segue.destination as! EditProfileSummary
+            let pass = sender as! String
+            Profile2VC.passedData = pass
+            
+        }
         
     }
 

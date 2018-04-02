@@ -1,5 +1,5 @@
 //
-//  KelebihanDanKekurangan.swift
+//  Recommendation.swift
 //  Mobile UCC
 //
 //  Created by LabSE Siskom on 7/10/17.
@@ -8,15 +8,14 @@
 
 import UIKit
 
-class KelebihanDanKekurangan: UIViewController {
+class EditRecommendation: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Edit Kelebihan dan Kekurangan"
+        self.title = "Edit Recommendation"
         // Do any additional setup after loading the view.
     }
 
-   
 
 
 }

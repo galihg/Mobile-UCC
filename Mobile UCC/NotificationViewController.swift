@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 class NotificationViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -23,32 +24,29 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
     
     var notification = [Notification]()
     
+    let url = URL(string: "http://api.career.undip.ac.id/v1/auth/check")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.addSlideMenuButton()
-        self.title = "Notification"
+        
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.dataSource = self
         tableView.delegate = self
         
-        
-        /*Vacancy.downloadAllVacancy(completionHandler: { (Vacancy) in
-         let vacancy = Vacancy as NSArray
-         DispatchQueue.main.async(execute: {
-         self.vacancy = vacancy as! [Vacancy]
-         })
-         })*/
-        
         downloadAllNotification()
-        setLoadingScreen()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
+        
+        self.title = "Notification"
+       
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -72,144 +70,47 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
         
     }
     
-    // Set the activity indicator into the main view
-    private func setLoadingScreen() {
-        
-        // Sets the view which contains the loading text and the spinner
-        let width: CGFloat = 30
-        let height: CGFloat = 30
-        let x = (tableView.frame.width / 2.3) - (width / 30.5)
-        let y = (tableView.frame.height / 2.3) - (height / 2.3) - (navigationController?.navigationBar.frame.height)!
-        loadingView.frame = CGRect(x: x, y: y, width: width, height: height)
-        
-        
-        // Sets spinner
-        spinner.activityIndicatorViewStyle = .gray
-        spinner.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        spinner.startAnimating()
-        
-        // Adds text and spinner to the view
-        loadingView.addSubview(spinner)
-        
-        tableView.addSubview(loadingView)
-        
-    }
-    
-    // Remove the activity indicator from the main view
-    private func removeLoadingScreen() {
-        
-        // Hides and stops the text and the spinner
-        
-        spinner.stopAnimating()
-        spinner.isHidden = true
-        loadingLabel.isHidden = true
-        
-    }
-    
     func downloadAllNotification () {
         
         notification = []
         
-        let url = URL(string: "http://api.career.undip.ac.id/v1/jobseekers/notification")
+        HUD.show(.progress)
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/notification"
         
-        let defaults = UserDefaults.standard
-        
-        if(defaults.object(forKey: "session") != nil)
-        {
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-            
-            let username = (preferences[0] as! String)
-            let token = (preferences[1] as! String)
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let notificationDictionaries = server_response["data"] as! NSArray
                     
-                    
-                    if (data_block=="ok") {
-                        do {
-                            let notificationDictionaries = server_response["data"] as! NSArray
-                            //print(vacancyDictionaries)
-                            for notificationDictionary in notificationDictionaries {
-                                let eachNotification = notificationDictionary as! [String:Any]
-                                let id_notif = eachNotification ["id"] as? Int
-                                let type_notif = eachNotification ["type"] as? String
-                                let subject_notif = eachNotification ["subject"] as? String
-                                let status = eachNotification ["read"] as? Bool
-                                let date_notif = eachNotification ["date_created"] as? String
-                                
-                                self.notification.append(Notification(id_notif: id_notif!, type_notif: type_notif!, subject_notif: subject_notif!, status: status!, date_notif: date_notif!))
-                            }
-                            print(self.notification)
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                                self.removeLoadingScreen()
-                            }
+                    for notificationDictionary in notificationDictionaries {
+                        let eachNotification = notificationDictionary as! [String:Any]
+                        let id_notif = eachNotification ["id"] as? Int
+                        let type_notif = eachNotification ["type"] as? String
+                        let subject_notif = eachNotification ["subject"] as? String
+                        let status = eachNotification ["read"] as? Bool
+                        let date_notif = eachNotification ["date_created"] as? String
                         
-                            
-                        }
-                        
+                        self.notification.append(Notification(id_notif: id_notif!, type_notif: type_notif!, subject_notif: subject_notif!, status: status!, date_notif: date_notif!))
                     }
-                    else if (data_block=="invalid-session"){
-                        DispatchQueue.main.async (
-                            execute:self.LoginError
-                        )
+                    print(self.notification)
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        HUD.hide()
+                    }
+                    
+                } else if (status == "invalid-session"){
+                    
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                        self.openViewControllerBasedOnIdentifier("Home")
+                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
                     }
                 }
-                
-            })
-            
-            task.resume()
+            }
         }
-            
-        else
-        {
-            self.openViewControllerBasedOnIdentifier("Login Screen")
-        }
-    }
-    
-    
-    
-    func LoginError() {
-        self.openViewControllerBasedOnIdentifier("Login Screen")
+        
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -218,8 +119,13 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
     
     func numberOfSections(in tableView: UITableView) -> Int
     {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
         if notification.count > 0 {
-            return 1
+            return notification.count
         } else {
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noDataLabel.text          = "Tidak ada Notifikasi"
@@ -229,12 +135,7 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
             tableView.separatorStyle  = .none
             return 0
         }
-
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        return notification.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
@@ -255,110 +156,48 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
         
         let notification = self.notification[indexPath.row]
         let notifId = notification.id_notif
-        let idString = "\(notifId!)"
-        
-        let urlString = "http://api.career.undip.ac.id/v1/jobseekers/notification/" + idString
-        setLoadingScreen()
-        UIApplication.shared.beginIgnoringInteractionEvents()
-        downloadDetailNotif(urlString)
+
+        downloadDetailNotif(notifId!)
     }
     
-    func downloadDetailNotif (_ url: String) {
+    func downloadDetailNotif (_ notifId: Int) {
         
+        HUD.show(.progress)
+        let idString = "\(notifId)"
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/notification/" + idString
         
-        let url = URL(string: url)
-        
-        let defaults = UserDefaults.standard
-        
-        if(defaults.object(forKey: "session") != nil)
-        {
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-            
-            let username = (preferences[0] as! String)
-            let token = (preferences[1] as! String)
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok") {
+                    let notificationDictionaries = server_response["data"] as! NSDictionary
+                    let type_notif = notificationDictionaries["type"] as? String
+                    let subject_notif = notificationDictionaries ["subject"] as? String
+                    let date_notif = notificationDictionaries ["date_created"] as? String
+                    let content_notif = notificationDictionaries ["content_html"] as? String
                     
-                    
-                    if (data_block=="ok") {
-                        let notificationDictionaries = server_response["data"] as! NSDictionary
-                        let type_notif = notificationDictionaries["type"] as? String
-                        let subject_notif = notificationDictionaries ["subject"] as? String
-                        let date_notif = notificationDictionaries ["date_created"] as? String
-                        let content_notif = notificationDictionaries ["content_html"] as? String
-                        
-                        let passedArray = [type_notif!, subject_notif!, date_notif!, content_notif!] as [Any]
-                        DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "detailNotif", sender: passedArray )
-                        }
-                        
-                    }
-                        
-                        
-                    else if (data_block=="invalid-session"){
-                        DispatchQueue.main.async (
-                            execute:self.LoginError
-                        )
+                    let passedArray = [type_notif!, subject_notif!, date_notif!, content_notif!] as [Any]
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "detailNotif", sender: passedArray )
                     }
                 }
-                
-            })
-            
-            task.resume()
-        }
-            
-        else
-        {
-            self.openViewControllerBasedOnIdentifier("Login Screen")
+                else if (status == "invalid-session"){
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                        self.openViewControllerBasedOnIdentifier("Home")
+                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                    }
+                    
+                }
+            }
         }
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailNotif" {
-            //var selectedRow = self.tableView.indexPathForSelectedRow
-            removeLoadingScreen()
-            UIApplication.shared.endIgnoringInteractionEvents()
+            
+            HUD.hide()
             let Notif2VC = segue.destination as! DetailNotif
             let pass = sender as! [Any]
             Notif2VC.passedData = pass
@@ -367,28 +206,5 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
         }
     }
     
-    /*func NewsAtIndexPath(IndexPath: NSIndexPath) -> News2 {
-     let pass = news[IndexPath.section]
-     return pass.news[IndexPath.row]
-     }*/
-    
 }
 
-class Notification
-{
-    var id_notif: Int?
-    var type_notif: String?
-    var subject_notif: String?
-    var status: Bool?
-    var date_notif: String?
-    
-    init(id_notif: Int, type_notif: String, subject_notif: String, status: Bool, date_notif: String)
-    {
-        self.id_notif = id_notif
-        self.type_notif = type_notif
-        self.subject_notif = subject_notif
-        self.status = status
-        self.date_notif = date_notif
-        
-    }
-}

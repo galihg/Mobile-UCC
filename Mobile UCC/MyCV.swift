@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 class MyCV: BaseViewController {
 
@@ -17,26 +18,14 @@ class MyCV: BaseViewController {
     @IBOutlet weak var statusEmail: UILabel!
     @IBOutlet weak var contentView: UIView!
     
-    // View which contains the loading text and the spinner
-    let loadingView = UIView()
-    
-    // Spinner shown during load the TableView
-    let spinner = UIActivityIndicatorView()
-    
-    // Text shown during load the TableView
-    let loadingLabel = UILabel()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.addSlideMenuButton()
-        self.title = "My CV"
-        
+ 
         let defaults = UserDefaults.standard
-        if(defaults.object(forKey: "session") != nil)
-        {
-            let preference_block = defaults.object(forKey: "session")
+        if let preference_block = defaults.object(forKey: "session") {
             var preferences = preference_block as! [Any]
         
             profileName.text = (preferences[2] as! String)
@@ -54,19 +43,22 @@ class MyCV: BaseViewController {
             let urlPic = URL (string: urlPicRaw)
             let networkService = NetworkService(url: urlPic!)
             networkService.downloadImage({ (imageData) in
-                    let image = UIImage(data: imageData as Data)
-                    DispatchQueue.main.async(execute: {
-                        self.profPic.setImage(image, for: UIControlState())
-                    })
+                let image = UIImage(data: imageData as Data)
+                DispatchQueue.main.async(execute: {
+                    self.profPic.setImage(image, for: UIControlState())
                 })
-            
+            })
         }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
-        self.navigationController?.isNavigationBarHidden = false
+        //self.navigationController?.isNavigationBarHidden = false
+        
+        self.title = "My CV"
+        auth_check()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -90,41 +82,36 @@ class MyCV: BaseViewController {
         
     }
     
-    
-    // Set the activity indicator into the main view
-    private func setLoadingScreen() {
+    func auth_check() {
         
-        // Sets the view which contains the loading text and the spinner
-        let width: CGFloat = 30
-        let height: CGFloat = 30
-        let x = (contentView.frame.width / 2.3) - (width / 30.5)
-        let y = (contentView.frame.height / 2.3) - (height / 2.3) - (navigationController?.navigationBar.frame.height)!
-        loadingView.frame = CGRect(x: x, y: y, width: width, height: height)
+        let url = "http://api.career.undip.ac.id/v1/auth/check"
         
-        
-        // Sets spinner
-        spinner.activityIndicatorViewStyle = .gray
-        spinner.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        spinner.startAnimating()
-        
-        // Adds text and spinner to the view
-        loadingView.addSubview(spinner)
-        
-        contentView.addSubview(loadingView)
-        
-    }
-    
-    // Remove the activity indicator from the main view
-    private func removeLoadingScreen() {
-        
-        // Hides and stops the text and the spinner
-        
-        spinner.stopAnimating()
-        spinner.isHidden = true
-        loadingLabel.isHidden = true
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            
+            if let status = server_response["status"] as? String
+            {
+                if (status == "ok"){
+                    
+                    DispatchQueue.main.async {
+                        return
+                    }
+                    
+                } else if (status == "invalid-session"){
+                    
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                       self.openViewControllerBasedOnIdentifier("Home")
+                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                    }
+                    
+                }
+            }
+            
+        }
         
     }
-
     
     @IBAction func editPhoto(_ sender: Any) {
         let defaults = UserDefaults.standard
@@ -137,185 +124,16 @@ class MyCV: BaseViewController {
     }
     
     @IBAction func publicInfo(_ sender: Any) {
-
-        let urlString = "http://api.career.undip.ac.id/v1/jobseekers/cv"
-        
-        setLoadingScreen()
-        UIApplication.shared.beginIgnoringInteractionEvents()
-        ambilCV(urlString)
-
+        performSegue(withIdentifier: "showPublicInfo", sender: self )
     }
     
     @IBAction func showEdu(_ sender: Any) {
         performSegue(withIdentifier: "showEducation", sender: self)
     }
     
-    func ambilCV (_ url: String) {
-        
-        let url = URL(string: url)
-        let defaults = UserDefaults.standard
-        let email = emailProfile.text
-        let verifEmail = statusEmail.text
-        
-        
-        if(defaults.object(forKey: "session") != nil)
-        {
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-        
-            let username = (preferences[0] as! String)
-            let token = (preferences[1] as! String)
-            let phone = (preferences[6] as! String)
-            let verifPhone = (preferences[7] as! Bool)
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-        
-            let session = URLSession.shared
-        
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
-                    if (data_block=="ok") {
-                        let data_dictionary = server_response["data"] as? NSDictionary
-                        let data1 = data_dictionary?["fullname"] as? String ?? "(empty)"
-                        let data2 = data_dictionary?["academic_title"] as? String ?? "(empty)"
-                        let data3 = data_dictionary?["birthdate"] as? String ?? "(empty)"
-                        let data4 = data_dictionary?["birthplace"] as? String ?? "(empty)"
-                        let data5 = data_dictionary?["gender"] as? String ?? "(empty)"
-                        let data6 = data_dictionary?["religion"] as? String ?? "(empty)"
-                        let data7 = data_dictionary?["marriage_status"] as? String ?? "(empty)"
-                        let data8 = data_dictionary?["body_height"] as? Int ?? 0
-                        let data9 = data_dictionary?["id_number"] as? String ?? "(empty)"
-                        let data10 = data_dictionary?["current_address"] as? String ?? "(empty)"
-                        let data11 = data_dictionary?["current_city"] as? String ?? "(empty)"
-                        let data12 = data_dictionary?["current_province"] as? String ?? "(empty)"
-                        let data13 = data_dictionary?["current_zip"] as? String ?? "(empty)"
-                        let data14 = data_dictionary?["current_country"] as? String ?? "(empty)"
-                        
-                        let passedArray = [data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12, data13, data14, email!, verifEmail!, phone, verifPhone] as [Any]
-                        DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "showPublicInfo", sender: passedArray )
-                        }
-                        
-                    }
-             
-                }
-                
-            })
-            
-            task.resume()
-        }
-    }
-    
     @IBAction func profilSum(_ sender: Any) {
-        let urlString = "http://api.career.undip.ac.id/v1/jobseekers/cv_part/shortprofile"
-        setLoadingScreen()
-        UIApplication.shared.beginIgnoringInteractionEvents()
-        ambilProfil(urlString)
+        performSegue(withIdentifier: "showProfileSum", sender: self )
     }
-    
-    func ambilProfil(_ url: String) {
-        let url = URL(string: url)
-        let defaults = UserDefaults.standard
-        
-        if(defaults.object(forKey: "session") != nil)
-        {
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-            
-            let username = (preferences[0] as! String)
-            let token = (preferences[1] as! String)
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
-                    if (data_block=="ok") {
-                        let data_dictionary = server_response["data"] as? NSDictionary
-                        let data = data_dictionary?["profil"] as? String ?? "(empty)"
-                        
-                        let passedData = data as String
-                        
-                        DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "showProfileSum", sender: passedData )
-                        }
-                        
-                    }
-                    
-                }
-                
-            })
-            
-            task.resume()
-        }
-    }
-    
     
     @IBAction func showExperience(_ sender: Any) {
         performSegue(withIdentifier: "showWork", sender: self)
@@ -326,94 +144,38 @@ class MyCV: BaseViewController {
     }
     
     @IBAction func showEnglish(_ sender: Any) {
-        let urlString = "http://api.career.undip.ac.id/v1/jobseekers/cv_part/english"
-        setLoadingScreen()
-        UIApplication.shared.beginIgnoringInteractionEvents()
-        ambilEnglish(urlString)
+        self.performSegue(withIdentifier: "showEnglish", sender: self )
     }
-    
-    func ambilEnglish(_ url: String) {
-        let url = URL(string: url)
-        let defaults = UserDefaults.standard
-        
-        if(defaults.object(forKey: "session") != nil)
-        {
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-            
-            let username = (preferences[0] as! String)
-            let token = (preferences[1] as! String)
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
-                    if (data_block=="ok") {
-                        let data_dictionary = server_response["data"] as? NSDictionary
-                        let id_english = data_dictionary?["id_bhs_inggris"] as? String ?? "(empty)"
-                        let id_member = data_dictionary?["id_member"] as? String ?? "(empty)"
-                        let tipe_toefl = data_dictionary?["tipe_toefl"] as? String ?? "(empty)"
-                        let nilai_toefl = data_dictionary?["nilai_toefl"] as? String ?? "(empty)"
-                        let tahun_toefl = data_dictionary?["thn_toefl"] as? String ?? "(empty)"
-                        let nilai_ielts = data_dictionary?["nilai_ielts"] as? String ?? "(empty)"
-                        let tahun_ielts = data_dictionary?["thn_ielts"] as? String ?? "(empty)"
-                        let nilai_toeic = data_dictionary?["nilai_toeic"] as? String ?? "(empty)"
-                        let tahun_toeic = data_dictionary?["thn_toeic"] as? String ?? "(empty)"
-                        
-                        let passedArray = [id_english, id_member, tipe_toefl, nilai_toefl, tahun_toefl, nilai_ielts, tahun_ielts, nilai_toeic, tahun_toeic] as [String]
-                        
-                        DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "showEnglish", sender: passedArray )
-                        }
-                        
-                    }
-                    
-                }
-                
-            })
-            
-            task.resume()
-        }
-    }
-    
+   
     @IBAction func showOrganization(_ sender: Any) {
         performSegue(withIdentifier: "showOrganization", sender: self)
     }
     
+    @IBAction func showAward(_ sender: Any) {
+        performSegue(withIdentifier:"showAward" , sender: self)
+    }
+    
+    @IBAction func showRecommendation(_ sender: Any) {
+        performSegue(withIdentifier:"showRecommendation" , sender: self)
+        
+    }
+    
+    @IBAction func showStrength(_ sender: Any) {
+        performSegue(withIdentifier: "showStrength", sender: self )
+    }
+    
+    @IBAction func showSkill(_ sender: Any) {
+        performSegue(withIdentifier: "showSkill", sender: self )
+    }
+    
+    @IBAction func showCTC(_ sender: Any) {
+        performSegue(withIdentifier: "showCTC", sender: self)
+    }
+    
+    @IBAction func showPortofolio(_ sender: Any) {
+        performSegue(withIdentifier: "showPortofolio", sender: self)
+        
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showEditPhoto" {
@@ -426,36 +188,25 @@ class MyCV: BaseViewController {
         }
         
         if segue.identifier == "showPublicInfo" {
-            
-            removeLoadingScreen()
-            UIApplication.shared.endIgnoringInteractionEvents()
-            let PublicVC = segue.destination as! PublicInformation
-            let pass = sender as! [Any]
-            PublicVC.passedData = pass
+
             navigationItem.title = nil
             
         }
         
         if segue.identifier == "showProfileSum" {
             
-            removeLoadingScreen()
-            UIApplication.shared.endIgnoringInteractionEvents()
-            let ProfileVC = segue.destination as! ProfileSummary
-            let pass = sender as! String
-            ProfileVC.passedData = pass
             navigationItem.title = nil
             
         }
         
         if segue.identifier == "showEducation" {
-        
-            let EduVC = segue.destination as! Education
+  
             navigationItem.title = nil
             
         }
         
         if segue.identifier == "showWork" {
-            let WorkVC = segue.destination as! WorkExperience
+          
             navigationItem.title = nil
         }
         
@@ -464,12 +215,40 @@ class MyCV: BaseViewController {
         }
         
         if segue.identifier == "showEnglish" {
-            removeLoadingScreen()
-            UIApplication.shared.endIgnoringInteractionEvents()
-            let EnglishVC = segue.destination as! EnglishSkill
-            let pass = sender as! [Any]
-            EnglishVC.passedData = pass as! [String]
             navigationItem.title = nil
         }
+        
+        if segue.identifier == "showOrganization" {
+            navigationItem.title = nil
+        }
+        
+        if segue.identifier == "showAward" {
+            navigationItem.title = nil
+        }
+        
+        if segue.identifier == "showRecommendation" {
+            navigationItem.title = nil
+        }
+        
+        if segue.identifier == "showStrength" {
+
+            navigationItem.title = nil
+            
+        }
+        
+        if segue.identifier == "showSkill" {
+
+            navigationItem.title = nil
+            
+        }
+        
+        if segue.identifier == "showCTC" {
+            navigationItem.title = nil
+        }
+        
+        if segue.identifier == "showPortofolio" {
+            navigationItem.title = nil
+        }
+        
     }
 }

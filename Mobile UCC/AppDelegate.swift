@@ -38,9 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }*/
         
         
-        UINavigationBar.appearance().barTintColor = UIColor(red: 0, green: 0/255, blue: 50/255, alpha: 1)
+        UINavigationBar.appearance().barTintColor = UIColor(red: 23/255, green: 41/255, blue: 83/255, alpha: 1)
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        UINavigationBar.appearance().isTranslucent = false
         
         return true
     }
@@ -68,5 +69,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+}
+
+extension UIApplication {
+    
+    static func topViewController(base: UIViewController? = UIApplication.shared.delegate?.window??.rootViewController) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return topViewController(base: nav.visibleViewController)
+        }
+        if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
+            return topViewController(base: selected)
+        }
+        if let presented = base?.presentedViewController {
+            return topViewController(base: presented)
+        }
+        
+        return base
+    }
 }
 

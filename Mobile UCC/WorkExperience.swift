@@ -7,31 +7,20 @@
 //
 
 import UIKit
+import PKHUD
 
 class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet var tableView: UITableView!
     
-    
     var work = [Work]()
     
-    // View which contains the loading text and the spinner
-    let loadingView = UIView()
-    
-    // Spinner shown during load the TableView
-    let spinner = UIActivityIndicatorView()
-    
-    // Text shown during load the TableView
-    let loadingLabel = UILabel()
-    
     let addButton = UIButton()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
-        self.title = "Work Experience"
+        // Do any additional setup after loading the view."
         
         //create a new button
         let button = UIButton.init(type: .custom)
@@ -41,8 +30,10 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
         button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControlEvents.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        
+        button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         let barButton = UIBarButtonItem(customView: button)
+        
         //assign button to navigationbar
         self.navigationItem.rightBarButtonItem = barButton
         
@@ -52,50 +43,14 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
         tableView.dataSource = self
         tableView.delegate = self
         
-        setLoadingScreen()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.title = "Work Experience"
         downloadAllExperience()
     }
     
     func newButtonAction(sender: UIBarButtonItem){
-        
-    }
-    
-    // Set the activity indicator into the main view
-    private func setLoadingScreen() {
-        
-        // Sets the view which contains the loading text and the spinner
-        let width: CGFloat = 120
-        let height: CGFloat = 30
-        let x = (tableView.frame.width / 2.3) - (width / 2.3)
-        let y = (tableView.frame.height / 2.3) - (height / 2.3) - (navigationController?.navigationBar.frame.height)!
-        loadingView.frame = CGRect(x: x, y: y, width: width, height: height)
-        
-        // Sets loading text
-        loadingLabel.textColor = .gray
-        loadingLabel.textAlignment = .center
-        loadingLabel.text = "Loading..."
-        loadingLabel.frame = CGRect(x: 0, y: 0, width: 140, height: 30)
-        
-        // Sets spinner
-        spinner.activityIndicatorViewStyle = .gray
-        spinner.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        spinner.startAnimating()
-        
-        // Adds text and spinner to the view
-        loadingView.addSubview(spinner)
-        loadingView.addSubview(loadingLabel)
-        
-        tableView.addSubview(loadingView)
-        
-    }
-    
-    // Remove the activity indicator from the main view
-    private func removeLoadingScreen() {
-        
-        // Hides and stops the text and the spinner
-        spinner.stopAnimating()
-        spinner.isHidden = true
-        loadingLabel.isHidden = true
         
     }
     
@@ -116,103 +71,48 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
     }
     
     func downloadAllExperience () {
-        
+        HUD.show(.progress)
         work = []
-        
-        let url = URL(string: "http://api.career.undip.ac.id/v1/jobseekers/cv_part/work")
-        
-        let defaults = UserDefaults.standard
-        if(defaults.object(forKey: "session") != nil)
-            
-        {
-            
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-            
-            let username = (preferences[0] as! String)
-            let token = (preferences[1] as! String)
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
+    
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/cv_part/work"
+
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok") {
+                    let workDictionaries = server_response["data"] as! NSArray
                     
-                    
-                    if (data_block=="ok") {
-                        do {
-                            let workDictionaries = server_response["data"] as! NSArray
-                            
-                            for workDictionary in workDictionaries {
-                                let eachWork = workDictionary as! [String:Any]
-                                let id_pekerjaan = eachWork ["id_pekerjaan"] as? String
-                                let id_member = eachWork ["id_member"] as? String
-                                let perusahaan = eachWork ["perusahaan"] as? String
-                                let posisi = eachWork ["posisi"] as? String
-                                let deskripsi = eachWork ["deskripsi"] as? String
-                              
-                                
-                                self.work.append(Work(id_pekerjaan: id_pekerjaan!, id_member: id_member!, perusahaan: perusahaan!, posisi: posisi!, deskripsi: deskripsi!))
-                            }
-                            print(self.work)
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                                self.removeLoadingScreen()
-                            }
-                            
-                        }
+                    for workDictionary in workDictionaries {
+                        let eachWork = workDictionary as! [String:Any]
+                        let id_pekerjaan = eachWork ["id_pekerjaan"] as? String
+                        let id_member = eachWork ["id_member"] as? String
+                        let perusahaan = eachWork ["perusahaan"] as? String
+                        let posisi = eachWork ["posisi"] as? String
+                        let deskripsi = eachWork ["deskripsi"] as? String
                         
+                        
+                        self.work.append(Work(id_pekerjaan: id_pekerjaan!, id_member: id_member!, perusahaan: perusahaan!, posisi: posisi!, deskripsi: deskripsi!))
                     }
+                    print(self.work)
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        if (self.work.count == 0){
+                            self.setAddButton()
+                        }
+                        HUD.hide()
+                    } 
+                } else if (status == "invalid-session") {
                     
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                        self.openViewControllerBasedOnIdentifier("Home")
+                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                    }
                 }
-                
-            })
-            
-            task.resume()
+            }
         }
-        
-        /*else
-         {
-         self.openViewControllerBasedOnIdentifier("Login Screen")
-         }*/
     }
-    
-    
-    
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return .lightContent
@@ -220,7 +120,6 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
     
     func numberOfSections(in tableView: UITableView) -> Int
     {
-        
         return 1
     }
     
@@ -257,9 +156,9 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
     }
     
     @IBAction func edit_work(_ sender: Any) {
+        
     }
-  
-    
+
     @IBAction func delete_work(_ sender: Any) {
         let data = work[(sender as AnyObject).tag]
         let buttonPosition : CGPoint = (sender as AnyObject).convert((sender as AnyObject).bounds.origin, to: tableView)
@@ -267,136 +166,31 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
         
         let workId = data.id_pekerjaan
         
-        let urlString4 = "http://api.career.undip.ac.id/v1/jobseekers/delete_cv_part/work/"
-        
-        //setLoadingScreen()
-        //UIApplication.shared.beginIgnoringInteractionEvents()
-        deleteWork(urlString4, indexPath!, workId!)
+        deleteWork(indexPath!, workId!)
     }
   
+    func deleteWork (_ row:IndexPath,_ id:String) {
+
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/delete_cv_part/work/"
+        let paramToSend = "id_pekerjaan=" + id
     
-    func deleteWork (_ url:String, _ row:IndexPath,_ id:String) {
-        
-        
-        let url = URL(string: url)
-        
-        let defaults = UserDefaults.standard
-        if(defaults.object(forKey: "session") != nil)
-            
-        {
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-            
-            let username = preferences[0] as! String
-            let token = preferences[1] as! String
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "POST"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let paramToSend = "id_pekerjaan=" + id
-            
-            request.httpBody = paramToSend.data(using: String.Encoding.utf8)
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
-                    
-                    
-                    if (data_block=="ok") {
-                        let message = server_response["message"] as? String
-                        self.createAlert(title: "WARNING!", message: message!)
-                        DispatchQueue.main.async {
-                            self.work.remove(at: row.row)
-                            self.tableView.deleteRows(at: [row], with: .fade)
-                        }
-                        
+        NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok") {
+                    let message = server_response["message"] as? String
+                    Alert.showMessage(title: "WARNING!", msg: message!)
+                    DispatchQueue.main.async {
+                        self.work.remove(at: row.row)
+                        self.tableView.deleteRows(at: [row], with: .fade)
+                        self.downloadAllExperience()
                     }
-                    else if (data_block=="error"){
-                        let message = server_response["message"] as? String
-                        self.createAlert(title: "WARNING!", message: message!)
-                        
-                        /*DispatchQueue.main.async {
-                         self.tableView.reloadData()
-                         }*/
-                    }
+                } else if (status == "error"){
+                    let message = server_response["message"] as? String
+                    Alert.showMessage(title: "WARNING!", msg: message!)
                 }
-                
-            })
-            
-            task.resume()
+            }
         }
-        
-    }
-    
-    func createAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
-            alert.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    
-    
-}
-
-class Work
-{
-    var id_pekerjaan: String?
-    var id_member: String?
-    var perusahaan: String?
-    var posisi: String?
-    var deskripsi: String?
-    var year_in: String?
-    var year_out: String?
-    var ipk: String?
-    
-    init(id_pekerjaan: String, id_member: String, perusahaan: String, posisi: String, deskripsi: String)
-    {
-        self.id_pekerjaan = id_pekerjaan
-        self.id_member = id_member
-        self.perusahaan = perusahaan
-        self.posisi = posisi
-        self.deskripsi = deskripsi
     }
     
 }
-
-
-
-
 

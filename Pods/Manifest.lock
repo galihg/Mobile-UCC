@@ -1,0 +1,15 @@
+PODS:
+  - KeychainSwift (10.0.0)
+  - PKHUD (5.0.0)
+
+DEPENDENCIES:
+  - KeychainSwift (~> 10.0)
+  - PKHUD (~> 5.0)
+
+SPEC CHECKSUMS:
+  KeychainSwift: f9f7910449a0c0fd2cabc889121530dd2c477c33
+  PKHUD: 3c001512c6e002091184197a8de7a20420786e3b
+
+PODFILE CHECKSUM: d646a533bfdb79afd41658cbab2ebd3d372bb960
+
+COCOAPODS: 1.4.0

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AwardsAndAchievements: UIViewController {
+class EditAwardsAndAchievements: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

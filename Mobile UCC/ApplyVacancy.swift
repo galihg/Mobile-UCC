@@ -17,7 +17,7 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var btn_city: UIButton!
     @IBOutlet weak var checkbox: UIButton!
     
-    //var indicator : UIActivityIndicatorView = UIActivityIndicatorView()
+    
     var checked : Bool!
     var id_province : String!
     var id_city : String!
@@ -27,10 +27,8 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
     
     var passedData : String = ""
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Apply Vacancy"
         
         checked = false
         provinceTable.isHidden = true
@@ -47,16 +45,16 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
         cityTable.dataSource = self
         cityTable.delegate = self
         
-        
-        let urlString = "http://api.career.undip.ac.id/v1/location/provinces/"
-        downloadAllProvince(urlString)
-        
+        downloadAllProvince()
+        auth_check()
     
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
+        
+        self.title = "Apply Vacancy"
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,197 +78,99 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
+    func auth_check() {
+        
+        let url = "http://api.career.undip.ac.id/v1/auth/check"
+        
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            
+            if let status = server_response["status"] as? String
+            {
+                if (status == "ok"){
+                    
+                    DispatchQueue.main.async {
+                        return
+                    }
+                    
+                } else if (status == "invalid-session"){
+                    
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                        self.openViewControllerBasedOnIdentifier("Home")
+                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                    }
+                    
+                }
+            }
+            
+        }
+        
+    }
 
-
-    func downloadAllProvince (_ url:String) {
+    func downloadAllProvince () {
         
         provinsi = []
         
-        let url = URL(string: url)
-        
-        //let defaults = UserDefaults.standard
-        
-        //if(defaults.object(forKey: "session") != nil)
-        if(true)
-        {
-            /*let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [String]
+        let url = "http://api.career.undip.ac.id/v1/location/provinces/"
+     
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
             
-            let username = preferences[0]
-            let token = preferences[1]
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()*/
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            //request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
+            if let status = server_response["status"] as? String {
                 
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
+                if (status == "ok") {
+                    let provinceDictionaries = server_response["data"] as! NSArray
                     
-                    
-                    if (data_block=="ok") {
-                        do {
-                            let provinceDictionaries = server_response["data"] as! NSArray
-
-                            for provinceDictionary in provinceDictionaries {
-                                let eachProvince = provinceDictionary as! [String:Any]
-                                
-                                let id_provinsi = eachProvince["id"] as? String
-                                let nama_provinsi = eachProvince["name"] as? String
-                                
-                                self.provinsi.append(Provinsi(id_provinsi: id_provinsi!, nama_provinsi: nama_provinsi!))
-                            }
-                            print(self.provinsi)
-                            DispatchQueue.main.async (
-                                execute:self.provinceTable.reloadData
-                            )
-                        }
+                    for provinceDictionary in provinceDictionaries {
+                        let eachProvince = provinceDictionary as! [String:Any]
                         
+                        let id_provinsi = eachProvince["id"] as? String
+                        let nama_provinsi = eachProvince["name"] as? String
+                        
+                        self.provinsi.append(Provinsi(id_provinsi: id_provinsi!, nama_provinsi: nama_provinsi!))
                     }
-                    else if (data_block=="invalid-session"){
-                        DispatchQueue.main.async (
-                            execute:self.LoginError
-                        )
-                    }
+            
+                    DispatchQueue.main.async (
+                        execute:self.provinceTable.reloadData
+                    )
+                    
                 }
-                
-            })
+            }
             
-            task.resume()
         }
             
-        else
-        {
-            self.openViewControllerBasedOnIdentifier("Login Screen")
-        }
+   
     }
     
     func downloadAllCity (_ url:String) {
         
         kota = []
         
-        let url = URL(string: url)
-        
-        let defaults = UserDefaults.standard
-        
-        if(defaults.object(forKey: "session") != nil)
-        {
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
             
-            let username = (preferences[0] as! String)
-            let token = (preferences[1] as! String)
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
+            if let status = server_response["status"] as? String {
                 
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
+                if (status == "ok"){
                     
+                    let cityDictionaries = server_response["data"] as! NSArray
                     
-                    if (data_block=="ok") {
-                        do {
-                            let cityDictionaries = server_response["data"] as! NSArray
-                            
-                            for cityDictionary in cityDictionaries {
-                                let eachCity = cityDictionary as! [String:Any]
-                                
-                                let id_kota = eachCity["id"] as? String
-                                let nama_kota = eachCity["name"] as? String
-                                
-                                self.kota.append(Kota(id_kota: id_kota!, nama_kota: nama_kota!))
-                            }
-                            print(self.kota)
-                            DispatchQueue.main.async (
-                                execute:self.cityTable.reloadData
-                            )
-                        }
+                    for cityDictionary in cityDictionaries {
+                        let eachCity = cityDictionary as! [String:Any]
                         
+                        let id_kota = eachCity["id"] as? String
+                        let nama_kota = eachCity["name"] as? String
+                        
+                        self.kota.append(Kota(id_kota: id_kota!, nama_kota: nama_kota!))
                     }
-                    else if (data_block=="invalid-session"){
-                        DispatchQueue.main.async (
-                            execute:self.LoginError
-                        )
-                    }
+                   
+                    DispatchQueue.main.async (
+                        execute:self.cityTable.reloadData
+                    )
+                    
                 }
-                
-            })
-            
-            task.resume()
+            }
         }
-            
-        else
-        {
-            self.openViewControllerBasedOnIdentifier("Login Screen")
-        }
-    }
-    
-    func LoginError() {
-        self.openViewControllerBasedOnIdentifier("Login Screen")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -349,7 +249,7 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
                 downloadAllCity(urlString)
             }
             else {
-                createAlert(title: "WARNING!", message: "Pilih provinsi terlebih dahulu!")
+                Alert.showMessage(title: "WARNING!", msg: "Pilih provinsi terlebih dahulu!")
             }
             
         }
@@ -380,154 +280,31 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
                 print(self.id_city)
                 DoApply(id_vacancy, self.id_province, self.id_city, statement)
                 
-                /*indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-                indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-                indicator.center = self.view.center
-                self.view.addSubview(indicator)
-                indicator.startAnimating()
-                indicator.backgroundColor = UIColor.white*/
             }
             else {
-                createAlert(title: "WARNING!", message: "Silakan pilih provinsi dan kota domisili.")
+                Alert.showMessage(title: "WARNING!", msg: "Silakan pilih provinsi dan kota domisili.")
             }
         }
         else if (self.checked == false) {
             let statement = "unread"
             print(statement)
-            createAlert(title: "WARNING!", message: "Anda harus menekan tombol centang terlebih dahulu")
+            Alert.showMessage(title: "WARNING!", msg: "Anda harus menekan tombol centang terlebih dahulu")
         }
     }
     func DoApply(_ id1:String, _ id2:String, _ id3:String, _ stat:String)
     {
       
-        let defaults = UserDefaults.standard
-        let url = URL(string: "http://api.career.undip.ac.id/v1/applications/list")
+        let url = "http://api.career.undip.ac.id/v1/applications/list"
+            
+        let paramToSend = "offer_id=" + id1 + "&current_province=" + id2 + "&current_city=" + id3 + "&statement=" + stat
         
-        if(defaults.object(forKey: "session") != nil)
-        {
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-            
-            let username = (preferences[0] as! String)
-            let token = (preferences[1] as! String)
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "POST"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            
-            let paramToSend = "offer_id=" + id1 + "&current_province=" + id2 + "&current_city=" + id3 + "&statement=" + stat
-            
-            request.httpBody = paramToSend.data(using: String.Encoding.utf8)
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
-                    
-                    
-                    if (data_block=="ok") {
-                        do {
-                            let message = server_response["message"] as? String
-                            self.createAlert(title: "WARNING!", message: message!)
-                           
-                            /*DispatchQueue.main.async (
-                                execute:self.indicator.stopAnimating
-                                self.indicator.hidesWhenStopped = true
-                            )*/
-                           
-                        }
-                        
-                        
-                    }
-                    else if (data_block=="error"){
-                        let message = server_response["message"] as? String
-                        self.createAlert(title: "WARNING!", message: message!)
-                    }
-                }
-                
-            })
-            
-            task.resume()
-        }
-            
-        else
-        {
-            self.openViewControllerBasedOnIdentifier("Login Screen")
+        NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
+            if let message = server_response["message"] as? String {
+                Alert.showMessage(title: "WARNING!", msg: message)
+            }
         }
         
     }
-    
-    func createAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        
-        /*let height:NSLayoutConstraint = NSLayoutConstraint(item: alert.view, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 200);
-        
-        let width : NSLayoutConstraint = NSLayoutConstraint(item: alert.view, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 300);
-        
-        alert.view.addConstraint(height);
-        
-        alert.view.addConstraint(width);*/
-        
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
-            alert.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
 
 }
 
-class Provinsi
-{
-    var id_provinsi: String?
-    var nama_provinsi: String?
-    
-    init(id_provinsi: String, nama_provinsi: String)
-    {
-        self.id_provinsi = id_provinsi
-        self.nama_provinsi = nama_provinsi
-    }
-}
-
-class Kota
-{
-    var id_kota: String?
-    var nama_kota: String?
-    
-    init(id_kota: String, nama_kota: String)
-    {
-        self.id_kota = id_kota
-        self.nama_kota = nama_kota
-    }
-}

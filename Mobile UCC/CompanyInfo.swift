@@ -20,7 +20,6 @@ class CompanyInfo: BaseViewController {
     @IBOutlet weak var web_icon: UIImageView!
     @IBOutlet weak var loc_icon: UIImageView!
     
-    
     var passedData : [Any] = []
     
     override func viewDidLoad() {
@@ -55,12 +54,17 @@ class CompanyInfo: BaseViewController {
         })
         
         let profilRaw = (passedData[1] as! String)
-        profilPerusahaan.text = profilRaw.html2String
+        profilPerusahaan.text = profilRaw.htmlString
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
+        
+        let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "session") != nil ) {
+            Auth.auth_check()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,6 +84,37 @@ class CompanyInfo: BaseViewController {
             controller.addAction(cancel)
             
             present(controller, animated: true, completion: nil)
+        }
+        
+    }
+    
+    func auth_check() {
+        
+        let url = "http://api.career.undip.ac.id/v1/auth/check"
+        
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            
+            if let status = server_response["status"] as? String
+            {
+                if (status == "ok"){
+                    
+                    DispatchQueue.main.async {
+                        return
+                    }
+                    
+                } else if (status == "invalid-session"){
+                    
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                        self.openViewControllerBasedOnIdentifier("Home")
+                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                    }
+                    
+                }
+            }
+            
         }
         
     }

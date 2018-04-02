@@ -8,19 +8,18 @@
 
 import UIKit
 
+
 class LoginScreen: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var _username: UITextField!
     @IBOutlet weak var _password: UITextField!
     @IBOutlet weak var _login_button: UIButton!
  
-    
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     var bottomConstraintConstant:CGFloat = 100.0
     
     @IBOutlet weak var textFieldStackView: UIStackView!
     @IBOutlet weak var OuterStackView: UIStackView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,18 +31,6 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
         // Listen for the keyboard
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
-        /*let preferences = UserDefaults.standard
-        if(preferences.object(forKey: "session") != nil)
-        {
-            LoginDone()
-        }
-        
-        else
-        {
-            LoginToDo()
-        }*/
-        /*let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: navigationController, action: nil)
-        navigationItem.leftBarButtonItem = backButton*/
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,15 +48,6 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func LoginButton(_ sender: Any) {
-        
-        /*if(_login_button.titleLabel?.text == "Logout")
-        {
-            let preferences = UserDefaults.standard
-            preferences.removeObject(forKey: "session")
-            
-            LoginToDo()
-            return
-        }*/
         
         let auth_uname = _username.text
         let password = _password.text
@@ -172,15 +150,7 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
     {
         createAlert(title: "WARNING!", message: "Invalid username or password.")
     }
-    
-    /*func textFieldDidBeginEditing(_ textField: UITextField) {
 
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-    }*/
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         _username.resignFirstResponder()
@@ -222,19 +192,18 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
             let rect:CGRect = info["UIKeyboardFrameEndUserInfoKey"] as! CGRect
             
             // Find our target Y
-            let targetY = view.frame.size.height - rect.height - 30 //- _username.frame.size.height
+            let targetY = view.frame.size.height - rect.height - 30 - _username.frame.size.height
             
             // Find out where the stackview is relative to the frame
             let textFieldY = OuterStackView.frame.origin.y + textFieldStackView.frame.origin.y 
             
-            let difference = targetY - textFieldY
+            let difference =  textFieldY + targetY
             
             let targetOffsetForTopConstraint = bottomConstraint.constant + difference
             
             self.view.layoutIfNeeded()
             
             UIView.animate(withDuration: 0.25, animations: {
-                
                 
                 self.bottomConstraint.constant = targetOffsetForTopConstraint
                 self.view.layoutIfNeeded()

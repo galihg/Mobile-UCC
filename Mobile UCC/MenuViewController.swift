@@ -45,8 +45,15 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tblMenuOptions.tableFooterView = UIView()
+        updateArrayMenuOptions()
+        self.tblMenuOptions.estimatedRowHeight = tblMenuOptions.rowHeight
+        self.tblMenuOptions.rowHeight = UITableViewAutomaticDimension
+        self.tblMenuOptions.dataSource = self
+        self.tblMenuOptions.delegate = self
+        self.tblMenuOptions.tableFooterView = UIView()
+        self.tblMenuOptions.layoutIfNeeded()
         // Do any additional setup after loading the view.
+        
         let defaults = UserDefaults.standard
         if(defaults.object(forKey: "session") != nil)
         {
@@ -79,7 +86,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateArrayMenuOptions()
+    
     }
     
     func updateArrayMenuOptions(){
@@ -97,7 +104,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
             arrayMenuOptions.append(["title":"Contact Us", "icon":"contact_icon"])
             arrayMenuOptions.append(["title":"About", "icon":"about_icon"])
             arrayMenuOptions.append(["title":"Logout", "icon":"logout_icon"])
-        
+            arrayMenuOptions.append(["title":"", "icon":""])
         
             tblMenuOptions.reloadData()
         } else {
@@ -133,6 +140,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         })
     }
     
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         /*if indexPath.section == 0 {
             if let cell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cellProfile")!

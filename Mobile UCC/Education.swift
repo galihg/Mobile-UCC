@@ -7,33 +7,22 @@
 //
 
 import UIKit
+import PKHUD
 
-class Education: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class Education: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     @IBOutlet var tableView: UITableView!
     
-    
     var pendidikan = [Pendidikan]()
     
-    // View which contains the loading text and the spinner
-    let loadingView = UIView()
-    
-    // Spinner shown during load the TableView
-    let spinner = UIActivityIndicatorView()
-    
-    // Text shown during load the TableView
-    let loadingLabel = UILabel()
-    
     let addButton = UIButton()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        self.title = "Education"
-        
+
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
@@ -42,62 +31,32 @@ class Education: UIViewController, UITableViewDataSource, UITableViewDelegate {
         button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControlEvents.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         
         let barButton = UIBarButtonItem(customView: button)
+        
         //assign button to navigationbar
         self.navigationItem.rightBarButtonItem = barButton
-        
         
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.dataSource = self
         tableView.delegate = self
         
-        setLoadingScreen()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //ViewControllers view ist still not in the window hierarchy
+        //This is the right place to do for instance animations on your views subviews
+        self.title = "Education"
         downloadAllEducation()
+        
     }
     
     func newButtonAction(sender: UIBarButtonItem){
-        
-    }
-    
-    // Set the activity indicator into the main view
-    private func setLoadingScreen() {
-        
-        // Sets the view which contains the loading text and the spinner
-        let width: CGFloat = 120
-        let height: CGFloat = 30
-        let x = (tableView.frame.width / 2.3) - (width / 2.3)
-        let y = (tableView.frame.height / 2.3) - (height / 2.3) - (navigationController?.navigationBar.frame.height)!
-        loadingView.frame = CGRect(x: x, y: y, width: width, height: height)
-        
-        // Sets loading text
-        loadingLabel.textColor = .gray
-        loadingLabel.textAlignment = .center
-        loadingLabel.text = "Loading..."
-        loadingLabel.frame = CGRect(x: 0, y: 0, width: 140, height: 30)
-        
-        // Sets spinner
-        spinner.activityIndicatorViewStyle = .gray
-        spinner.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        spinner.startAnimating()
-        
-        // Adds text and spinner to the view
-        loadingView.addSubview(spinner)
-        loadingView.addSubview(loadingLabel)
-        
-        tableView.addSubview(loadingView)
-        
-    }
-    
-    // Remove the activity indicator from the main view
-    private func removeLoadingScreen() {
-        
-        // Hides and stops the text and the spinner
-        spinner.stopAnimating()
-        spinner.isHidden = true
-        loadingLabel.isHidden = true
-        
+        let educationId = "-1"
+        getForm(educationId)
     }
     
     private func setAddButton() {
@@ -118,111 +77,58 @@ class Education: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func downloadAllEducation () {
         
         pendidikan = []
+        HUD.show(.progress)
         
-        let url = URL(string: "http://api.career.undip.ac.id/v1/jobseekers/cv_part/education")
-        
-        let defaults = UserDefaults.standard
-        if(defaults.object(forKey: "session") != nil)
-            
-        {
-            
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-            
-            let username = (preferences[0] as! String)
-            let token = (preferences[1] as! String)
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/cv_part/education"
+       
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let educationDictionaries = server_response["data"] as! NSArray
                     
+                    for educationDictionary in educationDictionaries {
+                        let eachEducation = educationDictionary as! [String:Any]
+                        let id_education = eachEducation ["id_pddk"] as? String
+                        let id_member = eachEducation ["id_member"] as? String
+                        let degree = eachEducation ["jenjang"] as? String
+                        let univ_name = eachEducation ["universitas"] as? String
+                        let major = eachEducation ["jurusan"] as? String
+                        let year_in = eachEducation ["thn_masuk"] as? String
+                        let year_out = eachEducation ["thn_lulus"] as? String
+                        let ipk = eachEducation ["ipk"] as? String
+                        
+                        self.pendidikan.append(Pendidikan(id_education: id_education!, id_member: id_member!, degree: degree!, univ_name: univ_name!, major: major!, year_in: year_in!, year_out: year_out!, ipk: ipk!))
+                    }
                     
-                    if (data_block=="ok") {
-                        do {
-                            let educationDictionaries = server_response["data"] as! NSArray
-                            
-                            for educationDictionary in educationDictionaries {
-                                let eachEducation = educationDictionary as! [String:Any]
-                                let id_education = eachEducation ["id_pddk"] as? String
-                                let id_member = eachEducation ["id_member"] as? String
-                                let degree = eachEducation ["jenjang"] as? String
-                                let univ_name = eachEducation ["universitas"] as? String
-                                let major = eachEducation ["jurusan"] as? String
-                                let year_in = eachEducation ["thn_masuk"] as? String
-                                let year_out = eachEducation ["thn_lulus"] as? String
-                                let ipk = eachEducation ["ipk"] as? String
-                                
-                                self.pendidikan.append(Pendidikan(id_education: id_education!, id_member: id_member!, degree: degree!, univ_name: univ_name!, major: major!, year_in: year_in!, year_out: year_out!, ipk: ipk!))
-                            }
-                            print(self.pendidikan)
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                                self.removeLoadingScreen()
-                            }
-                            
+                    DispatchQueue.main.async {
+                       
+                        self.tableView.reloadData()
+                        if (self.pendidikan.count == 0){
+                            self.setAddButton()
                         }
+                        HUD.hide()
                         
                     }
-   
+                } else if (status == "invalid-session"){
+                    
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                       self.openViewControllerBasedOnIdentifier("Home")
+                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                    }
                 }
-                
-            })
-            
-            task.resume()
+            }
         }
-            
-        /*else
-        {
-            self.openViewControllerBasedOnIdentifier("Login Screen")
-        }*/
     }
     
-    
-    
-
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return .lightContent
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
     {
-        
         return 1
     }
     
@@ -255,10 +161,25 @@ class Education: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func addEducation(_ button: UIButton) {
-        print("Button pressed 👍")
+        
+        let educationId = "-1"
+        getForm(educationId)
+        
     }
     
     @IBAction func edit_education(_ sender: Any) {
+        let data = pendidikan[(sender as AnyObject).tag]
+        let educationId = data.id_education
+    
+        getForm(educationId!)
+        
+    }
+    
+    func getForm(_ educationId: String) {
+        
+        let formId = educationId
+        self.performSegue(withIdentifier: "showEditEducation", sender: formId)
+        
     }
     
     @IBAction func delete_education(_ sender: Any) {
@@ -267,135 +188,46 @@ class Education: UIViewController, UITableViewDataSource, UITableViewDelegate {
         let indexPath = tableView.indexPathForRow(at: buttonPosition)
         
         let educationId = data.id_education
-        //let educationId_Int = Int(educationId!)
         
-        let urlString4 = "http://api.career.undip.ac.id/v1/jobseekers/delete_cv_part/education/"
-        
-        //setLoadingScreen()
-        //UIApplication.shared.beginIgnoringInteractionEvents()
-        deleteEducation(urlString4, indexPath!, educationId!)
+        deleteEducation(indexPath!, educationId!)
     }
     
-    func deleteEducation (_ url:String, _ row:IndexPath,_ id:String) {
+    func deleteEducation (_ row:IndexPath,_ id:String) {
         
         
-        let url = URL(string: url)
-        
-        let defaults = UserDefaults.standard
-        if(defaults.object(forKey: "session") != nil)
-            //if(true)
-        {
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
-            
-            let username = preferences[0] as! String
-            let token = preferences[1] as! String
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "POST"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let paramToSend = "id_pendidikan=" + id
-            
-            request.httpBody = paramToSend.data(using: String.Encoding.utf8)
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
-                    
-                    
-                    if (data_block=="ok") {
-                        let message = server_response["message"] as? String
-                        self.createAlert(title: "WARNING!", message: message!)
-                        DispatchQueue.main.async {
-                            self.pendidikan.remove(at: row.row)
-                            self.tableView.deleteRows(at: [row], with: .fade)
-                        }
-                        
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/delete_cv_part/education/"
+        let paramToSend = "id_pendidikan=" + id
+
+        NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let message = server_response["message"] as? String
+                    Alert.showMessage(title: "WARNING!", msg: message!)
+                    DispatchQueue.main.async {
+                        self.pendidikan.remove(at: row.row)
+                        self.tableView.deleteRows(at: [row], with: .fade)
+                        self.downloadAllEducation()
                     }
-                    else if (data_block=="error"){
-                        let message = server_response["message"] as? String
-                        self.createAlert(title: "WARNING!", message: message!)
-                        
-                        /*DispatchQueue.main.async {
-                         self.tableView.reloadData()
-                         }*/
-                    }
+                }  else if (status == "error"){
+                    let message = server_response["message"] as? String
+                    Alert.showMessage(title: "WARNING!", msg: message!)
                 }
-                
-            })
-            
-            task.resume()
+            }
         }
         
     }
-    
-    func createAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
-            alert.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "showEditEducation") {
+            navigationItem.title = nil
+            let Education2VC = segue.destination as! EditEducation
+            let pass = sender as! String
+            Education2VC.passedData = pass
+        }
     }
    
     
 
 }
 
-class Pendidikan
-{
-    var id_education: String?
-    var id_member: String?
-    var degree: String?
-    var univ_name: String?
-    var major: String?
-    var year_in: String?
-    var year_out: String?
-    var ipk: String?
-    
-    init(id_education: String, id_member: String, degree: String, univ_name: String, major: String, year_in: String, year_out: String, ipk: String)
-    {
-        self.id_education = id_education
-        self.id_member = id_member
-        self.degree = degree
-        self.univ_name = univ_name
-        self.major = major
-        self.year_in = year_in
-        self.year_out = year_out
-        self.ipk = ipk
-    }
-    
-}
+

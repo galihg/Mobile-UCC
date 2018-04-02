@@ -29,7 +29,8 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
         button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControlEvents.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-    
+        button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         let barButton = UIBarButtonItem(customView: button)
         //assign button to navigationbar
         self.navigationItem.rightBarButtonItem = barButton

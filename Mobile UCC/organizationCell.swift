@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class organizationCell: UITableViewCell {
 
     @IBOutlet weak var namaOrganisasi: UILabel!
@@ -31,7 +32,15 @@ class organizationCell: UITableViewCell {
         namaOrganisasi.text = organisasi.nama_organisasi
         posisi.text = organisasi.posisi
         thn_mulai.text = organisasi.year_in
-        thn_selesai.text = organisasi.year_out
+        
+        let aktif = organisasi.active
+        
+        if (aktif == "1") {
+            thn_selesai.text = "Active"
+        } else {
+            thn_selesai.text = organisasi.year_out
+        }
+        
       
     }
     
