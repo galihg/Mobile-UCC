@@ -50,7 +50,8 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
     }
     
     func newButtonAction(sender: UIBarButtonItem){
-        
+        let orgId = "-1"
+        performSegue(withIdentifier: "showEditOrganization", sender: orgId)
     }
     
     private func setAddButton() {
@@ -121,7 +122,6 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
     
     func numberOfSections(in tableView: UITableView) -> Int
     {
-        
         return 1
     }
     
@@ -154,12 +154,14 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
     }
     
     func addOrganization(_ button: UIButton) {
-        print("Button pressed 👍")
+        let orgId = "-1"
+        performSegue(withIdentifier: "showEditOrganization", sender: orgId)
     }
     
-
     @IBAction func edit_org(_ sender: Any) {
-        
+        let data = organisasi[(sender as AnyObject).tag]
+        let orgId = data.id_organisasi
+        performSegue(withIdentifier: "showEditOrganization", sender: orgId)
     }
     
     @IBAction func delete_org(_ sender: Any) {
@@ -192,6 +194,15 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
                     Alert.showMessage(title: "WARNING!", msg: message!)
                 }
             }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditOrganization" {
+            let Org2VC = segue.destination as! EditOrganizationExperience
+            let pass = sender as! String
+            Org2VC.passedData = pass
+            navigationItem.title = nil
         }
     }
     

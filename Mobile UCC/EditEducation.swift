@@ -9,20 +9,26 @@
 import UIKit
 import PKHUD
 
-class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
+class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate{
 
     @IBOutlet weak var btnDegree: UIButton!
     @IBOutlet weak var btnCountry: UIButton!
     @IBOutlet weak var _university: UITextField!
     @IBOutlet weak var _major: UITextField!
     @IBOutlet weak var _accreditation: UITextField!
+    @IBOutlet weak var _submajor: UITextField!
+    @IBOutlet weak var _thesis: UITextField!
+    @IBOutlet weak var _gpaScore: UITextField!{
+        didSet {
+            _gpaScore.addDoneCancelToolbar(onDone: (target: self, action: #selector(doneButtonTappedForMyNumericTextField)))
+        }
+    }
+    @IBOutlet weak var _entryMonth: UITextField!
+    @IBOutlet weak var graduateLabel: UILabel!
+    @IBOutlet weak var _graduatedMonth: UITextField!
     
     @IBOutlet weak var universityTop: NSLayoutConstraint!
-    @IBOutlet weak var universityBottom: NSLayoutConstraint!
-    @IBOutlet weak var majorTop: NSLayoutConstraint!
-    @IBOutlet weak var majorBottom: NSLayoutConstraint!
-    @IBOutlet weak var accreditationTop: NSLayoutConstraint!
-    @IBOutlet weak var accreditationBottom: NSLayoutConstraint!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var provinceLabel: UILabel!
     @IBOutlet weak var btnProvince: UIButton!
@@ -34,31 +40,59 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
     @IBOutlet weak var provinceTable: UITableView!
     @IBOutlet weak var cityTable: UITableView!
     
+    @IBOutlet weak var btnGraduate: UIButton!
+    @IBOutlet weak var graduateTable: UITableView!
     
     @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
-    let items = ["Strata I", "Strata II", "Strata III", "SMA/SMK Sederajat", "Diploma"]
+    var jenjang = ["03-SMA": "SMA/SMK Sederajat", "21-S1": "Strata I", "31-S2": "Strata II", "41-S3": "Strata III", "22-PR": "Profesi" , "11-D1": "Diploma I", "12-D2": "Diploma II", "13-D3": "Diploma III", "14-D4": "Diploma IV"]
+    
+    var bulan = ["01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "June", "07": "Jul", "08": "Aug", "09": "Sep", "10": "Okt", "11": "Nov", "12": "Dec"]
+    
+    var items = ["- Choose -", "Not Yet", "Graduated"]
     
     var isIndonesia: Bool? = true
     var passedData: String!
-    var id_negara: String!
-    var id_provinsi: String!
-    var id_kota: String!
+    var id_negara = ""
+    var id_provinsi = ""
+    var id_kota = ""
+    var id_jenjang = ""
+    var graduate_status = ""
+    var bln_masuk = ""
+    var thn_masuk = ""
+    var bln_lulus = ""
+    var thn_lulus = ""
     
     var provinsi = [Provinsi]()
     var kota = [Kota]()
     var negara = [Negara]()
     
+    //Uidate picker
+    let datePicker = UIDatePicker()
+    
+    let picker = DatePickerView()
+    //fileprivate var pickerFromCode : CDatePickerViewEx = CDatePickerViewEx.init(frame: CGRect.zero)
+    
+    var activeTextField = UITextField()
+    
+    var bottomConstraintConstant:CGFloat = 10.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        self.title = "Edit Education"
         
+        // Do any additional setup after loading the view.
+        
+        if (passedData != "-1") {
+            self.title = "Edit Education"
+        } else {
+            self.title = "Add Education"
+        }
         setTable(countryTable)
         setTable(degreeTable)
         setTable(provinceTable)
         setTable(cityTable)
+        setTable(graduateTable)
         
         provinceLabel.isHidden = true
         btnProvince.isHidden = true
@@ -70,16 +104,35 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
         _university.delegate = self
         _major.delegate = self
         _accreditation.delegate = self
+        _submajor.delegate = self
+        _thesis.delegate = self
+        _gpaScore.delegate = self
+        _entryMonth.delegate = self
+        _graduatedMonth.delegate = self
         
+        _university.text = ""
+        _major.text = ""
+        _accreditation.text = ""
+        _submajor.text = ""
+        _thesis.text = ""
+        _gpaScore.text = ""
+        _entryMonth.text = ""
+        _graduatedMonth.text = ""
+        
+        self._gpaScore.keyboardType = UIKeyboardType.decimalPad
+        scrollView.keyboardDismissMode = .onDrag
         auth_chech()
-    
+        
+        // Listen for the keyboard
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
         
-  
+
     }
     
     func auth_chech() {
@@ -94,16 +147,12 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
                     
                     DispatchQueue.main.async {
                         if (self.passedData == "-1") {
-                            
-                            //let urlString2 = "http://api.career.undip.ac.id/v1/jobseekers/add_cv_part/education"
+       
                             self.getCountries()
                             self.getProvinsi()
                             
                         } else {
-                            
-                            //let urlString = "http://api.career.undip.ac.id/v1/jobseekers/detail_cv_part/education"
-                            //let urlString2 = "http://api.career.undip.ac.id/v1/jobseekers/edit_cv_part/education"
-                            
+   
                             HUD.show(.progress)
                             
                             self.getDetailEducation()
@@ -137,6 +186,99 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
         table.isHidden = true
     }
     
+    func resignResponder() {
+        _university.resignFirstResponder()
+        _graduatedMonth.resignFirstResponder()
+        _entryMonth.resignFirstResponder()
+        _gpaScore.resignFirstResponder()
+        _major.resignFirstResponder()
+        _thesis.resignFirstResponder()
+        _submajor.resignFirstResponder()
+        _accreditation.resignFirstResponder()
+    }
+    
+    // Assign the newly active text field to your activeTextField variable
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        self.activeTextField = textField
+        
+        if (textField == _entryMonth || textField == _graduatedMonth ) {
+            //show date picker
+            showDatePicker(textField)
+        }
+    }
+    
+    func showDatePicker(_ textField: UITextField){
+ 
+        //ToolBar
+        let toolbar = UIToolbar();
+        toolbar.sizeToFit()
+        
+        //done button & cancel button
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(EditEducation.donedatePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.done, target: self, action: #selector(EditEducation.cancelDatePicker))
+        toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
+        
+        // add toolbar to textField
+        textField.inputAccessoryView = toolbar
+        // add datepicker to textField
+        textField.inputView = picker
+        
+    }
+    
+    func donedatePicker(){
+        //For date formate
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM"
+        let month = formatter.string(from: picker.date)
+        formatter.dateFormat = "yyyy"
+        let year = formatter.string(from: picker.date)
+        let time = month + "/" + year
+        var myStringArr = time.components(separatedBy: "/")
+        
+        if (self.activeTextField == _entryMonth){
+            bln_masuk = myStringArr [0]
+            thn_masuk = myStringArr [1]
+            print (bln_masuk + thn_masuk)
+        } else if (self.activeTextField == _graduatedMonth){
+            bln_lulus = myStringArr [0]
+            thn_lulus = myStringArr [1]
+            print(bln_lulus + thn_lulus)
+        }
+        
+        //display time
+        formatter.dateFormat = " MMM yyyy"
+        self.activeTextField.text = formatter.string(from: picker.date)
+        //dismiss date picker dialog
+        self.view.endEditing(true)
+        
+        resignResponder()
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.bottomConstraint.constant = self.bottomConstraintConstant
+            self.view.layoutIfNeeded()
+            
+        })
+    }
+    
+    func cancelDatePicker(){
+        //cancel button dismiss datepicker dialog
+        resignResponder()
+        
+        self.view.endEditing(true)
+        
+        self.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.bottomConstraint.constant = self.bottomConstraintConstant
+            self.view.layoutIfNeeded()
+            
+        })
+    }
+    
     func setConstraint(_ id: String) {
         
         let distance = cityLabel.frame.size.height + 8 + btnCity.frame.size.height + 8 + provinceLabel.frame.size.height + 8 + btnProvince.frame.size.height + 8 + 16
@@ -154,8 +296,6 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
                 self.view.layoutIfNeeded()
                 
             })
-            
-            
             
         }
         else {
@@ -205,131 +345,101 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
                     self.id_kota = kota
                     self.passedData = id_pddk
                     self.id_negara = negara
+                    self.id_jenjang = jenjang
+                    self.graduate_status = sudah_lulus
+                    self.bln_masuk = bln_masuk
+                    self.thn_masuk = thn_masuk
+                    self.bln_lulus = bln_lulus
+                    self.thn_lulus = thn_lulus
                     
-                    if (self.id_negara != nil) {
+                    if (self.id_jenjang != "") {
+                        self.getDegree()
+                    }
+                    if (self.id_negara != "") {
                         self.getCountries()
                     }
                     
-                    if (self.id_provinsi != nil) {
+                    if (self.id_provinsi != "") {
                         self.getProvinsi()
                         
-                        if (self.id_kota != nil) {
+                        if (self.id_kota != "") {
                             self.getKota(self.id_provinsi)
                         }
                     }
                     
-                    
-                    print(self.passedData)
-                    print(self.id_provinsi)
+                    if (self.graduate_status == "0") {
+                        DispatchQueue.main.async {
+                            self.btnGraduate.setTitle("Not Yet", for: [])
+                            self.graduateLabel.text = "Estimated Graduating Month"
+                        }
+                    } else if (self.graduate_status == "1") {
+                        DispatchQueue.main.async {
+                            self.btnGraduate.setTitle("Graduated", for: [])
+                        }
+                    }
                     
                     DispatchQueue.main.async {
-            
-                        self.btnDegree.setTitle(jenjang, for: [])
-                    
+                        self._university.text = universitas
+                        self._accreditation.text = akreditasi
+                        self._major.text = jurusan
+                        self._submajor.text = konsentrasi
+                        self._thesis.text = judul_ta
+                        self._gpaScore.text = ipk
+                        self._entryMonth.text = self.filterPosisi(id: self.bln_masuk, tipe:"bulan") + " " + self.thn_masuk
+                        self._graduatedMonth.text = self.filterPosisi(id: self.bln_lulus, tipe:"bulan") + " " + self.thn_lulus
                     }
+                    
                 }
             }
         }
     
     }
     
+    func getDegree() {
+        let namaJenjang = self.filterPosisi(id: self.id_jenjang, tipe: "jenjang")
+        
+        DispatchQueue.main.async {
+            self.btnDegree.setTitle(namaJenjang, for: [])
+        }
+    }
+    
     func getProvinsi() {
         
         provinsi = []
         
-        let url = URL(string: "http://api.career.undip.ac.id/v1/location/provinces/" )
+        let url = "http://api.career.undip.ac.id/v1/location/provinces/"
         
-        let defaults = UserDefaults.standard
-        if let session = defaults.object(forKey: "session")
-        {
-            
-            let preference_block = session
-            var preferences = preference_block as! [Any]
-            
-            let username = preferences[0] as! String
-            let token = preferences[1] as! String
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let provinceDictionaries = server_response["data"] as! [[String:Any]]
                     
-                    
-                    if (data_block=="ok") {
+                    for provinceDictionary in provinceDictionaries {
                         
-                        let provinceDictionaries = server_response["data"] as! [[String:Any]]
+                        let id = provinceDictionary["id"] as? String
+                        let nama = provinceDictionary["name"] as? String
                         
-                        for provinceDictionary in provinceDictionaries {
-                            
-                            let id = provinceDictionary["id"] as? String
-                            let nama = provinceDictionary["name"] as? String
-
-                            self.provinsi.append(Provinsi(id_provinsi: id!, nama_provinsi: nama!))
-                            
-                        }
-               
-                        
-                        
-                        DispatchQueue.main.async {
-                        
-                        self.provinceTable.reloadData()
-                        
-                            if (self.passedData != "-1"){
-                      
-                                let namaProvinsi = self.filterPosisi(id: self.id_provinsi, tipe:"provinsi")
-                           
-                                print(namaProvinsi)
-                            
-                                self.btnProvince.setTitle(namaProvinsi, for: [])
-                
-                            }
-                        
-                        }
-                        
-                        
+                        self.provinsi.append(Provinsi(id_provinsi: id!, nama_provinsi: nama!))
                         
                     }
                     
+                    DispatchQueue.main.async {
+                        
+                        self.provinceTable.reloadData()
+                        
+                        if (self.passedData != "-1"){
+                            
+                            let namaProvinsi = self.filterPosisi(id: self.id_provinsi, tipe:"provinsi")
+                            
+                            print(namaProvinsi)
+                            
+                            self.btnProvince.setTitle(namaProvinsi, for: [])
+                            
+                        }
+                        
+                    }
                 }
-                
-            })
-            
-            task.resume()
+            }
         }
         
     }
@@ -338,103 +448,43 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
         
         negara = []
         
-        let url = URL(string: "http://api.career.undip.ac.id/v1/location/countries/" )
+        let url = "http://api.career.undip.ac.id/v1/location/countries/"
         
-        let defaults = UserDefaults.standard
-        if let session = defaults.object(forKey: "session")
-        {
-            
-            let preference_block = session
-            var preferences = preference_block as! [Any]
-            
-            let username = preferences[0] as! String
-            let token = preferences[1] as! String
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let countryDictionaries = server_response["data"] as! [[String:Any]]
                     
-                    
-                    if (data_block=="ok") {
+                    for countryDictionary in countryDictionaries {
                         
-                        let countryDictionaries = server_response["data"] as! [[String:Any]]
+                        let id = countryDictionary["id"] as? String
+                        let nama = countryDictionary["name"] as? String
                         
-                        for countryDictionary in countryDictionaries {
-                            
-                            let id = countryDictionary["id"] as? String
-                            let nama = countryDictionary["name"] as? String
-                            
-                            self.negara.append(Negara(id_negara: id!, nama_negara: nama!))
-                            
-                        }
-                        
-                        DispatchQueue.main.async {
-                            
-                            self.countryTable.reloadData()
-                            
-                            if (self.passedData != "-1") {
-                            
-                                let namaNegara = self.filterPosisi(id: self.id_negara, tipe: "negara")
-                               
-                                print(namaNegara)
-                                
-                                self.btnCountry.setTitle(namaNegara, for: [])
-                            
-                                if (self.id_negara) != nil {
-                                    self.setConstraint(self.id_negara)
-                                } else {
-                                    print("error parsing json")
-                                }
-                            }
-                        }
-                        
-                        
-                        
-                        
+                        self.negara.append(Negara(id_negara: id!, nama_negara: nama!))
                         
                     }
                     
+                    DispatchQueue.main.async {
+                        
+                        self.countryTable.reloadData()
+                        
+                        if (self.passedData != "-1") {
+                            
+                            let namaNegara = self.filterPosisi(id: self.id_negara, tipe: "negara")
+                            
+                            print(namaNegara)
+                            
+                            self.btnCountry.setTitle(namaNegara, for: [])
+                            
+                            if (self.id_negara) != nil {
+                                self.setConstraint(self.id_negara)
+                            } else {
+                                print("error parsing json")
+                            }
+                        }
+                    }
                 }
-                
-            })
-            
-            task.resume()
+            }
         }
         
     }
@@ -442,94 +492,33 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
     func getKota(_ id: String) {
         kota = []
         
-        let url = URL(string: "http://api.career.undip.ac.id/v1/location/cities/" + id )
+        let url = "http://api.career.undip.ac.id/v1/location/cities/" + id
         
-        let defaults = UserDefaults.standard
-        if let session = defaults.object(forKey: "session")
-        {
-            
-            let preference_block = session
-            var preferences = preference_block as! [Any]
-            
-            let username = preferences[0] as! String
-            let token = preferences[1] as! String
-            
-            let loginString = String(format: "%@:%@", username, token)
-            let loginData = loginString.data(using: String.Encoding.utf8)!
-            let base64LoginString = loginData.base64EncodedString()
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url!)
-            request.httpMethod = "GET"
-            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
-                
-                guard let _:Data = data else
-                {
-                    return
-                }
-                
-                let json:Any?
-                
-                do
-                {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch
-                {
-                    return
-                }
-                
-                
-                guard let server_response = json as? [String:Any] else
-                {
-                    return
-                }
-                
-                
-                if let data_block = server_response["status"] as? String
-                {
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let cityDictionaries = server_response["data"] as! [[String:Any]]
                     
-                    
-                    if (data_block=="ok") {
+                    for cityDictionary in cityDictionaries {
                         
-                        let cityDictionaries = server_response["data"] as! [[String:Any]]
+                        let id = cityDictionary["id"] as? String
+                        let nama = cityDictionary["name"] as? String
                         
-                        for cityDictionary in cityDictionaries {
-                            
-                            let id = cityDictionary["id"] as? String
-                            let nama = cityDictionary["name"] as? String
-                            
-                            self.kota.append(Kota(id_kota: id!, nama_kota: nama!))
-                            print(self.kota)
-                        }
-                        
-                        DispatchQueue.main.async {
-                            HUD.hide()
-                            self.cityTable.reloadData()
-                            
-                            if (self.passedData != "-1") {
-                                let namaKota = self.filterPosisi(id: self.id_kota!, tipe: "kota")
-                                print(namaKota)
-                                self.btnCity.setTitle(namaKota, for: [])
-                            }
-                        }
-                        
-                        
-                        
-                        
-                        
+                        self.kota.append(Kota(id_kota: id!, nama_kota: nama!))
+                        print(self.kota)
                     }
                     
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                        self.cityTable.reloadData()
+                        
+                        let namaKota = self.filterPosisi(id: self.id_kota, tipe: "kota")
+                        print(namaKota)
+                        self.btnCity.setTitle(namaKota, for: [])
+                     
+                    }
                 }
-                
-            })
-            
-            task.resume()
+            }
         }
         
     }
@@ -545,6 +534,8 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
                 if (id == entitas.id_negara){
                     filteredName = entitas.nama_negara
                     break
+                } else {
+                    filteredName = "- Choose Country -"
                 }
             }
         } else if (tipe == "provinsi") {
@@ -555,6 +546,8 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
                 if (id == entitas.id_provinsi){
                     filteredName = entitas.nama_provinsi
                     break
+                } else {
+                    filteredName = "- Choose Province -"
                 }
             }
            
@@ -567,6 +560,28 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
                     filteredName = entitas.nama_kota
                     break
                 } else {
+                    filteredName = "- Choose City -"
+                }
+            }
+        } else if (tipe == "jenjang"){
+            let rawEntity = self.jenjang
+            
+            for (kode, degree) in rawEntity {
+                if (kode == id){
+                    filteredName = degree
+                    break
+                } else {
+                    filteredName = "- Choose Degree -"
+                }
+            }
+        } else if (tipe == "bulan") {
+            let rawEntity = self.bulan
+            
+            for (kode, month) in rawEntity {
+                if (kode == bln_masuk){
+                    filteredName = month
+                    break
+                } else {
                     filteredName = ""
                 }
             }
@@ -574,6 +589,24 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
         
         return filteredName
         
+    }
+    
+    func filterDegree(_ degreeDictionary: Dictionary<String, String>) -> [String]{
+       var filteredArray = [String]()
+       for (kode, degree) in degreeDictionary {
+            filteredArray.append(degree)
+       }
+       return filteredArray
+    }
+    
+    func filterDegree2(_ degreeDictionary: Dictionary<String, String>, _ nama: String) -> String {
+        var filteredString: String!
+        for (kode, degree) in degreeDictionary {
+           if (nama == degree) {
+                filteredString = kode
+            }
+        }
+        return filteredString
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -584,6 +617,8 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
             return provinsi.count
         } else if (tableView == cityTable) {
             return kota.count
+        } else if (tableView == degreeTable) {
+            return jenjang.count
         } else {
             return items.count
         }
@@ -610,12 +645,12 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
             
         } else if (tableView == degreeTable) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "degreeCell", for: indexPath)
-            
-            cell.textLabel?.text = self.items[indexPath.row]
+
+            cell.textLabel?.text = filterDegree(jenjang)[indexPath.row]
             cell.textLabel?.sizeToFit()
             return cell
             
-        } else {
+        } else if (tableView == cityTable) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cityCell", for: indexPath)
             let kota = self.kota[indexPath.row]
             
@@ -623,6 +658,11 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
             cell.textLabel?.sizeToFit()
             return cell
             
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "graduateCell", for: indexPath)
+            cell.textLabel?.text = items[indexPath.row]
+            cell.textLabel?.sizeToFit()
+            return cell
         }
     }
     
@@ -639,8 +679,6 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
             
             parsingPlace(countryTable, countryName!, countryId!, btnCountry, index, tipe)
             setConstraint(id_negara)
-            
-            
             
         } else if (tableView == provinceTable) {
             
@@ -662,6 +700,20 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
             
             parsingPlace(cityTable, cityName!, cityId!, btnCity, index, tipe)
             
+        } else if (tableView == degreeTable) {
+            let degree = filterDegree(jenjang)[indexPath.row]
+            let degreeCode = filterDegree2(jenjang,degree)
+            let index = indexPath
+            let tipe = "jenjang"
+            
+            parsingPlace(degreeTable, degree, degreeCode, btnDegree , index, tipe)
+            
+        } else {
+            let graduate = items[indexPath.row]
+            let index = indexPath
+            let tipe = "graduate"
+            
+            parsingPlace(graduateTable, graduate, "", btnGraduate, index, tipe)
             
         }
     }
@@ -678,8 +730,17 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
             }
         } else if (tipe == "kota") {
             id_kota = id
+        } else if (tipe == "jenjang") {
+            id_jenjang = id
+        } else if (tipe == "graduate") {
+            if (name == "Not Yet") {
+                graduate_status = "0"
+                graduateLabel.text = "Estimated Graduating Month"
+            } else if (name == "Graduated"){
+                graduate_status = "1"
+                graduateLabel.text = "Graduated Month"
+            }
         }
-        
         
         tableView.deselectRow(at: indexPath, animated: true)
         tableView.isHidden = true
@@ -710,7 +771,6 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    
     @IBAction func setProvince(_ sender: Any) {
         if (provinceTable.isHidden == true) {
             
@@ -736,5 +796,157 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
     
+    @IBAction func setGraduate(_ sender: Any) {
+        if (graduateTable.isHidden == true) {
+            graduateTable.isHidden = false
+        } else {
+            graduateTable.isHidden = true
+        }
+    }
+    
+    @IBAction func save_education(_ sender: Any) {
+        resignResponder()
+        if (self.passedData == "-1") {
+            HUD.show(.progress)
+            
+            let url = "http://api.career.undip.ac.id/v1/jobseekers/add_cv_part/education"
+            
+            let paramToSend = "jenjang=" + id_jenjang + "&negara=" + id_negara
+            let paramToSend2 = "&provinsi=" + id_provinsi + "&kota=" + id_kota
+            let paramToSend3 = "&universitas=" + _university.text! + "&jurusan=" + _major.text!
+            let paramToSend4 = "&akreditasi=" + _accreditation.text! + "&konsentrasi=" + _submajor.text!
+            let paramToSend5 = "&judul_ta=" + _thesis.text! + "&ipk=" + _gpaScore.text!
+            let paramToSend6 = "&sudah_lulus=" + graduate_status + "&bln_masuk=" + bln_masuk
+            let paramToSend7 = "&thn_masuk=" + thn_masuk + "&bln_lulus=" + bln_lulus
+            let paramToSend8 = "&thn_lulus=" + thn_lulus
+            
+            let paramGroup1 = paramToSend + paramToSend2 + paramToSend3 + paramToSend4
+            let paramGroup2 = paramToSend5 + paramToSend6 + paramToSend7 + paramToSend8
+            let paramFinal = paramGroup1 + paramGroup2
+            
+            NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
+                
+                if let message = server_response["message"] as? String {
+                    Alert.showMessage(title: "WARNING!", msg: message)
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                }
+            }
+
+            
+        } else {
+            
+            HUD.show(.progress)
+            
+            let url = "http://api.career.undip.ac.id/v1/jobseekers/edit_cv_part/education/"
+            
+            let paramToSend = "id_pendidikan=" + passedData + "&jenjang=" + id_jenjang + "&negara=" + id_negara
+            let paramToSend2 = "&provinsi=" + id_provinsi + "&kota=" + id_kota
+            let paramToSend3 = "&universitas=" + _university.text! + "&jurusan=" + _major.text!
+            let paramToSend4 = "&akreditasi=" + _accreditation.text! + "&konsentrasi=" + _submajor.text!
+            let paramToSend5 = "&judul_ta=" + _thesis.text! + "&ipk=" + _gpaScore.text!
+            let paramToSend6 = "&sudah_lulus=" + graduate_status + "&bln_masuk=" + bln_masuk
+            let paramToSend7 = "&thn_masuk=" + thn_masuk + "&bln_lulus=" + bln_lulus
+            let paramToSend8 = "&thn_lulus=" + thn_lulus
+            
+            let paramGroup1 = paramToSend + paramToSend2 + paramToSend3 + paramToSend4
+            let paramGroup2 = paramToSend5 + paramToSend6 + paramToSend7 + paramToSend8
+            let paramFinal = paramGroup1 + paramGroup2
+            
+            NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
+                
+                if let message = server_response["message"] as? String {
+                   
+                    DispatchQueue.main.async {
+                        Alert.showMessage(title: "WARNING!", msg: message)
+                        HUD.hide()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        resignResponder()
+        self.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.bottomConstraint.constant = self.bottomConstraintConstant
+            self.view.layoutIfNeeded()
+            
+        })
+        return true
+        
+    }
+    
+    /*override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        resignResponder()
+        
+        self.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            
+            self.bottomConstraint.constant = self.bottomConstraintConstant
+            self.contentView.layoutIfNeeded()
+            
+        })
+    }*/
+    func keyboardWillShow(notification:NSNotification) {
+        
+        if let info = notification.userInfo {
+            
+            let rect:CGRect = info["UIKeyboardFrameEndUserInfoKey"] as! CGRect
+            
+            self.view.layoutIfNeeded()
+            
+            UIView.animate(withDuration: 0.25, animations: {
+                
+                self.bottomConstraint.constant = 263
+                self.view.layoutIfNeeded()
+                
+            })
+            
+        }
+    
+    }
+    
+    func doneButtonTappedForMyNumericTextField() {
+        print("Done");
+        _gpaScore.resignFirstResponder()
+        
+        self.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.bottomConstraint.constant = self.bottomConstraintConstant
+            self.view.layoutIfNeeded()
+            
+        })
+    }
+    
+}
+
+extension UITextField {
+    func addDoneCancelToolbar(onDone: (target: Any, action: Selector)? = nil, onCancel: (target: Any, action: Selector)? = nil) {
+        //let onCancel = onCancel ?? (target: self, action: #selector(cancelButtonTapped))
+        let onDone = onDone ?? (target: self, action: #selector(doneButtonTapped))
+        
+        let toolbar: UIToolbar = UIToolbar()
+        toolbar.barStyle = .default
+        toolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+            UIBarButtonItem(title: "Done", style: .done, target: onDone.target, action: onDone.action)
+        ]
+        toolbar.sizeToFit()
+        
+        self.inputAccessoryView = toolbar
+    }
+    
+    // Default actions:
+    func doneButtonTapped() { self.resignFirstResponder() }
     
 }

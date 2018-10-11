@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 class EditProfileSummary: UIViewController {
 
@@ -47,12 +48,18 @@ class EditProfileSummary: UIViewController {
     
     func DoSave(_ profil:String) {
         
+        HUD.show(.progress)
         let url = "http://api.career.undip.ac.id/v1/jobseekers/edit_cv_part/shortprofile"
         let paramToSend = "profil=" + profil
 
         NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
             if let message = server_response["message"] as? String {
-                Alert.showMessage(title: "WARNING!", msg: message)
+                
+                DispatchQueue.main.async {
+                    HUD.hide()
+                    Alert.showMessage(title: "WARNING!", msg: message)
+                }
+                
             }
         }
         

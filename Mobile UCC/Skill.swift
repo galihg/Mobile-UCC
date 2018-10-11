@@ -31,7 +31,20 @@ class Skill: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-       
+        
+        let button = UIButton.init(type: .custom)
+        //set image for button
+        button.setImage(UIImage(named: "edit"),for: UIControlState())
+        //add function for button
+        button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        //set frame
+        button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
+        let barButton = UIBarButtonItem(customView: button)
+        
+        //assign button to navigationbar
+        self.navigationItem.rightBarButtonItem = barButton
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,12 +60,12 @@ class Skill: BaseViewController {
             if let status = server_response["status"] as? String {
                 if (status == "ok") {
                     let data_dictionary = server_response["data"] as? NSDictionary
-                    let id_keahlian = data_dictionary?["id_keahlian"] as? String ?? "(empty)"
-                    let id_member = data_dictionary?["id_member"] as? String ?? "(empty)"
-                    let teknis = data_dictionary?["teknis"] as? String ?? "(empty)"
-                    let non_teknis = data_dictionary?["non_teknis"] as? String ?? "(empty)"
-                    let komputer = data_dictionary?["komputer"] as? String ?? "(empty)"
-                    let lainnya = data_dictionary?["lainnya"] as? String ?? "(empty)"
+                    let id_keahlian = data_dictionary?["id_keahlian"] as? String ?? ""
+                    let id_member = data_dictionary?["id_member"] as? String ?? ""
+                    let teknis = data_dictionary?["teknis"] as? String ?? ""
+                    let non_teknis = data_dictionary?["non_teknis"] as? String ?? ""
+                    let komputer = data_dictionary?["komputer"] as? String ?? ""
+                    let lainnya = data_dictionary?["lainnya"] as? String ?? ""
                     
                     DispatchQueue.main.async {
                         
@@ -61,7 +74,7 @@ class Skill: BaseViewController {
                         self.komputer.text = komputer
                         self.other.text = lainnya
                         
-                        if (self.teknis.text == "(empty)" && self.nonteknis.text == "(empty)" && self.komputer.text == "(empty)" && self.other.text == "(empty)" ) {
+                        if (self.teknis.text == "" && self.nonteknis.text == "" && self.komputer.text == "" && self.other.text == "" ) {
     
                             self.setSubview(true)
                             HUD.hide()
@@ -109,7 +122,33 @@ class Skill: BaseViewController {
         }
     }
     
-
- 
+    func editButtonAction(sender: UIBarButtonItem){
+        let technical = teknis.text!
+        let nonTechnical = nonteknis.text
+        let computer = komputer.text
+        let otherSkill = other.text
+        
+        let passedArray = [technical, nonTechnical, computer, otherSkill]
+        performSegue(withIdentifier: "showEditSkill", sender: passedArray)
+    }
+    
+    @IBAction func editSkill(_ sender: Any) {
+        let technical = teknis.text!
+        let nonTechnical = nonteknis.text
+        let computer = komputer.text
+        let otherSkill = other.text
+        
+        let passedArray = [technical, nonTechnical, computer, otherSkill]
+        performSegue(withIdentifier: "showEditSkill", sender: passedArray)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditSkill" {
+            let Skill2VC = segue.destination as! EditSkill
+            let pass = sender as! [String]
+            Skill2VC.passedData = pass
+            navigationItem.title = nil
+        }
+    }
 
 }

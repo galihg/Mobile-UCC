@@ -13,11 +13,10 @@ class portofolioCell: UITableViewCell {
     @IBOutlet weak var judul: UILabel!
     @IBOutlet weak var tglMulai: UILabel!
     @IBOutlet weak var tglSelesai: UILabel!
-    @IBOutlet weak var alamatURL: UILabel!
+    @IBOutlet weak var alamatURL: UITextView!
     @IBOutlet weak var deskripsi: UILabel!
     @IBOutlet weak var btn_edit: UIButton!
     @IBOutlet weak var btn_delete: UIButton!
-    
     
     
     

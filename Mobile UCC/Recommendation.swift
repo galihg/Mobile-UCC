@@ -50,7 +50,8 @@ class Recommendation: BaseViewController, UITableViewDataSource, UITableViewDele
     }
     
     func newButtonAction(sender: UIBarButtonItem){
-        
+        let recomId = "-1"
+        performSegue(withIdentifier: "showEditRecommendation", sender: recomId)
     }
     
     private func setAddButton() {
@@ -153,12 +154,15 @@ class Recommendation: BaseViewController, UITableViewDataSource, UITableViewDele
     }
     
     func addRecommendation(_ button: UIButton) {
-        print("Button pressed 👍")
+        let recomId = "-1"
+        performSegue(withIdentifier: "showEditRecommendation", sender: recomId)
     }
     
 
     @IBAction func edit_recommend(_ sender: Any) {
-        
+        let data = rekomendasi[(sender as AnyObject).tag]
+        let recomId = data.id_rekomendasi
+        performSegue(withIdentifier: "showEditRecommendation", sender: recomId)
     }
     
     @IBAction func delete_recommend(_ sender: Any) {
@@ -192,6 +196,15 @@ class Recommendation: BaseViewController, UITableViewDataSource, UITableViewDele
                     Alert.showMessage(title: "WARNING!", msg: message!)
                 }
             }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditRecommendation" {
+            let Recom2VC = segue.destination as! EditRecommendation
+            let pass = sender as! String
+            Recom2VC.passedData = pass
+            navigationItem.title = nil
         }
     }
 

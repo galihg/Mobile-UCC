@@ -80,6 +80,8 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
             controller.addAction(cancel)
             
             present(controller, animated: true, completion: nil)
+            HUD.hide()
+            
         }
         
     }

@@ -55,16 +55,16 @@ class StrengthWeakness: BaseViewController {
             if let status = server_response["status"] as? String{
                 if (status == "ok"){
                     let data_dictionary = server_response["data"] as? NSDictionary
-                    let id_karakter = data_dictionary?["id_karakter"] as? String ?? "(empty)"
-                    let id_member = data_dictionary?["id_member"] as? String ?? "(empty)"
-                    let kelebihan = data_dictionary?["kelebihan"] as? String ?? "(empty)"
-                    let kekurangan = data_dictionary?["kekurangan"] as? String ?? "(empty)"
+                    let id_karakter = data_dictionary?["id_karakter"] as? String ?? ""
+                    let id_member = data_dictionary?["id_member"] as? String ?? ""
+                    let kelebihan = data_dictionary?["kelebihan"] as? String ?? ""
+                    let kekurangan = data_dictionary?["kekurangan"] as? String ?? ""
                     
                     DispatchQueue.main.async {
                         self.kelebihan.text = kelebihan
-                        self.kekurangan.text = kelebihan
+                        self.kekurangan.text = kekurangan
                         
-                        if (self.kelebihan.text == "(empty)" && self.kekurangan.text == "(empty)") {
+                        if (self.kelebihan.text == "" && self.kekurangan.text == "") {
                             self.strengthLabel.isHidden = true
                             self.blueLine.isHidden = true
                             self.kelebihan.isHidden = true
@@ -94,6 +94,29 @@ class StrengthWeakness: BaseViewController {
     }
     
     func editButtonAction(sender: UIBarButtonItem){
+        let strength = kelebihan.text
+        let weakness = kekurangan.text
         
+        let passedArray = [strength, weakness]
+        performSegue(withIdentifier: "showEditStrengthWeakness", sender: passedArray)
     }
+    
+    @IBAction func editStrengthWeakness(_ sender: Any) {
+        let strength = kelebihan.text
+        let weakness = kekurangan.text
+        
+        let passedArray = [strength, weakness]
+        performSegue(withIdentifier: "showEditStrengthWeakness", sender: passedArray)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditStrengthWeakness" {
+            let SW2VC = segue.destination as! EditStrengthWeakness
+            let pass = sender as! [String]
+            SW2VC.passedData = pass
+            navigationItem.title = nil 
+        }
+    }
+    
+    
 }

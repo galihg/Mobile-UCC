@@ -49,7 +49,8 @@ class CTC: BaseViewController, UITableViewDataSource, UITableViewDelegate{
     }
     
     func newButtonAction(sender: UIBarButtonItem){
-        
+        let ctcId = ["-1"]
+        performSegue(withIdentifier: "showEditCTC", sender: ctcId)
     }
   
     private func setAddButton() {
@@ -64,9 +65,7 @@ class CTC: BaseViewController, UITableViewDataSource, UITableViewDelegate{
     }
     
     private func removeAddButton() {
-        
         addButton.isHidden = true
-        
     }
     
     func downloadAllCTC () {
@@ -152,11 +151,20 @@ class CTC: BaseViewController, UITableViewDataSource, UITableViewDelegate{
     }
     
     func addCTC(_ button: UIButton) {
-        print("Button pressed 👍")
+        let ctcId = ["-1"]
+        performSegue(withIdentifier: "showEditCTC", sender: ctcId)
     }
     
     @IBAction func editCTC(_ sender: Any) {
+        let data = course[(sender as AnyObject).tag]
+        let ctcId = data.id_ctc
+        let ctcName = data.nama_kursus
+        let ctcOrganizer = data.organizer
+        let ctcCertificate = data.sertifikat
+        let ctcYear = data.tahun
         
+        let passedArray = [ctcId, ctcName, ctcOrganizer, ctcCertificate, ctcYear]
+        performSegue(withIdentifier: "showEditCTC", sender: passedArray)
     }
     
     @IBAction func deleteCTC(_ sender: Any) {
@@ -192,6 +200,15 @@ class CTC: BaseViewController, UITableViewDataSource, UITableViewDelegate{
             }
         }
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditCTC" {
+            let CTC2VC = segue.destination as! EditCTC
+            let pass = sender as! [String]
+            CTC2VC.passedData = pass
+            navigationItem.title = nil
+        }
     }
 
 }

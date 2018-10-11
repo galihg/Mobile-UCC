@@ -53,7 +53,8 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
     }
     
     func newButtonAction(sender: UIBarButtonItem){
-        
+        let languageId = "-1"
+        getForm(languageId)
     }
     
     private func setAddButton() {
@@ -157,11 +158,20 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
     }
     
     func addLanguage(_ button: UIButton) {
-        print("Button pressed 👍")
+        let languageId = "-1"
+        getForm(languageId)
     }
     
     @IBAction func edit_language(_ sender: Any) {
+        let data = language[(sender as AnyObject).tag]
+        let languageId = data.id_bahasa
         
+        getForm(languageId!)
+    }
+    
+    func getForm(_ languageId: String) {
+        let formId = languageId
+        self.performSegue(withIdentifier: "showEditLanguageSkills", sender: formId)
     }
 
     @IBAction func delete_language(_ sender: Any) {
@@ -178,7 +188,9 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
         
         let url = "http://api.career.undip.ac.id/v1/jobseekers/delete_cv_part/foreignlanguage/"
         
-        NetworkService.parseJSONFromURL(url, "POST", parameter: ""){ (server_response) in
+        let paramToSend = "id_bahasa_asing" + id
+        
+        NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
             if let status = server_response["status"] as? String {
                 if (status == "ok") {
                     let message = server_response["message"] as? String
@@ -195,6 +207,15 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
             }
         }
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "showEditLanguageSkills") {
+            navigationItem.title = nil
+            let Language2VC = segue.destination as! EditLanguageSkills
+            let pass = sender as! String
+            Language2VC.passedData = pass
+        }
     }
     
 }

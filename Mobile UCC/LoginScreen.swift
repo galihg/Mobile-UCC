@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import PKHUD
 
 class LoginScreen: UIViewController, UITextFieldDelegate {
     
@@ -66,6 +66,7 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
     
     func DoLogin(_ user:String, _ psw:String, _ client:String)
     {
+        HUD.show(.progress)
         let url = URL(string: "http://api.career.undip.ac.id/v1/auth/login")
         let session = URLSession.shared
         
@@ -123,10 +124,11 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
                     let preferences = UserDefaults.standard
                     preferences.set(data_block1, forKey: "session")
                     print(data_block1)
-                    DispatchQueue.main.async (
-                        execute:self.LoginDone
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                        self.LoginDone()
                         
-                    )
+                    }
                 }
                 else if (data_block=="error"){
                     DispatchQueue.main.async (

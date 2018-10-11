@@ -74,11 +74,11 @@ class EnglishSkill: BaseViewController {
                     DispatchQueue.main.async {
                         
                         if tipe_toefl == "1" {
-                            self.toeflType.text = "PBT"
+                            self.toeflType.text = "PBT (Paper-Based Test)"
                         } else if tipe_toefl == "2" {
-                            self.toeflType.text = "CBT"
+                            self.toeflType.text = "CBT (Computer-Based Test)"
                         } else if tipe_toefl == "3" {
-                            self.toeflType.text = "iBT"
+                            self.toeflType.text = "iBT (Internet-Based Test)"
                         } else {
                             self.toeflType.text = "(empty)"
                         }
@@ -106,9 +106,9 @@ class EnglishSkill: BaseViewController {
         }
     }
     
-    
     func editButtonAction(sender: UIBarButtonItem){
-        
+        let passedArray = [toeflType.text!, toeflScore.text!, toeflYear.text!, ieltsScore.text!, ieltsYear.text!, toeicScore.text!, toeicYear.text!] as [String]
+        performSegue(withIdentifier: "showEditEnglish", sender: passedArray)
     }
     
     private func setEditButton() {
@@ -121,13 +121,20 @@ class EnglishSkill: BaseViewController {
     }
     
     private func removeEditButton() {
-        
         editButton.isHidden = true
-        
     }
     
     func editEnglish(_ button: UIButton) {
         print("Button pressed 👍")
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditEnglish" {
+            let English2VC = segue.destination as! EditEnglishSkill
+            let pass = sender as! [String]
+            English2VC.passedData = pass
+            navigationItem.title = nil 
+        }
     }
     
     

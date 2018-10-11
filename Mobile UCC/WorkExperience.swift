@@ -51,7 +51,8 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
     }
     
     func newButtonAction(sender: UIBarButtonItem){
-        
+        let workId = "-1"
+        getForm(workId)
     }
     
     private func setAddButton() {
@@ -152,11 +153,15 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
     }
     
     func addWork(_ button: UIButton) {
-        print("Button pressed 👍")
+        let workId = "-1"
+        getForm(workId)
     }
     
     @IBAction func edit_work(_ sender: Any) {
+        let data = work[(sender as AnyObject).tag]
+        let workId = data.id_pekerjaan
         
+        getForm(workId!)
     }
 
     @IBAction func delete_work(_ sender: Any) {
@@ -167,6 +172,11 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
         let workId = data.id_pekerjaan
         
         deleteWork(indexPath!, workId!)
+    }
+    
+    func getForm(_ workId: String) {
+        let formId = workId
+        self.performSegue(withIdentifier: "showEditWork", sender: formId)
     }
   
     func deleteWork (_ row:IndexPath,_ id:String) {
@@ -189,6 +199,15 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
                     Alert.showMessage(title: "WARNING!", msg: message!)
                 }
             }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "showEditWork") {
+            navigationItem.title = nil
+            let Work2VC = segue.destination as! EditWorkExperience
+            let pass = sender as! String
+            Work2VC.passedData = pass
         }
     }
     

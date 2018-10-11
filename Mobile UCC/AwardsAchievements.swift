@@ -50,7 +50,8 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
     }
     
     func newButtonAction(sender: UIBarButtonItem){
-        
+        let awardId = ["-1"]
+        performSegue(withIdentifier: "showEditAwards", sender: awardId)
     }
     
     private func setAddButton() {
@@ -65,10 +66,9 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
     }
     
     private func removeAddButton() {
-        
         addButton.isHidden = true
-        
     }
+    
     func downloadAllAward () {
         
         HUD.show(.progress)
@@ -153,11 +153,21 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
     }
     
     func addAward(_ button: UIButton) {
-        print("Button pressed 👍")
+        let awardId = ["-1"]
+        performSegue(withIdentifier: "showEditAwards", sender: awardId)
     }
     
 
     @IBAction func edit_award(_ sender: Any) {
+        let data = award[(sender as AnyObject).tag]
+        let awardId = data.id_prestasi
+        let awardName = data.nama_prestasi
+        let awardYear = data.tahun
+        let awardAppreciator = data.pemberi
+        let awardDescription = data.keterangan
+        
+        let passedArray = [awardId!, awardName!, awardYear!, awardAppreciator!, awardDescription!]
+        performSegue(withIdentifier: "showEditAwards", sender: passedArray)
     }
     
     @IBAction func delete_award(_ sender: Any) {
@@ -193,6 +203,15 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
             }
         }
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditAwards" {
+            let Award2VC = segue.destination as! EditAwardsAndAchievements
+            let pass = sender as! [String]
+            Award2VC.passedData = pass
+            navigationItem.title = nil
+        }
     }
     
 }

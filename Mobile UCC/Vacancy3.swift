@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 class Vacancy3: BaseViewController {
 
@@ -115,13 +116,33 @@ class Vacancy3: BaseViewController {
         
         if(defaults.object(forKey: "session") != nil)
         {
+            HUD.show(.progress)
             let id = (passedData[15] as! String)
-            performSegue(withIdentifier: "applyNow", sender: id)
-        } else {
-            performSegue(withIdentifier: "login", sender: self)
-            Alert.showMessage(title: "WARNING!", msg: "Anda harus login terlebih dahulu")
+            let url = "http://api.career.undip.ac.id/v1/applications/check_eligibility/" + id
             
-            print("reference not found")
+            NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+                if let status = server_response["status"] as? String {
+                    if (status == "ok") {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                            self.performSegue(withIdentifier: "applyNow", sender: id)
+                        }
+                    } else {
+                        let message = server_response["message"] as? String
+                        Alert.showMessage(title: "WARNING!", msg: message!)
+                        
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                    }
+                }
+            }
+            
+        }  else {
+                performSegue(withIdentifier: "login", sender: self)
+                Alert.showMessage(title: "WARNING!", msg: "Anda harus login terlebih dahulu")
+            
+                print("reference not found")
         }
     }
     

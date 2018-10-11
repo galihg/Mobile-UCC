@@ -50,7 +50,8 @@ class Portofolio: BaseViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     func newButtonAction(sender: UIBarButtonItem){
-        
+        let portofolioId = "-1"
+        performSegue(withIdentifier: "showEditPortofolio", sender: portofolioId)
     }
     
     private func setAddButton() {
@@ -65,9 +66,7 @@ class Portofolio: BaseViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     private func removeAddButton() {
-        
         addButton.isHidden = true
-        
     }
     
     func downloadAllPortofolio () {
@@ -123,7 +122,6 @@ class Portofolio: BaseViewController, UITableViewDataSource, UITableViewDelegate
     
     func numberOfSections(in tableView: UITableView) -> Int
     {
-        
         return 1
     }
     
@@ -156,11 +154,14 @@ class Portofolio: BaseViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     func addPortofolio(_ button: UIButton) {
-        print("Button pressed 👍")
+        let portofolioId = "-1"
+        performSegue(withIdentifier: "showEditPortofolio", sender: portofolioId)
     }
    
     @IBAction func edit_portofolio(_ sender: Any) {
-        
+        let data = portofolios[(sender as AnyObject).tag]
+        let portofolioId = data.id_portofolio
+        performSegue(withIdentifier: "showEditPortofolio", sender: portofolioId)
     }
     
     @IBAction func delete_portofolio(_ sender: Any) {
@@ -196,6 +197,15 @@ class Portofolio: BaseViewController, UITableViewDataSource, UITableViewDelegate
             }
         }
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditPortofolio" {
+            let portofolio2VC = segue.destination as! EditPortofolio
+            let pass = sender as! String
+            portofolio2VC.passedData = pass
+            navigationItem.title = nil 
+        }
     }
     
 }

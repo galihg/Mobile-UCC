@@ -59,6 +59,7 @@ class MyCV: BaseViewController {
         
         self.title = "My CV"
         auth_check()
+       
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -102,7 +103,7 @@ class MyCV: BaseViewController {
                     preferences.removeObject(forKey: "session")
                     
                     DispatchQueue.main.async {
-                       self.openViewControllerBasedOnIdentifier("Home")
+                        self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
                     }
                     

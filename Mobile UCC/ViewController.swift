@@ -14,7 +14,7 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
     @IBOutlet weak var tableView: UITableView!
     
     var vacancy = [Vacancy]()
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,6 +59,7 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
             controller.addAction(cancel)
             
             present(controller, animated: true, completion: nil)
+            HUD.hide()
         }
         
     }

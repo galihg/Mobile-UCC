@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -293,7 +294,7 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
     }
     func DoApply(_ id1:String, _ id2:String, _ id3:String, _ stat:String)
     {
-      
+        HUD.show(.progress)
         let url = "http://api.career.undip.ac.id/v1/applications/list"
             
         let paramToSend = "offer_id=" + id1 + "&current_province=" + id2 + "&current_city=" + id3 + "&statement=" + stat
@@ -301,6 +302,9 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
         NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
             if let message = server_response["message"] as? String {
                 Alert.showMessage(title: "WARNING!", msg: message)
+                DispatchQueue.main.async {
+                    HUD.hide()
+                }
             }
         }
         

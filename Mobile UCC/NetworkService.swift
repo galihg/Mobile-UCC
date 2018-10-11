@@ -100,7 +100,7 @@ class NetworkService {
                 
             } else {
                 
-                request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+                //request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
                 
                 let task = session.dataTask(with: request as URLRequest, completionHandler: {
                     (data, response, error) in

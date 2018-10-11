@@ -7,16 +7,137 @@
 //
 
 import UIKit
+import PKHUD
+class EditAwardsAndAchievements: BaseViewController, UITextFieldDelegate, UITextViewDelegate {
 
-class EditAwardsAndAchievements: UIViewController {
-
+    @IBOutlet weak var _name: UITextField!
+    @IBOutlet weak var _year: UITextField! {
+        didSet {
+            _year.addDoneCancelToolbar(onDone: (target: self, action: #selector(doneButtonTappedForMyNumericTextField)))
+        }
+    }
+    @IBOutlet weak var _appreciator: UITextField!
+    
+    @IBOutlet weak var deskripsi: UITextView!
+    
+    var passedData = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Edit Awards and Achievements"
+        if (passedData[0] != "-1") {
+            self.title = "Edit Awards and Achievement"
+        } else {
+            self.title = "Add Awards and Achievement"
+        }
         // Do any additional setup after loading the view.
+        auth_check()
+        
+        _name.delegate = self
+        _year.delegate = self
+        _appreciator.delegate = self
+
+        deskripsi.delegate = self
+        deskripsi.layer.borderWidth = 1.0
+        
+        if (passedData[0] != "-1") {
+            _name.text = passedData[1]
+            _year.text = passedData[2]
+            _appreciator.text = passedData[3]
+            deskripsi.text = passedData[4]
+        }
     }
-
-
-  
-
+    
+    func auth_check() {
+        HUD.show(.progress)
+        let url = "http://api.career.undip.ac.id/v1/auth/check"
+        
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            
+            if let status = server_response["status"] as? String {
+                if (status == "ok") {
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                } else if (status == "invalid-session"){
+                    
+                    let preferences = UserDefaults.standard
+                    preferences.removeObject(forKey: "session")
+                    
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                        self.openViewControllerBasedOnIdentifier("Home")
+                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    func resignResponder() {
+        _name.resignFirstResponder()
+        _year.resignFirstResponder()
+        _appreciator.resignFirstResponder()
+        deskripsi.resignFirstResponder()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        resignResponder()
+        
+        self.view.layoutIfNeeded()
+        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        resignResponder()
+        self.view.layoutIfNeeded()
+        
+        return true
+        
+    }
+    
+    func doneButtonTappedForMyNumericTextField() {
+        print("Done");
+        resignResponder()
+    }
+    
+    @IBAction func submitAward(_ sender: Any) {
+        resignResponder()
+        HUD.show(.progress)
+        
+        if (passedData[0] == "-1") {
+            let url = "http://api.career.undip.ac.id/v1/jobseekers/add_cv_part/achievement"
+            
+            let paramToSend = "nama_prestasi=" + _name.text! + "&pemberi=" + _appreciator.text!
+            let paramToSend2 = "&tahun=" + _year.text! + "&keterangan=" + deskripsi.text!
+            
+            let paramFinal = paramToSend + paramToSend2
+            
+            NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
+                if let message = server_response["message"] as? String {
+                    Alert.showMessage(title: "WARNING!", msg: message)
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                }
+            }
+        } else {
+            let url = "http://api.career.undip.ac.id/v1/jobseekers/edit_cv_part/achievement"
+            
+            let paramToSend = "nama_prestasi=" + _name.text! + "&pemberi=" + _appreciator.text!
+            let paramToSend2 = "&tahun=" + _year.text! + "&keterangan=" + deskripsi.text! + "&id_data=" + passedData[0]
+            
+            let paramFinal = paramToSend + paramToSend2
+            
+            NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
+                if let message = server_response["message"] as? String {
+                    Alert.showMessage(title: "WARNING!", msg: message)
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                }
+            }
+        }
+    }
+    
 }
