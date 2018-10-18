@@ -104,7 +104,7 @@ class Vacancy3: BaseViewController {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
         self.title = "Detail Vacancy"
-        
+        self.navigationItem.title="Detail Vacancy"
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
             Auth.auth_check()

@@ -75,6 +75,7 @@ PODS:
   - Protobuf (3.6.1)
   - SidebarOverlay (4.2.2)
   - SwiftyJSON (4.2.0)
+  - TPKeyboardAvoiding (1.3.2)
 
 DEPENDENCIES:
   - Firebase/Core
@@ -84,6 +85,7 @@ DEPENDENCIES:
   - PKHUD (~> 5.0)
   - SidebarOverlay (~> 4.2)
   - SwiftyJSON (~> 4.2.0)
+  - TPKeyboardAvoiding
 
 SPEC CHECKSUMS:
   Firebase: 383fa29aca93e371cab776b48a5c66544d3c2003
@@ -101,7 +103,8 @@ SPEC CHECKSUMS:
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   SidebarOverlay: a5365455a2f9d54f70d0765764ca1a2806b1b11d
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
+  TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
 
-PODFILE CHECKSUM: 36176e1b3cb624e8144745c42190a39aec8bd072
+PODFILE CHECKSUM: cbd8d4ca75aa51be5849a1d70633f7f91ec7d810
 
 COCOAPODS: 1.4.0

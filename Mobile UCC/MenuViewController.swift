@@ -101,6 +101,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
             arrayMenuOptions.append(["title":"Notification", "icon":"notif_icon"])
             arrayMenuOptions.append(["title":"Application History", "icon":"history_icon"])
             arrayMenuOptions.append(["title":"My CV", "icon":"myCV_icon"])
+            arrayMenuOptions.append(["title":"Change Password", "icon":"unlocked"])
             arrayMenuOptions.append(["title":"Contact Us", "icon":"contact_icon"])
             arrayMenuOptions.append(["title":"About", "icon":"about_icon"])
             arrayMenuOptions.append(["title":"Logout", "icon":"logout_icon"])

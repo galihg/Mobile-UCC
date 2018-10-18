@@ -36,9 +36,7 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
     @IBOutlet weak var levelTable: UITableView!
     
     @IBOutlet weak var companyTop: NSLayoutConstraint!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
-    var bottomConstraintConstant :  CGFloat = 32.0
+
     var active = "0"
     var passedData: String!
     var tgl_masuk: String = ""
@@ -109,9 +107,7 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
         //Add toolbar to textField
         _entryDate.inputAccessoryView = toolbar
         _resignDate.inputAccessoryView = toolbar
-        
-        // Listen for the keyboard
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    
     }
     
     func auth_check() {
@@ -242,27 +238,11 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
         //dismiss date picker dialog
         self.view.endEditing(true)
         
-        resignResponder()
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
     }
     
     func cancelDatePicker(){
         //cancel button dismiss datepicker dialog
         self.view.endEditing(true)
-        
-        resignResponder()
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-        })
     }
     
     func getIndustry() {
@@ -668,37 +648,10 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignResponder()
-        self.view.layoutIfNeeded()
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
+        textField.resignFirstResponder()
+
         return true
         
     }
-    
-    func keyboardWillShow(notification:NSNotification) {
-        
-        if let info = notification.userInfo {
-            
-            let rect:CGRect = info["UIKeyboardFrameEndUserInfoKey"] as! CGRect
-            
-            self.view.layoutIfNeeded()
-            
-            UIView.animate(withDuration: 0.25, animations: {
-                
-                self.bottomConstraint.constant = 263
-                self.view.layoutIfNeeded()
-                
-            })
-            
-        }
-        
-    }
-    
 
 }

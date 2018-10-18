@@ -55,7 +55,7 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         //This is the right place to do for instance animations on your views subviews
         
         self.title = "Vacancy"
-        
+        self.navigationItem.title="Vacancy"
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
             Auth.auth_check()

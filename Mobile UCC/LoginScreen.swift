@@ -63,6 +63,9 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
         DoLogin(auth_uname!, auth_passw, client_ver)
     }
     
+    @IBAction func forgotPassword(_ sender: Any) {
+        performSegue(withIdentifier: "showReset", sender: self)
+    }
     
     func DoLogin(_ user:String, _ psw:String, _ client:String)
     {
@@ -131,9 +134,10 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
                     }
                 }
                 else if (data_block=="error"){
-                    DispatchQueue.main.async (
-                        execute:self.LoginError
-                    )
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                        self.LoginError()
+                    }
                 }
             }
             
@@ -213,8 +217,15 @@ class LoginScreen: UIViewController, UITextFieldDelegate {
             })
             
         }
-        
-        
-        
+    }
+    
+    func keyboardWillHide(notification:NSNotification) {
+       
+        UIView.animate(withDuration: 0.25, animations: {
+                
+            self.bottomConstraint.constant = self.bottomConstraintConstant
+            self.view.layoutIfNeeded()
+                
+        })
     }
 }

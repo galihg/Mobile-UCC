@@ -77,6 +77,8 @@
 		FA1C4D05200C88DE00A88A04 /* CTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4D04200C88DE00A88A04 /* CTC.swift */; };
 		FA1C4D07200C8ADB00A88A04 /* CTCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4D06200C8ADB00A88A04 /* CTCCell.swift */; };
 		FA2282AB2011952D007C0642 /* DLRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2282A92011952D007C0642 /* DLRadioButton.m */; };
+		FA2D065B21721F6D00FBCF2D /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2D065A21721F6D00FBCF2D /* ResetPassword.swift */; };
+		FA2D065D21721F9400FBCF2D /* ChangePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2D065C21721F9400FBCF2D /* ChangePassword.swift */; };
 		FA3366B22048EFA800697481 /* EditEducation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3366B12048EFA800697481 /* EditEducation.swift */; };
 		FA5FBF8421459B58008AEFE4 /* Industri.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FBF8321459B58008AEFE4 /* Industri.swift */; };
 		FA5FBF8621459C5E008AEFE4 /* KategoriPosisi.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FBF8521459C5E008AEFE4 /* KategoriPosisi.swift */; };
@@ -104,6 +106,7 @@
 		FAD93C852065F845000110C9 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD93C842065F845000110C9 /* History.swift */; };
 		FAE17C4E216E2FD500BDC6A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FAE17C4D216E2FD500BDC6A0 /* GoogleService-Info.plist */; };
 		FAE7597B2065724B00668580 /* Portofolios.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE7597A2065724B00668580 /* Portofolios.swift */; };
+		FAF77F072177CBF600F98EFD /* TextField Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF77F062177CBF600F98EFD /* TextField Extension.swift */; };
 		FAF7D56A20027B8D00483C08 /* AwardsAchievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF7D56920027B8D00483C08 /* AwardsAchievements.swift */; };
 		FAF7D56C20027BE500483C08 /* awardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF7D56B20027BE500483C08 /* awardCell.swift */; };
 		FAFD63852062A99D00C4344D /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD63842062A99D00C4344D /* Notification.swift */; };
@@ -187,6 +190,8 @@
 		FA2282A82011952B007C0642 /* Mobile UCC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mobile UCC-Bridging-Header.h"; sourceTree = "<group>"; };
 		FA2282A92011952D007C0642 /* DLRadioButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLRadioButton.m; sourceTree = "<group>"; };
 		FA2282AA2011952D007C0642 /* DLRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLRadioButton.h; sourceTree = "<group>"; };
+		FA2D065A21721F6D00FBCF2D /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
+		FA2D065C21721F9400FBCF2D /* ChangePassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePassword.swift; sourceTree = "<group>"; };
 		FA3366B12048EFA800697481 /* EditEducation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEducation.swift; sourceTree = "<group>"; };
 		FA5FBF8321459B58008AEFE4 /* Industri.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Industri.swift; sourceTree = "<group>"; };
 		FA5FBF8521459C5E008AEFE4 /* KategoriPosisi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KategoriPosisi.swift; sourceTree = "<group>"; };
@@ -216,6 +221,7 @@
 		FAE17C4C216CB75400BDC6A0 /* Mobile UCC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Mobile UCC.entitlements"; sourceTree = "<group>"; };
 		FAE17C4D216E2FD500BDC6A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FAE7597A2065724B00668580 /* Portofolios.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Portofolios.swift; sourceTree = "<group>"; };
+		FAF77F062177CBF600F98EFD /* TextField Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField Extension.swift"; sourceTree = "<group>"; };
 		FAF7D56920027B8D00483C08 /* AwardsAchievements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardsAchievements.swift; sourceTree = "<group>"; };
 		FAF7D56B20027BE500483C08 /* awardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = awardCell.swift; sourceTree = "<group>"; };
 		FAFD63842062A99D00C4344D /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -249,7 +255,6 @@
 				4634F8421F13C26F00CD4EA4 /* Education.swift */,
 				460742A61FB34F40000A85E1 /* PublicInformation.swift */,
 				466F33AD1FC4706F00D60FC1 /* ProfileSummary.swift */,
-				46233F1E1FC6C9E100D4F2C8 /* EditPhoto.swift */,
 				463F411C1FEA930600364E00 /* WorkExperience.swift */,
 				46CEDDD01FEBFC6400CC2897 /* LanguageSkills.swift */,
 				463187EA1FEFBEB60014F790 /* EnglishSkill.swift */,
@@ -267,6 +272,7 @@
 		462CE93D1FDBEE9D00974399 /* EDIT */ = {
 			isa = PBXGroup;
 			children = (
+				46233F1E1FC6C9E100D4F2C8 /* EditPhoto.swift */,
 				FA3366B12048EFA800697481 /* EditEducation.swift */,
 				4634F8401F13BEC300CD4EA4 /* EditProfileSummary.swift */,
 				46E1E1121F13F04200E6F79C /* EditPublicInformation.swift */,
@@ -330,6 +336,8 @@
 				4600A26D1ECC8F6E0068C58D /* About.swift */,
 				4600A26B1ECC89AE0068C58D /* Bookmark.swift */,
 				4665F2691F24764D00BCFABC /* LoginScreen.swift */,
+				FA2D065A21721F6D00FBCF2D /* ResetPassword.swift */,
+				FA2D065C21721F9400FBCF2D /* ChangePassword.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -489,6 +497,7 @@
 			isa = PBXGroup;
 			children = (
 				FA17224220600D6C00A6ECA9 /* Alert.swift */,
+				FAF77F062177CBF600F98EFD /* TextField Extension.swift */,
 			);
 			name = UIKit;
 			sourceTree = "<group>";
@@ -522,7 +531,7 @@
 		46F702DD1EC4574600C2DE86 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "LabSE Siskom";
 				TargetAttributes = {
@@ -532,6 +541,9 @@
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -575,7 +587,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		4A639FB7FBDBA77D5758EFFE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -587,6 +599,7 @@
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SidebarOverlay/SidebarOverlay.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -598,16 +611,17 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SidebarOverlay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mobile UCC/Pods-Mobile UCC-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D23310AE4A6FCDD8140E7206 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -615,14 +629,14 @@
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mobile UCC/Pods-Mobile UCC-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DF6629E2ECC53EFFF98EDC1F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -633,7 +647,7 @@
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Mobile UCC-checkManifestLockResult.txt",
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
@@ -655,9 +669,11 @@
 				46E1E10D1F13E8DD00E6F79C /* EditSkill.swift in Sources */,
 				462559DA1F35C5D800C0C9B3 /* eventCell.swift in Sources */,
 				FA83E6F7205FBF4300BF9439 /* Provinsi.swift in Sources */,
+				FA2D065D21721F9400FBCF2D /* ChangePassword.swift in Sources */,
 				FA1722452060106D00A6ECA9 /* Auth.swift in Sources */,
 				4673BD631F5D65B9000815AB /* NotificationViewController.swift in Sources */,
 				46CEDDD31FEBFD6200CC2897 /* languageCell.swift in Sources */,
+				FAF77F072177CBF600F98EFD /* TextField Extension.swift in Sources */,
 				FA68E2422063DB87002880AE /* Work.swift in Sources */,
 				FA3366B22048EFA800697481 /* EditEducation.swift in Sources */,
 				FA5FBF8421459B58008AEFE4 /* Industri.swift in Sources */,
@@ -681,6 +697,7 @@
 				46F702FF1EC4828900C2DE86 /* UpcomingEvent.swift in Sources */,
 				4636E8DF1F385C1D003C53D7 /* Vacancy.swift in Sources */,
 				FAF7D56A20027B8D00483C08 /* AwardsAchievements.swift in Sources */,
+				FA2D065B21721F6D00FBCF2D /* ResetPassword.swift in Sources */,
 				462CE93F1FDC173F00974399 /* educationCell.swift in Sources */,
 				FA5FBF8C214D4457008AEFE4 /* JobType.swift in Sources */,
 				FA68E24C20656DD4002880AE /* Course.swift in Sources */,
@@ -873,12 +890,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Mobile UCC/Mobile UCC.entitlements";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = AP245C845P;
 				INFOPLIST_FILE = "$(SRCROOT)/Mobile UCC/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "siskom.Mobile-UCC2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -898,12 +915,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Mobile UCC/Mobile UCC.entitlements";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = AP245C845P;
 				INFOPLIST_FILE = "$(SRCROOT)/Mobile UCC/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "siskom.Mobile-UCC2";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -49,6 +49,7 @@ class Skill: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "Skills"
+        self.navigationItem.title="Skills"
         ambilSkill()
     }
     

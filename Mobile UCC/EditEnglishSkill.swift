@@ -49,14 +49,11 @@ class EditEnglishSkill: BaseViewController, UITableViewDelegate, UITableViewData
     var toeicScore = "0"
     var toeicYear = "0"
     
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    var bottomConstraintConstant: CGFloat = 52.0
-    
     var activeTextField = UITextField()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Edit Kemampuan Bahasa Inggris"
+        self.title = "Edit English Skill"
         // Do any additional setup after loading the view.
         
         setTable(toeflTypeTable)
@@ -87,8 +84,6 @@ class EditEnglishSkill: BaseViewController, UITableViewDelegate, UITableViewData
         testEmptyScore(_toeicScore, passedData[5], &toeicScore)
         testEmptyYear(toeicYearBtn, passedData[6], &toeicYear)
        
-        // Listen for the keyboard
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
     }
     
     func testEmptyYear(_ button: UIButton, _ year: String, _ parameter: inout String) {
@@ -330,7 +325,7 @@ class EditEnglishSkill: BaseViewController, UITableViewDelegate, UITableViewData
     
     func doneButtonTappedForMyNumericTextField() {
         print("Done");
-        resignResponder()
+        self.view.endEditing(true)
         
         if (activeTextField == _toeflScore) {
             toeflScore = _toeflScore.text!
@@ -340,34 +335,10 @@ class EditEnglishSkill: BaseViewController, UITableViewDelegate, UITableViewData
             toeicScore = _toeicScore.text!
         }
         
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
-    }
-    
-    func keyboardWillShow(notification:NSNotification) {
-        
-        if let info = notification.userInfo {
-            
-            let rect:CGRect = info["UIKeyboardFrameEndUserInfoKey"] as! CGRect
-            
-            self.view.layoutIfNeeded()
-            
-            UIView.animate(withDuration: 0.25, animations: {
-                
-                self.bottomConstraint.constant = 263
-                self.view.layoutIfNeeded()
-                
-            })
-            
-        }
-        
     }
     
     @IBAction func saveEnglish(_ sender: Any) {
+        resignResponder()
         HUD.show(.progress)
         let url = "http://api.career.undip.ac.id/v1/jobseekers/edit_cv_part/english"
         

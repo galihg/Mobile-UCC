@@ -50,6 +50,7 @@ class Education: BaseViewController, UITableViewDataSource, UITableViewDelegate 
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
         self.title = "Education"
+        self.navigationItem.title="Education"
         downloadAllEducation()
         
     }

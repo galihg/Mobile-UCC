@@ -58,6 +58,7 @@ class MyCV: BaseViewController {
         //self.navigationController?.isNavigationBarHidden = false
         
         self.title = "My CV"
+        self.navigationItem.title="My CV"
         auth_check()
        
     }

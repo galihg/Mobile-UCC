@@ -46,7 +46,7 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
         //This is the right place to do for instance animations on your views subviews
         
         self.title = "Notification"
-       
+        downloadAllNotification()
     }
     
     override func viewDidAppear(_ animated: Bool) {

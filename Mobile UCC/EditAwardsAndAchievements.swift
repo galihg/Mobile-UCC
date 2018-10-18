@@ -25,9 +25,9 @@ class EditAwardsAndAchievements: BaseViewController, UITextFieldDelegate, UIText
     override func viewDidLoad() {
         super.viewDidLoad()
         if (passedData[0] != "-1") {
-            self.title = "Edit Awards and Achievement"
+            self.title = "Edit Award and Achievement"
         } else {
-            self.title = "Add Awards and Achievement"
+            self.title = "Add Award and Achievement"
         }
         // Do any additional setup after loading the view.
         auth_check()
@@ -81,15 +81,8 @@ class EditAwardsAndAchievements: BaseViewController, UITextFieldDelegate, UIText
         deskripsi.resignFirstResponder()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        resignResponder()
-        
-        self.view.layoutIfNeeded()
-        
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignResponder()
+        textField.resignFirstResponder()
         self.view.layoutIfNeeded()
         
         return true
@@ -98,7 +91,7 @@ class EditAwardsAndAchievements: BaseViewController, UITextFieldDelegate, UIText
     
     func doneButtonTappedForMyNumericTextField() {
         print("Done");
-        resignResponder()
+        self.view.endEditing(true)
     }
     
     @IBAction func submitAward(_ sender: Any) {

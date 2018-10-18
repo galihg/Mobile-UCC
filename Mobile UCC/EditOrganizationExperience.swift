@@ -207,15 +207,8 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
         deskripsi.resignFirstResponder()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        resignResponder()
-        
-        self.view.layoutIfNeeded()
-        
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignResponder()
+        textField.resignFirstResponder()
         self.view.layoutIfNeeded()
         
         return true
@@ -223,7 +216,7 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
     }
     
     func setConstraint() {
-        let distance = _yearEnd.frame.size.height + 8 + yearEnd.frame.size.height
+        let distance = _yearEnd.frame.size.height + 8 + yearEnd.frame.size.height + 8
         
         if (active == "1"){
             UIView.animate(withDuration: 0.25, animations: {

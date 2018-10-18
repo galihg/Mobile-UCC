@@ -35,7 +35,7 @@ class UCCNews: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         //This is the right place to do for instance animations on your views subviews
         
         self.title = "UCC News"
-        
+        self.navigationItem.title="UCC News"
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
             Auth.auth_check()

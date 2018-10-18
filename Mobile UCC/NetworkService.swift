@@ -126,29 +126,56 @@ class NetworkService {
             }
                 
         } else {
-            
-            let task = session.dataTask(with: request as URLRequest, completionHandler: {
-                (data, response, error) in
+            if (method == "POST") {
+                
+                let paramToSend = parameter
+                request.httpBody = paramToSend.data(using: String.Encoding.utf8)
+                
+                let task = session.dataTask(with: request as URLRequest, completionHandler: {
+                    (data, response, error) in
                     
-                guard let _:Data = data else { return }
+                    guard let _:Data = data else { return }
                     
-                let json:Any?
+                    let json:Any?
                     
-                do {
-                    json = try JSONSerialization.jsonObject(with: data!, options: [])
-                }
-                catch {
-                    return
-                }
+                    do {
+                        json = try JSONSerialization.jsonObject(with: data!, options: [])
+                    }
+                    catch {
+                        return
+                    }
                     
-                guard let server_response = json as? [String:Any] else { return }
+                    guard let server_response = json as? [String:Any] else { return }
                     
-                completion(server_response)
+                    completion(server_response)
                     
                 })
                 
-            task.resume()
-        
+                task.resume()
+                
+            } else {
+                let task = session.dataTask(with: request as URLRequest, completionHandler: {
+                (data, response, error) in
+                    
+                    guard let _:Data = data else { return }
+                    
+                    let json:Any?
+                    
+                    do {
+                    json = try JSONSerialization.jsonObject(with: data!, options: [])
+                    }
+                    catch {
+                        return
+                    }
+                    
+                    guard let server_response = json as? [String:Any] else { return }
+                    
+                    completion(server_response)
+                    
+                })
+                
+                task.resume()
+            }
         }
     }
 }

@@ -17,8 +17,16 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
     @IBOutlet weak var _tglLahir: UITextField!
     @IBOutlet weak var _hobi: UITextField!
     @IBOutlet weak var _email: UITextField!
-    @IBOutlet weak var _IDNumber: UITextField!
-    @IBOutlet weak var _phoneNumber: UITextField!
+    @IBOutlet weak var _IDNumber: UITextField!{
+        didSet {
+            _IDNumber.addDoneCancelToolbar(onDone: (target: self, action: #selector(doneButtonTappedForMyNumericTextField)))
+        }
+    }
+    @IBOutlet weak var _phoneNumber: UITextField!{
+        didSet {
+            _phoneNumber.addDoneCancelToolbar(onDone: (target: self, action: #selector(doneButtonTappedForMyNumericTextField)))
+        }
+    }
     @IBOutlet weak var _blog: UITextField!
     @IBOutlet weak var _ZIPCode: UITextField!{
         didSet {
@@ -64,12 +72,6 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
     
     @IBOutlet weak var additionalInformationTopConstant: NSLayoutConstraint!
     @IBOutlet weak var originAddressTopConstant: NSLayoutConstraint!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
-    let bottomConstraintConstant: CGFloat = 29.0
-    
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var scrollView: UIScrollView!
     
     var country : String!
     var province : String!
@@ -164,26 +166,22 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
         //Add toolbar to textField
         _tglLahir.inputAccessoryView = toolbar
         
-        _height.keyboardType = UIKeyboardType.decimalPad
-        _ZIPCode.keyboardType = UIKeyboardType.decimalPad
-        
-        
         getCountries()
         getProvinsi()
         getProfile()
-        
-        // Listen for the keyboard
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+
     }
     
     func set_constraint(){
         
-        let distance = 16 + currentProvinceLbl.frame.size.height + 8 + currentProvinceBtn.frame.size.height + 8 + currentCityLbl.frame.size.height
-        let distance2 = 8 + currentCityBtn.frame.size.height + 8 + ZIPCodeLbl.frame.size.height + 8 + _ZIPCode.frame.size.height
-        let distanceFinal = distance + distance2
+        let distance = 16 + currentProvinceLbl.frame.size.height + 8 + currentProvinceBtn.frame.size.height
+        let distance2 = 8 + currentCityBtn.frame.size.height + 8 + ZIPCodeLbl.frame.size.height
+        let distance3 = 8 + currentCityLbl.frame.size.height + 8 + _ZIPCode.frame.size.height
+        let distanceFinal = distance + distance2 + distance3
         
-        let distance3 = 41 + originProvinceLbl.frame.size.height + 8 + originProvinceBtn.frame.size.height + 8 + originCityLbl.frame.size.height + 8 + originCityBtn.frame.size.height
-  
+        let distance4 = 41 + originProvinceLbl.frame.size.height + 8 + originProvinceBtn.frame.size.height
+        let distance5 = 8 + originCityLbl.frame.size.height + 8 + originCityBtn.frame.size.height
+        let distanceFinal2 = distance4 + distance5
         if (country == "ID"){
             UIView.animate(withDuration: 0.25, animations: {
                 self.originAddressTopConstant.constant = distanceFinal
@@ -221,7 +219,7 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
             })
         } else {
             UIView.animate(withDuration: 0.25, animations: {
-                self.additionalInformationTopConstant.constant = distance3
+                self.additionalInformationTopConstant.constant = distanceFinal2
                 
                 self.originProvinceLbl.isHidden = false
                 self.originProvinceBtn.isHidden = false
@@ -463,10 +461,6 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
                 }
             }
         }
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         
     }
     
@@ -857,13 +851,8 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
     
     func doneButtonTappedForMyNumericTextField() {
         print("Done");
-        resignResponder()
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
+        
+        self.view.endEditing(true)
     }
     
     @IBAction func submitProfile(_ sender: Any) {
@@ -902,35 +891,9 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignResponder()
-        self.view.layoutIfNeeded()
+        textField.resignFirstResponder()
         
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
         return true
-        
-    }
-    
-    func keyboardWillShow(notification:NSNotification) {
-        
-        if let info = notification.userInfo {
-            
-            let rect:CGRect = info["UIKeyboardFrameEndUserInfoKey"] as! CGRect
-            
-            self.view.layoutIfNeeded()
-            
-            UIView.animate(withDuration: 0.25, animations: {
-                
-                self.bottomConstraint.constant = 263
-                self.view.layoutIfNeeded()
-                
-            })
-            
-        }
         
     }
     

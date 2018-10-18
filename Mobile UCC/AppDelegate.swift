@@ -14,22 +14,28 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    static var shared: AppDelegate { return UIApplication.shared.delegate as! AppDelegate }
+    //var VC: UIViewController?
+    
+    //static var shared: AppDelegate { return UIApplication.shared.delegate as! AppDelegate }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
         FirebaseApp.configure()
-        /*application.registerForRemoteNotifications()
+        application.registerForRemoteNotifications()
+        
         requestNotificationAuthorization(application: application)
+        
         if let userInfo = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] {
             NSLog("[RemoteNotification] applicationState: \(applicationStateString) didFinishLaunchingWithOptions for iOS9: \(userInfo)")
             //TODO: Handle background notification
-        }*/
+        }
         
         // Override point for customization after application launch.
         //self.window = UIWindow(frame: UIScreen.main.bounds)
-        /*let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        //var initialViewController: UIViewController
+        //let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        /*let VC = mainStoryboard.instantiateInitialViewController()
+        let loginVC = mainStoryboard.instantiateViewController(withIdentifier: "Reset Password") as! ResetPassword*/
+        /*var initialViewController: UIViewController
         //var initialViewController2: BaseViewController
         
         
@@ -56,6 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -79,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    /*var applicationStateString: String {
+    var applicationStateString: String {
         if UIApplication.shared.applicationState == .active {
             return "active"
         } else if UIApplication.shared.applicationState == .background {
@@ -89,19 +96,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult)-> Void) {
+        
+        let dict = userInfo["aps"] as! NSDictionary;
+        let message = dict["alert"];
+        
+        print("%@",message!);
+        
+    }
+    
     func requestNotificationAuthorization(application: UIApplication) {
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: {_, _ in })
+            UNUserNotificationCenter.current().requestAuthorization(options: authOptions){
+                (granted, error) in
+                print("Permission granted: \(granted)")
+                
+                guard granted else { return }
+                self.getNotificationSettings()
+            }
         } else {
             let settings: UIUserNotificationSettings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
             application.registerUserNotificationSettings(settings)
         }
-    }*/
+    }
+    
+    func getNotificationSettings() {
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            print("Notification settings: \(settings)")
+            
+            guard settings.authorizationStatus == .authorized else { return }
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+    }
 }
 
-/*@available(iOS 10, *)
+@available(iOS 10, *)
 extension AppDelegate : UNUserNotificationCenterDelegate {
     // iOS10+, called when presenting notification in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -118,9 +149,9 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         //TODO: Handle background notification
         completionHandler()
     }
-}*/
+}
 
-/*extension AppDelegate : MessagingDelegate {
+extension AppDelegate : MessagingDelegate {
     func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
         NSLog("[RemoteNotification] didRefreshRegistrationToken: \(fcmToken)")
     }
@@ -134,7 +165,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
             //TODO: Handle background notification
         }
     }
-}*/
+}
 
 
 

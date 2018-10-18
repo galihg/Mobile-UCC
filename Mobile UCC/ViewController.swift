@@ -35,7 +35,7 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
         //This is the right place to do for instance animations on your views subviews
         self.navigationController?.isNavigationBarHidden = false
         self.title = "Vacancy"
-        
+        self.navigationItem.title="Vacancy"
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
            Auth.auth_check()

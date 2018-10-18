@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import PKHUD
 class BaseViewController: UIViewController, SlideMenuDelegate {
     
     override func viewDidLoad() {
@@ -74,24 +74,31 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
             self.openViewControllerBasedOnIdentifier("My CV")
             
             break
-        
+            
         case 7:
+            print("Change Password\n", terminator: "")
+            
+            self.openViewControllerBasedOnIdentifier("Change Password")
+            
+            break
+        
+        case 8:
             print("Contact Us\n", terminator: "")
             
             self.openViewControllerBasedOnIdentifier("Contact Us")
             
             break
-        case 8:
+        case 9:
             print("About\n", terminator: "")
             
             self.openViewControllerBasedOnIdentifier("About")
             
             break
             
-        case 9:
+        case 10:
             print("Login Screen\n", terminator: "")
-            
-            let url = URL(string: "http://uat.career.undip.ac.id/restapi/auth/logout")
+            HUD.show(.progress)
+            let url = URL(string: "http://api.career.undip.ac.id/v1/auth/logout")
             let session = URLSession.shared
             
             let request = NSMutableURLRequest(url: url!)
@@ -128,6 +135,7 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
                         let preferences = UserDefaults.standard
                         preferences.removeObject(forKey: "session")
                         DispatchQueue.main.async {
+                            HUD.hide()
                             self.openViewControllerBasedOnIdentifier("Home")
                         }
                     }

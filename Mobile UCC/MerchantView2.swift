@@ -54,7 +54,7 @@ class MerchantView2: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-         self.title = "Merchant Details"
+         self.title = "Merchant Detail"
          Auth.auth_check()
     }
     @IBAction func passInfo(_ sender: Any) {

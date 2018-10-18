@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_start" translatesAutoresizingMaskIntoConstraints="NO" id="GDy-vF-2an">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="404" height="667"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_ucc_awal" translatesAutoresizingMaskIntoConstraints="NO" id="Ss7-Tt-vnl">
                                 <rect key="frame" x="122.5" y="117" width="130" height="66"/>
@@ -41,7 +40,7 @@
                             <constraint firstItem="GDy-vF-2an" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="9Dv-Zy-4ct"/>
                             <constraint firstItem="Ss7-Tt-vnl" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="97" id="BzT-Cg-jLd"/>
                             <constraint firstItem="GDy-vF-2an" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="MDv-6Z-3kL"/>
-                            <constraint firstAttribute="trailing" secondItem="GDy-vF-2an" secondAttribute="trailing" id="fcI-Yr-qcV"/>
+                            <constraint firstAttribute="trailing" secondItem="GDy-vF-2an" secondAttribute="trailing" constant="-29" id="fcI-Yr-qcV"/>
                             <constraint firstItem="Ss7-Tt-vnl" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="x8g-1g-8W0"/>
                             <constraint firstItem="Z05-xE-9r9" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="y1g-bI-esA"/>
                         </constraints>
@@ -53,7 +52,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="background_start" width="259" height="461"/>
-        <image name="logo_ucc_awal" width="130" height="66"/>
+        <image name="background_start" width="259.5" height="461"/>
+        <image name="logo_ucc_awal" width="130" height="66.5"/>
     </resources>
 </document>

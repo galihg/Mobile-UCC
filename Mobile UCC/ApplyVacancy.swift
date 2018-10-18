@@ -233,6 +233,7 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func get_province(_ sender: Any) {
         if (provinceTable.isHidden == true) {
             provinceTable.isHidden = false
+            cityTable.isHidden = true
         }
         else {
             provinceTable.isHidden = true
@@ -242,11 +243,13 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func get_city(_ sender: Any) {
         
         if (cityTable.isHidden == true) {
-            cityTable.isHidden = false
+            
+            provinceTable.isHidden = true
             print(self.id_province)
             
             if let id = self.id_province {
                 let urlString = "http://api.career.undip.ac.id/v1/location/cities/" + id
+                cityTable.isHidden = false
                 downloadAllCity(urlString)
             }
             else {

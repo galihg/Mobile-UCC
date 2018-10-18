@@ -110,15 +110,8 @@ class EditRecommendation: BaseViewController, UITextFieldDelegate, UITextViewDel
         address.resignFirstResponder()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        resignResponder()
-        
-        self.view.layoutIfNeeded()
-        
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignResponder()
+        textField.endEditing(true)
         self.view.layoutIfNeeded()
         
         return true
@@ -127,7 +120,7 @@ class EditRecommendation: BaseViewController, UITextFieldDelegate, UITextViewDel
     
     func doneButtonTappedForMyNumericTextField() {
         print("Done");
-        resignResponder()
+        self.view.endEditing(true)
     }
     
     @IBAction func submitAward(_ sender: Any) {

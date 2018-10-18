@@ -28,7 +28,6 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
     @IBOutlet weak var _graduatedMonth: UITextField!
     
     @IBOutlet weak var universityTop: NSLayoutConstraint!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var provinceLabel: UILabel!
     @IBOutlet weak var btnProvince: UIButton!
@@ -42,9 +41,6 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
     
     @IBOutlet weak var btnGraduate: UIButton!
     @IBOutlet weak var graduateTable: UITableView!
-    
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var scrollView: UIScrollView!
     
     var jenjang = ["03-SMA": "SMA/SMK Sederajat", "21-S1": "Strata I", "31-S2": "Strata II", "41-S3": "Strata III", "22-PR": "Profesi" , "11-D1": "Diploma I", "12-D2": "Diploma II", "13-D3": "Diploma III", "14-D4": "Diploma IV"]
     
@@ -75,8 +71,6 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
     //fileprivate var pickerFromCode : CDatePickerViewEx = CDatePickerViewEx.init(frame: CGRect.zero)
     
     var activeTextField = UITextField()
-    
-    var bottomConstraintConstant:CGFloat = 10.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,13 +112,8 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
         _gpaScore.text = ""
         _entryMonth.text = ""
         _graduatedMonth.text = ""
-        
-        self._gpaScore.keyboardType = UIKeyboardType.decimalPad
-        scrollView.keyboardDismissMode = .onDrag
+
         auth_chech()
-        
-        // Listen for the keyboard
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
     }
     
@@ -253,36 +242,22 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
         //dismiss date picker dialog
         self.view.endEditing(true)
         
-        resignResponder()
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
+        self.view.endEditing(true)
     }
     
     func cancelDatePicker(){
         //cancel button dismiss datepicker dialog
-        resignResponder()
-        
+
         self.view.endEditing(true)
-        
         self.view.layoutIfNeeded()
         
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
     }
     
     func setConstraint(_ id: String) {
         
-        let distance = cityLabel.frame.size.height + 8 + btnCity.frame.size.height + 8 + provinceLabel.frame.size.height + 8 + btnProvince.frame.size.height + 8 + 16
-        
+        let distance = cityLabel.frame.size.height + 8 + btnCity.frame.size.height + 8
+        let distance2 = provinceLabel.frame.size.height + 8 + btnProvince.frame.size.height + 8 + 16
+        let distanceFinal = distance + distance2
         if (id != "ID") {
             
             isIndonesia = false
@@ -307,7 +282,7 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
                 self.cityLabel.isHidden = false
                 self.btnCity.isHidden = false
                 
-                self.universityTop.constant = 8 + distance
+                self.universityTop.constant = 8 + distanceFinal
                 self.view.layoutIfNeeded()
                 
             })
@@ -869,84 +844,19 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignResponder()
-        self.view.layoutIfNeeded()
+        textField.resignFirstResponder()
         
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
         return true
-        
     }
     
-    /*override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        resignResponder()
-        
-        self.view.layoutIfNeeded()
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.contentView.layoutIfNeeded()
-            
-        })
-    }*/
-    func keyboardWillShow(notification:NSNotification) {
-        
-        if let info = notification.userInfo {
-            
-            let rect:CGRect = info["UIKeyboardFrameEndUserInfoKey"] as! CGRect
-            
-            self.view.layoutIfNeeded()
-            
-            UIView.animate(withDuration: 0.25, animations: {
-                
-                self.bottomConstraint.constant = 263
-                self.view.layoutIfNeeded()
-                
-            })
-            
-        }
-    
-    }
     
     func doneButtonTappedForMyNumericTextField() {
         print("Done");
-        _gpaScore.resignFirstResponder()
-        
+        self.view.endEditing(true)
         self.view.layoutIfNeeded()
         
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
     }
     
 }
 
-extension UITextField {
-    func addDoneCancelToolbar(onDone: (target: Any, action: Selector)? = nil, onCancel: (target: Any, action: Selector)? = nil) {
-        //let onCancel = onCancel ?? (target: self, action: #selector(cancelButtonTapped))
-        let onDone = onDone ?? (target: self, action: #selector(doneButtonTapped))
-        
-        let toolbar: UIToolbar = UIToolbar()
-        toolbar.barStyle = .default
-        toolbar.items = [
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-            UIBarButtonItem(title: "Done", style: .done, target: onDone.target, action: onDone.action)
-        ]
-        toolbar.sizeToFit()
-        
-        self.inputAccessoryView = toolbar
-    }
-    
-    // Default actions:
-    func doneButtonTapped() { self.resignFirstResponder() }
-    
-}
+

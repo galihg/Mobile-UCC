@@ -89,7 +89,7 @@ class EditCTC: BaseViewController, UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignResponder()
+        textField.resignFirstResponder()
         self.view.layoutIfNeeded()
         
         return true
@@ -104,7 +104,7 @@ class EditCTC: BaseViewController, UITextFieldDelegate {
     
     func doneButtonTappedForMyNumericTextField() {
         print("Done");
-        resignResponder()
+        self.view.endEditing(true)
     }
     
     @IBAction func certificateSet(_ sender: Any) {

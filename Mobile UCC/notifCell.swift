@@ -33,9 +33,9 @@ class notifCell: UITableViewCell {
         let status_notif = notification.status
         
         if (status_notif == true) {
-            status_label.text = "New"
-        } else {
             status_label.text = ""
+        } else {
+            status_label.text = "New"
         }
         
         if (type_label.text == "warning") {

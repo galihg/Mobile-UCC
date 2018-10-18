@@ -66,15 +66,8 @@ class EditStrengthWeakness: BaseViewController, UITextViewDelegate {
         kekurangan.resignFirstResponder()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        resignResponder()
-        
-        self.view.layoutIfNeeded()
-        
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignResponder()
+        textField.resignFirstResponder()
         self.view.layoutIfNeeded()
         
         return true

@@ -16,14 +16,11 @@ class EditSkill: BaseViewController, UITextViewDelegate {
     @IBOutlet weak var komputer: UITextView!
     @IBOutlet weak var otherSkill: UITextView!
 
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
-    var bottomConstraintConstant: CGFloat = 36.0
     var passedData = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Edit Strength and Weakness"
+        self.title = "Edit Skills"
         // Do any additional setup after loading the view.
         
         auth_check()
@@ -42,9 +39,6 @@ class EditSkill: BaseViewController, UITextViewDelegate {
         nonTeknis.layer.borderWidth = 1.0
         komputer.layer.borderWidth = 1.0
         otherSkill.layer.borderWidth = 1.0
-        
-        // Listen for the keyboard
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
     }
     
@@ -105,37 +99,11 @@ class EditSkill: BaseViewController, UITextViewDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignResponder()
+        textField.resignFirstResponder()
         self.view.layoutIfNeeded()
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            
-            self.bottomConstraint.constant = self.bottomConstraintConstant
-            self.view.layoutIfNeeded()
-            
-        })
+    
         return true
         
     }
     
-    func keyboardWillShow(notification:NSNotification) {
-        
-        if let info = notification.userInfo {
-            
-            let rect:CGRect = info["UIKeyboardFrameEndUserInfoKey"] as! CGRect
-            
-            self.view.layoutIfNeeded()
-            
-            UIView.animate(withDuration: 0.25, animations: {
-                
-                self.bottomConstraint.constant = 263
-                self.view.layoutIfNeeded()
-                
-            })
-            
-        }
-        
-    }
-    
-
 }
