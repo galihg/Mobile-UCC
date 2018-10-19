@@ -17,13 +17,8 @@ class ContactUs: BaseViewController, UITableViewDataSource, UITableViewDelegate 
     @IBOutlet weak var telpTextField: UITextField!
     @IBOutlet weak var messageTextField: UITextField!
     
-    
-    
-    
     let items = ["Info member gold / premium", "Info company member", "Info event"]
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

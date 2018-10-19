@@ -37,6 +37,10 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
         
     }
     
+    fileprivate func extractedFunc(_ controller: UIAlertController) {
+        present(controller, animated: true, completion: nil)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         // ViewControllers view ist fully loaded and could present further ViewController
         //Here you could do any other UI operations
@@ -54,7 +58,7 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
             controller.addAction(ok)
             controller.addAction(cancel)
             
-            present(controller, animated: true, completion: nil)
+            extractedFunc(controller)
         }
         
     }
