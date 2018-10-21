@@ -47,9 +47,9 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
     var tingkatan: String = ""
     var skala: String = ""
     
-    var companyScaleArray = [CompanyScale]()
-    var jobTypeArray = [JobType]()
-    var levelArray = [Level]()
+    var companyScales = [CompanyScale]()
+    var jobTypes = [JobType]()
+    var levels = [Level]()
     
     var industries = [Industri]()
     var kategoriPosisi = [KategoriPosisi]()
@@ -122,13 +122,17 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
                     
                     self.getIndustry()
                     self.getPositionCategory()
-                    self.getExpOptions()
                     
                     if (self.passedData != "-1") {
                         
                         self.getDetailExperience()
                         
                     } else {
+                        
+                        self.getJobType()
+                        self.getCompanyScale()
+                        self.getLevel()
+                        
                         DispatchQueue.main.async {
                             HUD.hide()
                         }
@@ -174,7 +178,7 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
         
     }
     
-    func getExpOptions() {
+    /*func getExpOptions() {
         
         companyScaleArray = []
         jobTypeArray = []
@@ -213,6 +217,143 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
                 }
             }
         }
+    }*/
+    
+    func getCompanyScale() {
+        companyScales = []
+        
+        let url = "http://api.career.undip.ac.id/v1/others/exp_options"
+        
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok") {
+                    let dataDictionaries = server_response["data"] as! [String:Any]
+                    
+                    let scaleDictionaries = dataDictionaries["employer_scales"] as! [String:Any]
+                    
+                    for (id,deskripsi) in scaleDictionaries {
+                        self.companyScales.append(CompanyScale(id_skala: id, deskripsi: deskripsi as! String))
+                    }
+                    
+                    if (self.passedData != "-1") {
+                        let namaSkala = self.filterExp(id: self.skala, kategori: "companyscale")
+                        
+                        DispatchQueue.main.async {
+                            self.companyScaleBtn.setTitle(namaSkala, for: [])
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        self.companyScaleTable.reloadData()
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    func getJobType() {
+        jobTypes = []
+        
+        let url = "http://api.career.undip.ac.id/v1/others/exp_options"
+        
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok") {
+                    let dataDictionaries = server_response["data"] as! [String:Any]
+
+                    let typeDictionaries = dataDictionaries["exp_types"] as! [String:Any]
+                    
+                    for (id,deskripsi) in typeDictionaries {
+                        self.jobTypes.append(JobType(id_tipe: id, deskripsi: deskripsi as! String))
+                    }
+                    
+                    if (self.passedData != "-1") {
+                        let namaTipePekerjaan = self.filterExp(id: self.type, kategori: "jobtype")
+                        
+                        DispatchQueue.main.async {
+                            self.jobTypeBtn.setTitle(namaTipePekerjaan, for: [])
+                        }
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.jobTypeTable.reloadData()
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    func getLevel() {
+        levels = []
+        
+        let url = "http://api.career.undip.ac.id/v1/others/exp_options"
+        
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String {
+                if (status == "ok") {
+                    let dataDictionaries = server_response["data"] as! [String:Any]
+
+                    let levelDictionaries = dataDictionaries["exp_levels"] as! [String:Any]
+     
+                    for (id,deskripsi) in levelDictionaries {
+                        self.levels.append(Level(id_level: id, deskripsi: deskripsi as! String))
+                    }
+                    
+                    if (self.passedData != "-1") {
+                        let namaLevel = self.filterExp(id: self.tingkatan, kategori: "level")
+                        
+                        DispatchQueue.main.async {
+                            self.levelBtn.setTitle(namaLevel, for: [])
+                        }
+                    }
+                
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                        self.levelTable.reloadData()
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    func filterExp(id: String, kategori: String) -> String {
+        var filteredName: String!
+        
+        if (kategori == "jobtype") {
+            let rawEntity = self.jobTypes
+            for entitas in rawEntity {
+                if (id == entitas.id_tipe){
+                    filteredName = entitas.deskripsi
+                    break
+                } else {
+                    filteredName = "- Choose -"
+                }
+            }
+        } else if (kategori == "companyscale") {
+            let rawEntity = self.companyScales
+            for entitas in rawEntity {
+                if (id == entitas.id_skala){
+                    filteredName = entitas.deskripsi
+                    break
+                } else {
+                    filteredName = "- Choose -"
+                }
+            }
+        } else {
+            let rawEntity = self.levels
+            for entitas in rawEntity {
+                if (id == entitas.id_level){
+                    filteredName = entitas.deskripsi
+                    break
+                } else {
+                    filteredName = "- Choose -"
+                }
+            }
+        }
+        
+        return filteredName
     }
     
     // Assign the newly active text field to your activeTextField variable
@@ -319,8 +460,8 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
                     let level = workDictionary["level"] as? String ?? ""
                     let gaji = workDictionary["gaji"] as? String ?? ""
                     let aktif = workDictionary["aktif"] as? String ?? ""
-                    let industri_deskripsi = workDictionary["industri_deskripsi"] as? String ?? ""
-                    let kategori_posisi_deskripsi = workDictionary["kategori_posisi_deskripsi"] as? String ?? ""
+                    let industri_deskripsi = workDictionary["industri_deskripsi"] as? String ?? "- Choose -"
+                    let kategori_posisi_deskripsi = workDictionary["kategori_posisi_deskripsi"] as? String ?? "- Choose -"
                     
                     self.tgl_masuk = tgl_masuk
                     self.tgl_keluar = tgl_keluar
@@ -330,7 +471,19 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
                     self.type = tipe
                     self.tingkatan = level
                     self.skala = skala
-                   
+                    
+                    if (self.skala != "") {
+                        self.getCompanyScale()
+                    }
+                    
+                    if (self.type != "") {
+                        self.getJobType()
+                    }
+                    
+                    if (self.tingkatan != "" ) {
+                        self.getLevel()
+                    }
+                    
                     if (self.active == "1") {
                         DispatchQueue.main.async {
                            self.activeBtn.setImage(UIImage(named: "checked box.png")!, for: UIControlState.normal)
@@ -401,13 +554,13 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
         if (tableView == industryTable) {
             return industries.count
         } else if (tableView == companyScaleTable) {
-            return companyScaleArray.count
+            return companyScales.count
         } else if (tableView == positionCategoryTable) {
             return kategoriPosisi.count
         } else if (tableView == jobTypeTable) {
-            return jobTypeArray.count
+            return jobTypes.count
         } else {
-            return levelArray.count
+            return levels.count
         }
     }
     
@@ -423,7 +576,7 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
             
         } else if (tableView == companyScaleTable) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "companyScaleCell", for: indexPath)
-            let companyScale = self.companyScaleArray[indexPath.row]
+            let companyScale = self.companyScales[indexPath.row]
             
             cell.textLabel?.text = companyScale.deskripsi
             cell.textLabel?.sizeToFit()
@@ -439,7 +592,7 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
             
         } else if (tableView == jobTypeTable) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "jobTypeCell", for: indexPath)
-            let jobType = self.jobTypeArray[indexPath.row]
+            let jobType = self.jobTypes[indexPath.row]
             
             cell.textLabel?.text = jobType.deskripsi
             cell.textLabel?.sizeToFit()
@@ -447,7 +600,7 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
             
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "levelCell", for: indexPath)
-            let level = self.levelArray[indexPath.row]
+            let level = self.levels[indexPath.row]
             
             cell.textLabel?.text = level.deskripsi
             cell.textLabel?.sizeToFit()
@@ -470,7 +623,7 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
             
         } else if (tableView == companyScaleTable) {
             
-            let scale = self.companyScaleArray[indexPath.row]
+            let scale = self.companyScales[indexPath.row]
             let scaleName = scale.deskripsi
             let scaleId = scale.id_skala
             let index = indexPath
@@ -490,7 +643,7 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
             
         } else if (tableView == jobTypeTable) {
             
-            let type = self.jobTypeArray[indexPath.row]
+            let type = self.jobTypes[indexPath.row]
             let typeName = type.deskripsi
             let typeId = type.id_tipe
             let index = indexPath
@@ -499,7 +652,7 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
             parsingPlace(jobTypeTable, typeName!, typeId!, jobTypeBtn, index, tipe)
             
         } else {
-            let level = self.levelArray[indexPath.row]
+            let level = self.levels[indexPath.row]
             let levelName = level.deskripsi
             let levelId = level.id_level
             let index = indexPath
@@ -545,6 +698,11 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
     
     @IBAction func setCompanyScale(_ sender: Any) {
         if (industryTable.isHidden == true) {
+            
+            if (companyScales.count == 0) {
+                getCompanyScale()
+            }
+            
             industryTable.isHidden = true
             companyScaleTable.isHidden = false
             positionCategoryTable.isHidden = true
@@ -569,6 +727,11 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
     
     @IBAction func setJobType(_ sender: Any) {
         if (industryTable.isHidden == true) {
+            
+            if (jobTypes.count == 0){
+                getJobType()
+            }
+            
             industryTable.isHidden = true
             companyScaleTable.isHidden = true
             positionCategoryTable.isHidden = true
@@ -581,6 +744,11 @@ class EditWorkExperience: BaseViewController, UITextViewDelegate, UITextFieldDel
     
     @IBAction func setLevel(_ sender: Any) {
         if (industryTable.isHidden == true) {
+            
+            if (levels.count == 0){
+                getLevel()
+            }
+            
             industryTable.isHidden = true
             companyScaleTable.isHidden = true
             positionCategoryTable.isHidden = true

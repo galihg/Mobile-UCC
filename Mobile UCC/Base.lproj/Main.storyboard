@@ -7393,14 +7393,14 @@ Telephone: (024) 769 226 40   www.career.undip.ac.id  </string>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQj-Dl-fR8">
                                                 <rect key="frame" x="16" y="124" width="343" height="30"/>
-                                                <state key="normal" title="- Choose -"/>
+                                                <state key="normal" title="- Choose Country-"/>
                                                 <connections>
                                                     <action selector="setCountry:" destination="NTq-pN-ipq" eventType="touchUpInside" id="grU-eQ-dfn"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O3h-Uh-VEp">
                                                 <rect key="frame" x="16" y="57" width="343" height="30"/>
-                                                <state key="normal" title="- Choose -"/>
+                                                <state key="normal" title="- Choose Degree-"/>
                                                 <connections>
                                                     <action selector="setDegree:" destination="NTq-pN-ipq" eventType="touchUpInside" id="DCp-iK-6qJ"/>
                                                 </connections>
@@ -7452,14 +7452,14 @@ Telephone: (024) 769 226 40   www.career.undip.ac.id  </string>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cDw-wD-1ai">
                                                 <rect key="frame" x="16" y="250" width="343" height="30"/>
-                                                <state key="normal" title="- Choose -"/>
+                                                <state key="normal" title="- Choose City-"/>
                                                 <connections>
                                                     <action selector="setCity:" destination="NTq-pN-ipq" eventType="touchUpInside" id="BMM-Vb-EK6"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SoZ-AH-j9Z">
                                                 <rect key="frame" x="16" y="187" width="343" height="30"/>
-                                                <state key="normal" title="- Choose -"/>
+                                                <state key="normal" title="- Choose Province-"/>
                                                 <connections>
                                                     <action selector="setProvince:" destination="NTq-pN-ipq" eventType="touchUpInside" id="E5h-4W-Tnc"/>
                                                 </connections>

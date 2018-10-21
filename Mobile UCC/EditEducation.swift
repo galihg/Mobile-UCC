@@ -113,7 +113,7 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
         _entryMonth.text = ""
         _graduatedMonth.text = ""
 
-        auth_chech()
+        auth_check()
         
     }
     
@@ -124,7 +124,7 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
 
     }
     
-    func auth_chech() {
+    func auth_check() {
         
         let url = "http://api.career.undip.ac.id/v1/auth/check"
         
@@ -702,6 +702,7 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
             if ( id != id_provinsi ){
                 id_provinsi = id
                 id_kota = ""
+                btnCity.setTitle("- Choose City -", for: [])
             }
         } else if (tipe == "kota") {
             id_kota = id
@@ -736,7 +737,11 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
     @IBAction func setCountry(_ sender: Any) {
         
         if (countryTable.isHidden == true) {
- 
+            
+            if (negara.count == 0){
+                getCountries()
+            }
+            
             countryTable.isHidden = false
             degreeTable.isHidden = true
             provinceTable.isHidden = true
@@ -748,6 +753,10 @@ class EditEducation: BaseViewController, UITableViewDataSource, UITableViewDeleg
     
     @IBAction func setProvince(_ sender: Any) {
         if (provinceTable.isHidden == true) {
+            
+            if (provinsi.count == 0){
+                getProvinsi()
+            }
             
             provinceTable.isHidden = false
             cityTable.isHidden = true
