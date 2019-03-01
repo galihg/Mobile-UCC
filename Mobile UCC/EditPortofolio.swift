@@ -51,9 +51,9 @@ class EditPortofolio: BaseViewController, UITextFieldDelegate, UITextViewDelegat
         toolbar.sizeToFit()
         
         //done button & cancel button
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(EditPortofolio.donedatePicker))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.done, target: self, action: #selector(EditPortofolio.cancelDatePicker))
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(EditPortofolio.donedatePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.done, target: self, action: #selector(EditPortofolio.cancelDatePicker))
         toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
         
         datePicker.datePickerMode = .date
@@ -92,6 +92,9 @@ class EditPortofolio: BaseViewController, UITextFieldDelegate, UITextViewDelegat
                         HUD.hide()
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                     
                 }
@@ -151,7 +154,7 @@ class EditPortofolio: BaseViewController, UITextFieldDelegate, UITextViewDelegat
         self.activeTextField = textField
     }
     
-    func donedatePicker(){
+    @objc func donedatePicker(){
         //For date format
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
@@ -172,7 +175,7 @@ class EditPortofolio: BaseViewController, UITextFieldDelegate, UITextViewDelegat
         
     }
     
-    func cancelDatePicker(){
+    @objc func cancelDatePicker(){
         //cancel button dismiss datepicker dialog
         self.view.endEditing(true)
         resignFirstResponder()
@@ -207,10 +210,16 @@ class EditPortofolio: BaseViewController, UITextFieldDelegate, UITextViewDelegat
             let paramFinal = paramToSend + paramToSend2 + paramToSend3
             
             NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
-                if let message = server_response["message"] as? String {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                if let status = server_response["status"] as? String {
+                    if let message = server_response["message"] as? String {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                        if (status == "ok"){
+                            Alert.showMessage(title: "SUCCESS!", msg: message)
+                        } else {
+                            Alert.showMessage(title: "WARNING!", msg: message)
+                        }
                     }
                 }
             }
@@ -224,10 +233,16 @@ class EditPortofolio: BaseViewController, UITextFieldDelegate, UITextViewDelegat
             let paramFinal = paramToSend + paramToSend2 + paramToSend3
             
             NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
-                if let message = server_response["message"] as? String {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                if let status = server_response["status"] as? String {
+                    if let message = server_response["message"] as? String {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                        if (status == "ok"){
+                            Alert.showMessage(title: "SUCCESS!", msg: message)
+                        } else {
+                            Alert.showMessage(title: "WARNING!", msg: message)
+                        }
                     }
                 }
             }

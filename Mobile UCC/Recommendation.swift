@@ -25,9 +25,9 @@ class Recommendation: BaseViewController, UITableViewDataSource, UITableViewDele
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
-        button.setImage(UIImage(named: "add"),for: UIControlState())
+        button.setImage(UIImage(named: "add"),for: UIControl.State())
         //add function for button
-        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControl.Event.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -38,7 +38,7 @@ class Recommendation: BaseViewController, UITableViewDataSource, UITableViewDele
         self.navigationItem.rightBarButtonItem = barButton
         
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -49,7 +49,7 @@ class Recommendation: BaseViewController, UITableViewDataSource, UITableViewDele
         downloadAllRecommendation()
     }
     
-    func newButtonAction(sender: UIBarButtonItem){
+    @objc func newButtonAction(sender: UIBarButtonItem){
         let recomId = "-1"
         performSegue(withIdentifier: "showEditRecommendation", sender: recomId)
     }
@@ -58,7 +58,7 @@ class Recommendation: BaseViewController, UITableViewDataSource, UITableViewDele
         
         addButton.frame = CGRect(x: 8, y: 86, width: 300, height: 63)
         //addButton.setImage(UIImage(named: "add2"),for: UIControlState())
-        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControlState())
+        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControl.State())
         addButton.addTarget(self, action: #selector(addRecommendation), for: .touchUpInside)
         addButton.setTitle("         ADD RECOMMENDATIONS", for: [])
         addButton.titleLabel!.font = UIFont(name: "Helvetica Neue", size: 17)
@@ -153,7 +153,7 @@ class Recommendation: BaseViewController, UITableViewDataSource, UITableViewDele
         return cell
     }
     
-    func addRecommendation(_ button: UIButton) {
+    @objc func addRecommendation(_ button: UIButton) {
         let recomId = "-1"
         performSegue(withIdentifier: "showEditRecommendation", sender: recomId)
     }
@@ -194,6 +194,9 @@ class Recommendation: BaseViewController, UITableViewDataSource, UITableViewDele
                 } else if (status == "error"){
                     let message = server_response["message"] as? String
                     Alert.showMessage(title: "WARNING!", msg: message!)
+                    NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                    NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                    NotificationCenter.default.post(name: .reload, object: nil)
                 }
             }
         }

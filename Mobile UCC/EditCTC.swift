@@ -36,9 +36,9 @@ class EditCTC: BaseViewController, UITextFieldDelegate {
             certificate = passedData[3]
             
             if (certificate == "1") {
-                certificateBtn.setImage(UIImage(named: "checked box.png")!, for: UIControlState.normal)
+                certificateBtn.setImage(UIImage(named: "checked box.png")!, for: UIControl.State.normal)
             } else {
-                certificateBtn.setImage(UIImage(named: "unchecked box.png")!, for: UIControlState.normal)
+                certificateBtn.setImage(UIImage(named: "unchecked box.png")!, for: UIControl.State.normal)
             }
         }
 
@@ -74,6 +74,9 @@ class EditCTC: BaseViewController, UITextFieldDelegate {
                         HUD.hide()
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                     
                 }
@@ -102,7 +105,7 @@ class EditCTC: BaseViewController, UITextFieldDelegate {
         _organizer.resignFirstResponder()
     }
     
-    func doneButtonTappedForMyNumericTextField() {
+    @objc func doneButtonTappedForMyNumericTextField() {
         print("Done");
         self.view.endEditing(true)
     }
@@ -110,11 +113,11 @@ class EditCTC: BaseViewController, UITextFieldDelegate {
     @IBAction func certificateSet(_ sender: Any) {
         if (certificate == "0") {
             certificate = "1"
-            certificateBtn.setImage(UIImage(named: "checked box.png")!, for: UIControlState.normal)
+            certificateBtn.setImage(UIImage(named: "checked box.png")!, for: UIControl.State.normal)
         }
         else if (certificate == "1"){
             certificate = "0"
-            certificateBtn.setImage(UIImage(named: "unchecked box.png")!, for: UIControlState.normal)
+            certificateBtn.setImage(UIImage(named: "unchecked box.png")!, for: UIControl.State.normal)
         }
     }
     
@@ -148,10 +151,16 @@ class EditCTC: BaseViewController, UITextFieldDelegate {
             let paramFinal = paramToSend + paramToSend2
             
             NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
-                if let message = server_response["message"] as? String {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                if let status = server_response["status"] as? String {
+                    if let message = server_response["message"] as? String {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                        if (status == "ok"){
+                            Alert.showMessage(title: "SUCCESS!", msg: message)
+                        } else {
+                            Alert.showMessage(title: "WARNING!", msg: message)
+                        }
                     }
                 }
             }

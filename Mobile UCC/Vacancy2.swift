@@ -31,7 +31,7 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         networkService.downloadImage({ (imageData) in
             let image = UIImage(data: imageData as Data)
             DispatchQueue.main.async(execute: {
-                self.imgPerusahaan.setImage(image, for: UIControlState())
+                self.imgPerusahaan.setImage(image, for: UIControl.State())
             })
         })
         
@@ -42,11 +42,14 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         
         //Bagian tabel
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
     
         downloadAllDetailVacancy()
+        
+        imgPerusahaan.contentMode = .center
+        imgPerusahaan.imageView?.contentMode = .scaleAspectFit
         
     }
     
@@ -151,9 +154,7 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     @IBAction func getPerusahaan(_ sender: Any) {
-       
         ambilPerusahaan()
-        
     }
 
     func ambilPerusahaan () {

@@ -11,7 +11,6 @@ import PKHUD
 
 class MyCV: BaseViewController {
 
-    
     @IBOutlet weak var profPic: UIButton!
     @IBOutlet weak var profileName: UILabel!
     @IBOutlet weak var emailProfile: UILabel!
@@ -23,44 +22,65 @@ class MyCV: BaseViewController {
 
         // Do any additional setup after loading the view.
         self.addSlideMenuButton()
- 
-        let defaults = UserDefaults.standard
-        if let preference_block = defaults.object(forKey: "session") {
-            var preferences = preference_block as! [Any]
-        
-            profileName.text = (preferences[2] as! String)
-            emailProfile.text = (preferences[3] as! String)
-        
-            let status = (preferences[5] as! Bool)
-            if (status == true) {
-                statusEmail.text = "(Verified)"
-            }
-            else {
-                statusEmail.text = "(Unverified)"
-            }
-        
-            let urlPicRaw = (preferences[4] as! String)
-            let urlPic = URL (string: urlPicRaw)
-            let networkService = NetworkService(url: urlPic!)
-            networkService.downloadImage({ (imageData) in
-                let image = UIImage(data: imageData as Data)
-                DispatchQueue.main.async(execute: {
-                    self.profPic.setImage(image, for: UIControlState())
-                })
-            })
-        }
+        profPic.contentMode = .center
+        profPic.imageView?.contentMode = .scaleAspectFit
 
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
-        //self.navigationController?.isNavigationBarHidden = false
-        
+
         self.title = "My CV"
         self.navigationItem.title="My CV"
+        
         auth_check()
+        getPhoto()
+        
+        let defaults = UserDefaults.standard
+        if let preference_block = defaults.object(forKey: "session") {
+            var preferences = preference_block as! [Any]
+            
+            profileName.text = (preferences[0] as! String)
+            emailProfile.text = (preferences[1] as! String)
+            
+            let status = (preferences[3] as! Bool)
+            if (status == true) {
+                statusEmail.text = "(Verified)"
+            }
+            else {
+                statusEmail.text = "(Unverified)"
+            }
+        }
+        
+        
        
+    }
+    
+    func getPhoto() {
+        HUD.show(.progress)
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/cv"
+        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
+            if let status = server_response["status"] as? String
+            {
+                if (status == "ok"){
+                    let cvDictionaries = server_response["data"] as! [String:Any]
+                    let photoDictionaries = cvDictionaries["profile_photo"] as! [String:Any]
+                    let imageOri = photoDictionaries["original"] as! String
+                    
+                    let urlPic = URL (string: imageOri)
+                    let networkService = NetworkService(url: urlPic!)
+                    networkService.downloadImage({ (imageData) in
+                        let image = UIImage(data: imageData as Data)
+                        DispatchQueue.main.async(execute: {
+                            HUD.hide()
+                            self.profPic.setImage(image, for: UIControl.State())
+                        })
+                    })
+                    
+                }
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -72,14 +92,7 @@ class MyCV: BaseViewController {
         }
         else
         {
-            let controller = UIAlertController(title: "No Internet Detected", message: "This app requires an Internet connection", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            
-            controller.addAction(ok)
-            controller.addAction(cancel)
-            
-            present(controller, animated: true, completion: nil)
+            Alert.showMessage(title: "No Internet Detected", msg: "This app requires an Internet connection")
         }
         
     }
@@ -106,6 +119,9 @@ class MyCV: BaseViewController {
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                     
                 }
@@ -116,12 +132,8 @@ class MyCV: BaseViewController {
     }
     
     @IBAction func editPhoto(_ sender: Any) {
-        let defaults = UserDefaults.standard
-        let preference_block = defaults.object(forKey: "session")
-        var preferences = preference_block as! [Any]
         
-        let urlPic = (preferences[4] as! String)
-        performSegue(withIdentifier: "showEditPhoto", sender: urlPic)
+        performSegue(withIdentifier: "showEditPhoto", sender: profPic.image(for: []))
     
     }
     
@@ -183,7 +195,7 @@ class MyCV: BaseViewController {
         if segue.identifier == "showEditPhoto" {
             
             let PhotoVC = segue.destination as! EditPhoto
-            let pass = sender as! String
+            let pass = sender as! UIImage
             PhotoVC.passedData = pass
             navigationItem.title = nil
             

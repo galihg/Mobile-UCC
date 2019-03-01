@@ -28,4 +28,5 @@ public class Reachability {
         let needsConnection = flags == .connectionRequired
         return isReachable && !needsConnection
     }
+
 }

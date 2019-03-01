@@ -30,12 +30,12 @@ class Vacancy3: BaseViewController {
     @IBOutlet weak var syaratKhusus: UITextView!
     @IBOutlet weak var informasi: UITextView!
     
-    
+
     var passedData : [Any] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Do any additional setup after loading the view.
         
         jobName.text = (passedData[0] as! String)
@@ -103,8 +103,8 @@ class Vacancy3: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
-        self.title = "Detail Vacancy"
-        self.navigationItem.title="Detail Vacancy"
+        self.title = "Vacancy Detail"
+        self.navigationItem.title="Vacancy Detail"
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
             Auth.auth_check()
@@ -137,11 +137,12 @@ class Vacancy3: BaseViewController {
                     }
                 }
             }
-            
         }  else {
-                performSegue(withIdentifier: "login", sender: self)
+                let loginVC = storyboard?.instantiateViewController(withIdentifier: "Login Screen") as! LoginScreen
+                present(loginVC, animated: true, completion: nil)
+                //performSegue(withIdentifier: "login", sender: self)
                 Alert.showMessage(title: "WARNING!", msg: "Anda harus login terlebih dahulu")
-            
+ 
                 print("reference not found")
         }
     }

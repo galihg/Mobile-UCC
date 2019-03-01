@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Notification
+class Notifikasi
 {
     var id_notif: Int?
     var type_notif: String?

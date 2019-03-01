@@ -19,11 +19,9 @@ class vacancy2Cell: UITableViewCell {
     @IBOutlet weak var tipeLowongan: UILabel!
     @IBOutlet weak var tempatKerja: UILabel!
     @IBOutlet weak var detailPass: UIButton!
-   
+    @IBOutlet weak var daysLeft: UILabel!
     
     
-    
-
     var detailVacancy: DetailVacancy! {
         didSet {
             self.updateUI()
@@ -34,31 +32,32 @@ class vacancy2Cell: UITableViewCell {
     {
         namaLowongan.text = detailVacancy.vacancy_name
         totalApplicants.text = "\(detailVacancy.total_applicants ?? 1)"
-        due_date.text = "\(detailVacancy.remaining_days ?? 1)"
         posisiPekerjaan.text = detailVacancy.job_position
         pendidikanMinimal.text = detailVacancy.min_education
         tipeLowongan.text = detailVacancy.type_vacancy
         
-        
-        let batas_waktu = detailVacancy.deadline
-        
-        if (batas_waktu != "nil") {
-            deadline.text = batas_waktu
+        if let remainingDays = detailVacancy.remaining_days {
+            if (remainingDays == 0){
+                due_date.text = "Closed"
+                daysLeft.text = ""
+            } else {
+                due_date.text = "\(remainingDays)"
+            }
+        } else {
+            due_date.text = "-"
         }
-        else {
-            deadline.text = "(tidak ada deadline)"
+        
+        if let batas_waktu = detailVacancy.deadline {
+             deadline.text = batas_waktu
+        } else {
+             deadline.text = "(tidak ada deadline)"
         }
         
-        let tempat_penugasan = detailVacancy.assignment
-        
-        if (batas_waktu != "nil") {
+        if let tempat_penugasan = detailVacancy.assignment {
             tempatKerja.text = tempat_penugasan
-        }
-        else {
+        } else {
             tempatKerja.text = "(tidak ada keterangan)"
         }
-        
-
     }
     
     // takes time to download stuff from the Internet

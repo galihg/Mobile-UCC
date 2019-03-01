@@ -10,12 +10,18 @@ import UIKit
 
 class About: BaseViewController {
 
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.addSlideMenuButton()
         self.title = "About"
+        
+        if (defaults.object(forKey: "session") != nil ) {
+            Auth.auth_check()
+        }
     }
 
     override func didReceiveMemoryWarning() {

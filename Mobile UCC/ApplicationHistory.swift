@@ -23,7 +23,7 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
         self.addSlideMenuButton()
         
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -51,22 +51,30 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
         }
         else
         {
-            let controller = UIAlertController(title: "No Internet Detected", message: "This app requires an Internet connection", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            Alert.showMessage(title: "No Internet Detected", msg: "This app requires an Internet connection")
             
-            controller.addAction(ok)
-            controller.addAction(cancel)
-            
-            extractedFunc(controller)
+            HUD.hide()
         }
+    }
+    
+    func emptyView(_ state: Bool) {
+        let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.size.width, height: self.tableView.bounds.size.height))
+        noDataLabel.text          = "Tidak ada riwayat lamaran"
+        noDataLabel.textColor     = UIColor.black
+        noDataLabel.textAlignment = .center
         
+        if state == true {
+            self.tableView.backgroundView  = noDataLabel
+            self.tableView.separatorStyle  = .none
+        } else {
+            self.tableView.backgroundView?.isHidden = true
+            self.tableView.separatorStyle  = .singleLine
+        }
     }
     
     func downloadAllHistory () {
         HUD.show(.progress)
-        history = []
-        
+
         let url = "http://api.career.undip.ac.id/v1/applications/list"
   
         NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
@@ -92,14 +100,12 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
 
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
-                        if (self.history.count == 0){
-                            let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: self.self.tableView.bounds.size.width, height: self.tableView.bounds.size.height))
-                            noDataLabel.text          = "Tidak ada riwayat lamaran"
-                            noDataLabel.textColor     = UIColor.black
-                            noDataLabel.textAlignment = .center
-                            self.tableView.backgroundView  = noDataLabel
-                            self.tableView.separatorStyle  = .none
-                        }
+                        /*if (self.history.count == 0){
+                            self.emptyView(true)
+                        } else {
+                            self.emptyView(false)
+                        }*/
+                        
                         HUD.hide()
                     }
                 } else if (status == "invalid-session"){
@@ -110,6 +116,9 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                 }
             }
@@ -127,7 +136,13 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return history.count
+        if (history.count == 0) {
+            emptyView(true)
+            return 0
+        } else {
+            emptyView(false)
+            return history.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
@@ -166,7 +181,6 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
                     DispatchQueue.main.async {
                         self.history.remove(at: row.row)
                         self.tableView.deleteRows(at: [row], with: .fade)
-                        self.downloadAllHistory()
                     }
                 } else if (status == "error") {
                     let message = server_response["message"] as? String

@@ -25,9 +25,9 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
-        button.setImage(UIImage(named: "add"),for: UIControlState())
+        button.setImage(UIImage(named: "add"),for: UIControl.State())
         //add function for button
-        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControl.Event.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -39,7 +39,7 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
         
         
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -50,7 +50,7 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
         downloadAllExperience()
     }
     
-    func newButtonAction(sender: UIBarButtonItem){
+    @objc func newButtonAction(sender: UIBarButtonItem){
         let workId = "-1"
         getForm(workId)
     }
@@ -59,7 +59,7 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
         
         addButton.frame = CGRect(x: 8, y: 86, width: 300, height: 63)
         //addButton.setImage(UIImage(named: "add2"),for: UIControlState())
-        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControlState())
+        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControl.State())
         addButton.addTarget(self, action: #selector(addWork), for: .touchUpInside)
         addButton.setTitle("         ADD WORK EXPERIENCE", for: [])
         self.view.addSubview(addButton)
@@ -109,6 +109,9 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                 }
             }
@@ -152,7 +155,7 @@ class WorkExperience: BaseViewController, UITableViewDataSource, UITableViewDele
         return cell
     }
     
-    func addWork(_ button: UIButton) {
+    @objc func addWork(_ button: UIButton) {
         let workId = "-1"
         getForm(workId)
     }

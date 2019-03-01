@@ -11,8 +11,8 @@ import Foundation
 class Alert: UIViewController {
     
     static func showMessage(title: String, msg: String) {
-        let alert = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
     }
 }

@@ -32,9 +32,9 @@ class EnglishSkill: BaseViewController {
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
-        button.setImage(UIImage(named: "edit"),for: UIControlState())
+        button.setImage(UIImage(named: "edit"),for: UIControl.State())
         //add function for button
-        button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControl.Event.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -100,13 +100,16 @@ class EnglishSkill: BaseViewController {
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                 }
             }
         }
     }
     
-    func editButtonAction(sender: UIBarButtonItem){
+    @objc func editButtonAction(sender: UIBarButtonItem){
         let passedArray = [toeflType.text!, toeflScore.text!, toeflYear.text!, ieltsScore.text!, ieltsYear.text!, toeicScore.text!, toeicYear.text!] as [String]
         performSegue(withIdentifier: "showEditEnglish", sender: passedArray)
     }
@@ -114,7 +117,7 @@ class EnglishSkill: BaseViewController {
     private func setEditButton() {
         
         editButton.frame = CGRect(x: 8, y: 86, width: 300, height: 63)
-        editButton.setBackgroundImage(UIImage(named: "edit2"), for: UIControlState())
+        editButton.setBackgroundImage(UIImage(named: "edit2"), for: UIControl.State())
         editButton.addTarget(self, action: #selector(editEnglish), for: .touchUpInside)
         editButton.setTitle("         EDIT ENGLISH SKILL", for: [])
         self.view.addSubview(editButton)
@@ -124,7 +127,7 @@ class EnglishSkill: BaseViewController {
         editButton.isHidden = true
     }
     
-    func editEnglish(_ button: UIButton) {
+    @objc func editEnglish(_ button: UIButton) {
         print("Button pressed 👍")
     }
     

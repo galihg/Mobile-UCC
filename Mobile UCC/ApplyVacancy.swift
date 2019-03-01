@@ -11,13 +11,11 @@ import PKHUD
 
 class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     
-    
     @IBOutlet weak var provinceTable: UITableView!
     @IBOutlet weak var cityTable: UITableView!
     @IBOutlet weak var btn_provinsi: UIButton!
     @IBOutlet weak var btn_city: UIButton!
     @IBOutlet weak var checkbox: UIButton!
-    
     
     var checked : Bool!
     var id_province : String!
@@ -31,24 +29,22 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "session") != nil ) {
+            Auth.auth_check()
+        }
+        
+        provinsi = Provinsi.downloadAllProvince()
         checked = false
-        provinceTable.isHidden = true
-        cityTable.isHidden = true
-        
+
         //bagian tabel
-        provinceTable.estimatedRowHeight = provinceTable.rowHeight
-        provinceTable.rowHeight = UITableViewAutomaticDimension
-        provinceTable.dataSource = self
-        provinceTable.delegate = self
+        setTable(provinceTable)
+        setTable(cityTable)
         
-        cityTable.estimatedRowHeight = provinceTable.rowHeight
-        cityTable.rowHeight = UITableViewAutomaticDimension
-        cityTable.dataSource = self
-        cityTable.delegate = self
-        
-        downloadAllProvince()
         auth_check()
-    
+        //downloadAllProvince()
+        provinceTable.reloadData()
+      
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,6 +75,14 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
+    func setTable(_ table:UITableView) {
+        table.estimatedRowHeight = table.rowHeight
+        table.rowHeight = UITableView.automaticDimension
+        table.dataSource = self
+        table.delegate = self
+        table.isHidden = true
+    }
+    
     func auth_check() {
         
         let url = "http://api.career.undip.ac.id/v1/auth/check"
@@ -101,6 +105,10 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                     
                 }
@@ -110,40 +118,6 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
         
     }
 
-    func downloadAllProvince () {
-        
-        provinsi = []
-        
-        let url = "http://api.career.undip.ac.id/v1/location/provinces/"
-     
-        NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
-            
-            if let status = server_response["status"] as? String {
-                
-                if (status == "ok") {
-                    let provinceDictionaries = server_response["data"] as! NSArray
-                    
-                    for provinceDictionary in provinceDictionaries {
-                        let eachProvince = provinceDictionary as! [String:Any]
-                        
-                        let id_provinsi = eachProvince["id"] as? String
-                        let nama_provinsi = eachProvince["name"] as? String
-                        
-                        self.provinsi.append(Provinsi(id_provinsi: id_provinsi!, nama_provinsi: nama_provinsi!))
-                    }
-            
-                    DispatchQueue.main.async (
-                        execute:self.provinceTable.reloadData
-                    )
-                    
-                }
-            }
-            
-        }
-            
-   
-    }
-    
     func downloadAllCity (_ url:String) {
         
         kota = []
@@ -189,7 +163,7 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
         if (tableView == provinceTable) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "provinceCell", for: indexPath)
             let provinsi = self.provinsi[indexPath.row]
-        
+            
             cell.textLabel?.text = provinsi.nama_provinsi
             cell.textLabel?.sizeToFit()
             return cell
@@ -201,7 +175,6 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
             cell.textLabel?.text = kota.nama_kota
             cell.textLabel?.sizeToFit()
             return cell
-            
         }
         
     }
@@ -265,11 +238,11 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func checked_btn(_ sender: Any) {
         if (checked == false) {
             self.checked = true
-            checkbox.setImage(UIImage(named: "checked box.png")!, for: UIControlState.normal)
+            checkbox.setImage(UIImage(named: "checked box.png")!, for: UIControl.State.normal)
         }
         else if (checked == true){
             self.checked = false
-            checkbox.setImage(UIImage(named: "unchecked box.png")!, for: UIControlState.normal)
+            checkbox.setImage(UIImage(named: "unchecked box.png")!, for: UIControl.State.normal)
         }
         
     }
@@ -303,10 +276,16 @@ class ApplyVacancy: BaseViewController, UITableViewDataSource, UITableViewDelega
         let paramToSend = "offer_id=" + id1 + "&current_province=" + id2 + "&current_city=" + id3 + "&statement=" + stat
         
         NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
-            if let message = server_response["message"] as? String {
-                Alert.showMessage(title: "WARNING!", msg: message)
-                DispatchQueue.main.async {
-                    HUD.hide()
+            if let status = server_response["status"] as? String {
+                if let message = server_response["message"] as? String {
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                    if (status == "ok"){
+                        Alert.showMessage(title: "SUCCESS!", msg: message)
+                    } else {
+                        Alert.showMessage(title: "WARNING!", msg: message)
+                    }
                 }
             }
         }

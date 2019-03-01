@@ -13,7 +13,7 @@ class DetailEvent: BaseViewController {
     @IBOutlet weak var eventName: UILabel!
     @IBOutlet weak var eventBanner: UIImageView!
     @IBOutlet weak var eventDate: UILabel!
-    @IBOutlet weak var eventLocation: UILabel!
+    @IBOutlet weak var eventLocation: UITextView!
     @IBOutlet weak var eventContent: UITextView!
     
     var passedData : [Any] = []
@@ -60,7 +60,7 @@ class DetailEvent: BaseViewController {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
         
-        self.title = "Detail Event"
+        self.title = "Event Detail"
         
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
@@ -77,30 +77,12 @@ class DetailEvent: BaseViewController {
         }
         else
         {
-            let controller = UIAlertController(title: "No Internet Detected", message: "This app requires an Internet connection", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            Alert.showMessage(title: "No Internet Detected", msg: "This app requires an Internet connection")
             
-            controller.addAction(ok)
-            controller.addAction(cancel)
-            
-            present(controller, animated: true, completion: nil)
+            //HUD.hide()
         }
         
     }
     
 }
 
-extension String {
-    var htmlAttributedString: NSAttributedString? {
-        do {
-            return try NSAttributedString(data: Data(utf8), options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue], documentAttributes: nil)
-        } catch {
-            print("error:", error)
-            return nil
-        }
-    }
-    var htmlString: String {
-        return htmlAttributedString?.string ?? ""
-    }
-}

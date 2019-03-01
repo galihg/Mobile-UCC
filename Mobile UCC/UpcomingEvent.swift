@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -19,28 +20,26 @@ class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDeleg
         
         // Do any additional setup after loading the view.
         
-        events = Events.downloadAllEvents()
-        
         self.addSlideMenuButton()
        
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.reloadData()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
         
-         self.title = "Upcoming Event"
+        self.title = "Upcoming Event"
         
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
             Auth.auth_check()
         }
+        
+        downloadAllEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,20 +51,47 @@ class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDeleg
         }
         else
         {
-            let controller = UIAlertController(title: "No Internet Detected", message: "This app requires an Internet connection", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            Alert.showMessage(title: "No Internet Detected", msg: "This app requires an Internet connection")
             
-            controller.addAction(ok)
-            controller.addAction(cancel)
-            
-            present(controller, animated: true, completion: nil)
+            HUD.hide()
         }
         
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .lightContent
+    func downloadAllEvents() {
+        HUD.show(.progress)
+        
+        let urlString = "http://api.career.undip.ac.id/v1/event/list"
+        
+        NetworkService.parseJSONFromURL(urlString, "GET", parameter: ""){ (server_response) in
+            
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let eventsDictionaries = server_response["data"] as! [[String:Any]]
+                    
+                    for eventsDictionay in eventsDictionaries {
+                        let eachEvent = eventsDictionay
+                        let name = eachEvent["event_name"] as! String
+                        let desc = eachEvent["event_desc"] as! String
+                        let desc_full = eachEvent["html_desc"] as! String
+                        let location = eachEvent["label_location"] as! String
+                        let desc_location = eachEvent["desc_location"] as! String
+                        let tgl_event = eachEvent["date_start"] as! String
+                        
+                        // image URL
+                        let small_banner = eachEvent["smallbanner_url"] as? String ?? "nil"
+                        let banner =  eachEvent["banner_url"] as? String ?? "nil"
+                        
+                        self.events.append(Events(name: name, desc: desc, desc_full: desc_full, small_banner: small_banner, banner: banner, location: location, desc_location: desc_location, tgl_event: tgl_event))
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        HUD.hide()
+                    }
+                }
+            }
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -75,10 +101,12 @@ class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
+        let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+        
         if events.count > 0 {
+            noDataLabel.isHidden = true
             return events.count
         } else {
-            let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noDataLabel.text          = "Tidak ada Event"
             noDataLabel.textColor     = UIColor.black
             noDataLabel.textAlignment = .center

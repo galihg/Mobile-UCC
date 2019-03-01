@@ -21,15 +21,12 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
         self.addSlideMenuButton()
 
         // Do any additional setup after loading the view.
-        
-        merchant = Merchant.downloadAllMerchant()
 
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.reloadData()
-        
+        //tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,12 +34,13 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
         //This is the right place to do for instance animations on your views subviews
         
         self.title = "Merchant"
-        
+        self.navigationItem.title = "Merchant"
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
             Auth.auth_check()
         }
         
+        downloadAllMerchants()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,20 +52,50 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
         }
         else
         {
-            let controller = UIAlertController(title: "No Internet Detected", message: "This app requires an Internet connection", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            Alert.showMessage(title: "No Internet Detected", msg: "This app requires an Internet connection")
             
-            controller.addAction(ok)
-            controller.addAction(cancel)
-            
-            present(controller, animated: true, completion: nil)
+            HUD.hide()
         }
         
     }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .lightContent
+ 
+    func downloadAllMerchants() {
+        HUD.show(.progress)
+        
+        let urlString = "http://api.career.undip.ac.id/v1/merchant/list"
+        
+        NetworkService.parseJSONFromURL(urlString, "GET", parameter: ""){ (server_response) in
+            
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let merchantDictionaries = server_response["data"] as! [[String:Any]]
+                    
+                    for merchantDictionary in merchantDictionaries {
+                        let eachMerchant = merchantDictionary
+                        let valid = eachMerchant["date_expired"] as? String ?? ""
+                        let id_merchant = eachMerchant["id_merchant"] as! String
+                        let name = eachMerchant["name"] as! String
+                        let address = eachMerchant["address"] as? String ?? ""
+                        let desc = eachMerchant["promo_desc"] as? String ?? ""
+                        let joined = eachMerchant["date_registered"] as? String ?? ""
+                        let contact = eachMerchant["contact"] as? String ?? ""
+                        let email = eachMerchant["email"] as? String ?? ""
+                        let web = eachMerchant["website"] as? String ?? ""
+                        
+                        // image URL
+                        let banner = URL(string: eachMerchant["banner_img_url"] as! String)
+                        let logo = URL(string: eachMerchant["logo_url"] as! String)
+                        
+                        self.merchant.append(Merchant(banner: banner!, valid: valid, id_merchant: id_merchant, logo: logo!, name: name, address: address, desc: desc, joined: joined, contact: contact, email: email, web: web))
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        HUD.hide()
+                    }
+                } 
+            }
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -105,7 +133,6 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func buttonPass(_ sender: Any) {
         let data = merchant[(sender as AnyObject).tag]
         
-        let merchantId = data.id_merchant
         let merchantName = data.name
         let merchantAddress = data.address
         let merchantLogo = data.logo

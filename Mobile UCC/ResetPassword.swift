@@ -28,6 +28,10 @@ class ResetPassword: UIViewController, UITextFieldDelegate {
 
     }
     
+    @IBAction func dismiss(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func resetPassword(_ sender: Any) {
         HUD.show(.progress)
         _email.resignFirstResponder()
@@ -36,11 +40,16 @@ class ResetPassword: UIViewController, UITextFieldDelegate {
         let paramToSend = "auth_uname=" + _email.text!
         
         NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
-            if let message = server_response["message"] as? String {
-                Alert.showMessage(title: "WARNING!", msg: message)
-                
-                DispatchQueue.main.async {
-                    HUD.hide()
+            if let status = server_response["status"] as? String {
+                if let message = server_response["message"] as? String {
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                    if (status == "ok"){
+                        Alert.showMessage(title: "SUCCESS!", msg: message)
+                    } else {
+                        Alert.showMessage(title: "WARNING!", msg: message)
+                    }
                 }
             }
         }

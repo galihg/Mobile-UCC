@@ -76,7 +76,10 @@
 		FA1722452060106D00A6ECA9 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1722442060106D00A6ECA9 /* Auth.swift */; };
 		FA1C4D05200C88DE00A88A04 /* CTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4D04200C88DE00A88A04 /* CTC.swift */; };
 		FA1C4D07200C8ADB00A88A04 /* CTCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4D06200C8ADB00A88A04 /* CTCCell.swift */; };
+		FA1D067821B549DF0085F41C /* ExtenNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1D067721B549DF0085F41C /* ExtenNotif.swift */; };
 		FA2282AB2011952D007C0642 /* DLRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2282A92011952D007C0642 /* DLRadioButton.m */; };
+		FA2778D921AA702A00143D2F /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2778D821AA702A00143D2F /* ContainerViewController.swift */; };
+		FA28C60721BD406F00149BE0 /* Mobile_UCCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA28C60621BD406F00149BE0 /* Mobile_UCCTests.swift */; };
 		FA2D065B21721F6D00FBCF2D /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2D065A21721F6D00FBCF2D /* ResetPassword.swift */; };
 		FA2D065D21721F9400FBCF2D /* ChangePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2D065C21721F9400FBCF2D /* ChangePassword.swift */; };
 		FA3366B22048EFA800697481 /* EditEducation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3366B12048EFA800697481 /* EditEducation.swift */; };
@@ -96,11 +99,14 @@
 		FA83E6F5205FAF7900BF9439 /* DetailVacancy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83E6F4205FAF7900BF9439 /* DetailVacancy.swift */; };
 		FA83E6F7205FBF4300BF9439 /* Provinsi.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83E6F6205FBF4300BF9439 /* Provinsi.swift */; };
 		FA83E6F9205FBF5100BF9439 /* Kota.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83E6F8205FBF5100BF9439 /* Kota.swift */; };
+		FA8F1C5D21AD4DA600A9A2D9 /* CoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8F1C5C21AD4DA600A9A2D9 /* CoverViewController.swift */; };
 		FAA07585208789FC00F4F199 /* CDatePickerViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA07584208789FC00F4F199 /* CDatePickerViewEx.m */; };
 		FAA0758720878E0100F4F199 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA0758620878E0000F4F199 /* DatePickerView.swift */; };
 		FAB4014F200E07A100B78D04 /* portofolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4014E200E07A100B78D04 /* portofolioCell.swift */; };
 		FAB40151200E095D00B78D04 /* Portofolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB40150200E095D00B78D04 /* Portofolio.swift */; };
 		FACAAA38205A7969008E35E5 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACAAA37205A7969008E35E5 /* NetworkService.swift */; };
+		FAD0295F2192A36900F14C66 /* RefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD0295E2192A36900F14C66 /* RefreshControl.swift */; };
+		FAD02961219340C800F14C66 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD02960219340C800F14C66 /* String.swift */; };
 		FAD30F4720036B5D00ED501B /* Recommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD30F4620036B5D00ED501B /* Recommendation.swift */; };
 		FAD30F4920036BB700ED501B /* recommendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD30F4820036BB700ED501B /* recommendCell.swift */; };
 		FAD93C852065F845000110C9 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD93C842065F845000110C9 /* History.swift */; };
@@ -112,6 +118,16 @@
 		FAFD63852062A99D00C4344D /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD63842062A99D00C4344D /* Notification.swift */; };
 		FAFE58752057F63A002509AE /* Negara.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFE58742057F63A002509AE /* Negara.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FA28C60921BD406F00149BE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46F702DD1EC4574600C2DE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46F702E41EC4574600C2DE86;
+			remoteInfo = "Mobile UCC";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0282A399721F0520703BCD0D /* Pods_Mobile_UCC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mobile_UCC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,9 +203,14 @@
 		FA1722442060106D00A6ECA9 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		FA1C4D04200C88DE00A88A04 /* CTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTC.swift; sourceTree = "<group>"; };
 		FA1C4D06200C8ADB00A88A04 /* CTCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTCCell.swift; sourceTree = "<group>"; };
+		FA1D067721B549DF0085F41C /* ExtenNotif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtenNotif.swift; sourceTree = "<group>"; };
 		FA2282A82011952B007C0642 /* Mobile UCC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mobile UCC-Bridging-Header.h"; sourceTree = "<group>"; };
 		FA2282A92011952D007C0642 /* DLRadioButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLRadioButton.m; sourceTree = "<group>"; };
 		FA2282AA2011952D007C0642 /* DLRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLRadioButton.h; sourceTree = "<group>"; };
+		FA2778D821AA702A00143D2F /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		FA28C60421BD406E00149BE0 /* Mobile UCCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mobile UCCTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA28C60621BD406F00149BE0 /* Mobile_UCCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mobile_UCCTests.swift; sourceTree = "<group>"; };
+		FA28C60821BD406F00149BE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA2D065A21721F6D00FBCF2D /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		FA2D065C21721F9400FBCF2D /* ChangePassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePassword.swift; sourceTree = "<group>"; };
 		FA3366B12048EFA800697481 /* EditEducation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEducation.swift; sourceTree = "<group>"; };
@@ -209,12 +230,15 @@
 		FA83E6F4205FAF7900BF9439 /* DetailVacancy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVacancy.swift; sourceTree = "<group>"; };
 		FA83E6F6205FBF4300BF9439 /* Provinsi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provinsi.swift; sourceTree = "<group>"; };
 		FA83E6F8205FBF5100BF9439 /* Kota.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kota.swift; sourceTree = "<group>"; };
+		FA8F1C5C21AD4DA600A9A2D9 /* CoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverViewController.swift; sourceTree = "<group>"; };
 		FAA07583208789C700F4F199 /* CDatePickerViewEx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDatePickerViewEx.h; sourceTree = "<group>"; };
 		FAA07584208789FC00F4F199 /* CDatePickerViewEx.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CDatePickerViewEx.m; sourceTree = "<group>"; };
 		FAA0758620878E0000F4F199 /* DatePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		FAB4014E200E07A100B78D04 /* portofolioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = portofolioCell.swift; sourceTree = "<group>"; };
 		FAB40150200E095D00B78D04 /* Portofolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Portofolio.swift; sourceTree = "<group>"; };
 		FACAAA37205A7969008E35E5 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		FAD0295E2192A36900F14C66 /* RefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshControl.swift; sourceTree = "<group>"; };
+		FAD02960219340C800F14C66 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		FAD30F4620036B5D00ED501B /* Recommendation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recommendation.swift; sourceTree = "<group>"; };
 		FAD30F4820036BB700ED501B /* recommendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recommendCell.swift; sourceTree = "<group>"; };
 		FAD93C842065F845000110C9 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
@@ -234,6 +258,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A049D5225E71EC1B913DE4BF /* Pods_Mobile_UCC.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA28C60121BD406E00149BE0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +438,7 @@
 		466F33AA1FC46F8E00D60FC1 /* Side Menu */ = {
 			isa = PBXGroup;
 			children = (
+				FA2778D821AA702A00143D2F /* ContainerViewController.swift */,
 				46F702FA1EC46E7400C2DE86 /* BaseViewController.swift */,
 				46F702FB1EC46E7400C2DE86 /* MenuViewController.swift */,
 			);
@@ -435,6 +467,7 @@
 			isa = PBXGroup;
 			children = (
 				46F702E71EC4574600C2DE86 /* Mobile UCC */,
+				FA28C60521BD406F00149BE0 /* Mobile UCCTests */,
 				46F702E61EC4574600C2DE86 /* Products */,
 				8ADFB7FA4716DD2B7F7BA394 /* Pods */,
 				3FF74778001ACFF077713840 /* Frameworks */,
@@ -445,6 +478,7 @@
 			isa = PBXGroup;
 			children = (
 				46F702E51EC4574600C2DE86 /* Mobile UCC.app */,
+				FA28C60421BD406E00149BE0 /* Mobile UCCTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -453,7 +487,8 @@
 			isa = PBXGroup;
 			children = (
 				FAE17C4C216CB75400BDC6A0 /* Mobile UCC.entitlements */,
-				FAFD63872063C32500C4344D /* UIKit */,
+				FA2778BF21A33E5B00143D2F /* Third Libraries */,
+				FAFD63872063C32500C4344D /* Interface */,
 				FAFD63862063C31B00C4344D /* Network */,
 				465A7CD31EE3FA0300043F41 /* Table Cell */,
 				465A7CCE1EE3F66D00043F41 /* View Controller */,
@@ -464,12 +499,8 @@
 				46F702F11EC4574600C2DE86 /* LaunchScreen.storyboard */,
 				46F702F41EC4574600C2DE86 /* Info.plist */,
 				FAE17C4D216E2FD500BDC6A0 /* GoogleService-Info.plist */,
-				FA2282AA2011952D007C0642 /* DLRadioButton.h */,
-				FA2282A92011952D007C0642 /* DLRadioButton.m */,
 				FA2282A82011952B007C0642 /* Mobile UCC-Bridging-Header.h */,
-				FAA0758620878E0000F4F199 /* DatePickerView.swift */,
-				FAA07583208789C700F4F199 /* CDatePickerViewEx.h */,
-				FAA07584208789FC00F4F199 /* CDatePickerViewEx.m */,
+				FA8F1C5C21AD4DA600A9A2D9 /* CoverViewController.swift */,
 			);
 			path = "Mobile UCC";
 			sourceTree = "<group>";
@@ -483,6 +514,27 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		FA2778BF21A33E5B00143D2F /* Third Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				FA2282AA2011952D007C0642 /* DLRadioButton.h */,
+				FA2282A92011952D007C0642 /* DLRadioButton.m */,
+				FAA0758620878E0000F4F199 /* DatePickerView.swift */,
+				FAA07583208789C700F4F199 /* CDatePickerViewEx.h */,
+				FAA07584208789FC00F4F199 /* CDatePickerViewEx.m */,
+			);
+			name = "Third Libraries";
+			sourceTree = "<group>";
+		};
+		FA28C60521BD406F00149BE0 /* Mobile UCCTests */ = {
+			isa = PBXGroup;
+			children = (
+				FA28C60621BD406F00149BE0 /* Mobile_UCCTests.swift */,
+				FA28C60821BD406F00149BE0 /* Info.plist */,
+			);
+			path = "Mobile UCCTests";
+			sourceTree = "<group>";
+		};
 		FAFD63862063C31B00C4344D /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -493,13 +545,16 @@
 			name = Network;
 			sourceTree = "<group>";
 		};
-		FAFD63872063C32500C4344D /* UIKit */ = {
+		FAFD63872063C32500C4344D /* Interface */ = {
 			isa = PBXGroup;
 			children = (
 				FA17224220600D6C00A6ECA9 /* Alert.swift */,
 				FAF77F062177CBF600F98EFD /* TextField Extension.swift */,
+				FAD0295E2192A36900F14C66 /* RefreshControl.swift */,
+				FAD02960219340C800F14C66 /* String.swift */,
+				FA1D067721B549DF0085F41C /* ExtenNotif.swift */,
 			);
-			name = UIKit;
+			name = Interface;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -525,20 +580,38 @@
 			productReference = 46F702E51EC4574600C2DE86 /* Mobile UCC.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FA28C60321BD406E00149BE0 /* Mobile UCCTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA28C60B21BD406F00149BE0 /* Build configuration list for PBXNativeTarget "Mobile UCCTests" */;
+			buildPhases = (
+				FA28C60021BD406E00149BE0 /* Sources */,
+				FA28C60121BD406E00149BE0 /* Frameworks */,
+				FA28C60221BD406E00149BE0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FA28C60A21BD406F00149BE0 /* PBXTargetDependency */,
+			);
+			name = "Mobile UCCTests";
+			productName = "Mobile UCCTests";
+			productReference = FA28C60421BD406E00149BE0 /* Mobile UCCTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		46F702DD1EC4574600C2DE86 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1000;
-				LastUpgradeCheck = 0830;
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "LabSE Siskom";
 				TargetAttributes = {
 					46F702E41EC4574600C2DE86 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = AP245C845P;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -548,6 +621,12 @@
 								enabled = 1;
 							};
 						};
+					};
+					FA28C60321BD406E00149BE0 = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = AP245C845P;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 46F702E41EC4574600C2DE86;
 					};
 				};
 			};
@@ -565,6 +644,7 @@
 			projectRoot = "";
 			targets = (
 				46F702E41EC4574600C2DE86 /* Mobile UCC */,
+				FA28C60321BD406E00149BE0 /* Mobile UCCTests */,
 			);
 		};
 /* End PBXProject section */
@@ -579,6 +659,13 @@
 				FAE17C4E216E2FD500BDC6A0 /* GoogleService-Info.plist in Resources */,
 				46F702F01EC4574600C2DE86 /* Assets.xcassets in Resources */,
 				46F702EE1EC4574600C2DE86 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA28C60221BD406E00149BE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -681,6 +768,7 @@
 				FA00A1922004B64300F3970A /* Skill.swift in Sources */,
 				FA7DC193200389F3007DD6BC /* StrengthWeakness.swift in Sources */,
 				FAA07585208789FC00F4F199 /* CDatePickerViewEx.m in Sources */,
+				FA1D067821B549DF0085F41C /* ExtenNotif.swift in Sources */,
 				46E1E1071F13E56B00E6F79C /* EditAwardsAndAchievements.swift in Sources */,
 				46F702E91EC4574600C2DE86 /* AppDelegate.swift in Sources */,
 				46E1E1051F13E3C700E6F79C /* EditOrganizationExperience.swift in Sources */,
@@ -699,8 +787,11 @@
 				FAF7D56A20027B8D00483C08 /* AwardsAchievements.swift in Sources */,
 				FA2D065B21721F6D00FBCF2D /* ResetPassword.swift in Sources */,
 				462CE93F1FDC173F00974399 /* educationCell.swift in Sources */,
+				FA2778D921AA702A00143D2F /* ContainerViewController.swift in Sources */,
 				FA5FBF8C214D4457008AEFE4 /* JobType.swift in Sources */,
+				FA8F1C5D21AD4DA600A9A2D9 /* CoverViewController.swift in Sources */,
 				FA68E24C20656DD4002880AE /* Course.swift in Sources */,
+				FAD02961219340C800F14C66 /* String.swift in Sources */,
 				46E1E1131F13F04200E6F79C /* EditPublicInformation.swift in Sources */,
 				46233F1F1FC6C9E100D4F2C8 /* EditPhoto.swift in Sources */,
 				464B743F1FA331B3002E07DD /* MerchantView3.swift in Sources */,
@@ -746,6 +837,7 @@
 				4600A26E1ECC8F6E0068C58D /* About.swift in Sources */,
 				46CEDDD11FEBFC6400CC2897 /* LanguageSkills.swift in Sources */,
 				46E1E10F1F13EC1E00E6F79C /* EditCTC.swift in Sources */,
+				FAD0295F2192A36900F14C66 /* RefreshControl.swift in Sources */,
 				4673461E1F35E8D000C7C1A1 /* MerchantView.swift in Sources */,
 				FAD30F4720036B5D00ED501B /* Recommendation.swift in Sources */,
 				463F411D1FEA930600364E00 /* WorkExperience.swift in Sources */,
@@ -760,7 +852,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FA28C60021BD406E00149BE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA28C60721BD406F00149BE0 /* Mobile_UCCTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FA28C60A21BD406F00149BE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 46F702E41EC4574600C2DE86 /* Mobile UCC */;
+			targetProxy = FA28C60921BD406F00149BE0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		46F702EC1EC4574600C2DE86 /* Main.storyboard */ = {
@@ -792,15 +900,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -823,7 +939,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -846,15 +962,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -871,7 +995,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Mobile UCC/Mobile UCC-Bridging-Header.h";
@@ -903,7 +1027,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Undip Career Center";
 				SWIFT_OBJC_BRIDGING_HEADER = "Mobile UCC/Mobile UCC-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -927,8 +1052,72 @@
 				PROVISIONING_PROFILE = "7525594d-b82f-4687-8ee6-e0fdccf36901";
 				PROVISIONING_PROFILE_SPECIFIER = "Undip Career Center";
 				SWIFT_OBJC_BRIDGING_HEADER = "Mobile UCC/Mobile UCC-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FA28C60C21BD406F00149BE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = AP245C845P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Mobile UCCTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Galih.Mobile-UCCTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mobile UCC.app/Mobile UCC";
+			};
+			name = Debug;
+		};
+		FA28C60D21BD406F00149BE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = AP245C845P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Mobile UCCTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Galih.Mobile-UCCTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mobile UCC.app/Mobile UCC";
 			};
 			name = Release;
 		};
@@ -949,6 +1138,15 @@
 			buildConfigurations = (
 				46F702F81EC4574600C2DE86 /* Debug */,
 				46F702F91EC4574600C2DE86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA28C60B21BD406F00149BE0 /* Build configuration list for PBXNativeTarget "Mobile UCCTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA28C60C21BD406F00149BE0 /* Debug */,
+				FA28C60D21BD406F00149BE0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

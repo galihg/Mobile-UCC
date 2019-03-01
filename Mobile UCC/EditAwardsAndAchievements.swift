@@ -67,6 +67,9 @@ class EditAwardsAndAchievements: BaseViewController, UITextFieldDelegate, UIText
                         HUD.hide()
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                     
                 }
@@ -89,7 +92,7 @@ class EditAwardsAndAchievements: BaseViewController, UITextFieldDelegate, UIText
         
     }
     
-    func doneButtonTappedForMyNumericTextField() {
+    @objc func doneButtonTappedForMyNumericTextField() {
         print("Done");
         self.view.endEditing(true)
     }
@@ -107,10 +110,16 @@ class EditAwardsAndAchievements: BaseViewController, UITextFieldDelegate, UIText
             let paramFinal = paramToSend + paramToSend2
             
             NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
-                if let message = server_response["message"] as? String {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                if let status = server_response["status"] as? String {
+                    if let message = server_response["message"] as? String {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                        if (status == "ok"){
+                            Alert.showMessage(title: "SUCCESS!", msg: message)
+                        } else {
+                            Alert.showMessage(title: "WARNING!", msg: message)
+                        }
                     }
                 }
             }
@@ -123,10 +132,16 @@ class EditAwardsAndAchievements: BaseViewController, UITextFieldDelegate, UIText
             let paramFinal = paramToSend + paramToSend2
             
             NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
-                if let message = server_response["message"] as? String {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                if let status = server_response["status"] as? String {
+                    if let message = server_response["message"] as? String {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                        if (status == "ok"){
+                            Alert.showMessage(title: "SUCCESS!", msg: message)
+                        } else {
+                            Alert.showMessage(title: "WARNING!", msg: message)
+                        }
                     }
                 }
             }

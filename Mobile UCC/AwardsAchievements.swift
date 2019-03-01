@@ -25,9 +25,9 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
-        button.setImage(UIImage(named: "add"),for: UIControlState())
+        button.setImage(UIImage(named: "add"),for: UIControl.State())
         //add function for button
-        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControl.Event.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -38,7 +38,7 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
         self.navigationItem.rightBarButtonItem = barButton
         
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
        
@@ -49,7 +49,7 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
         downloadAllAward()
     }
     
-    func newButtonAction(sender: UIBarButtonItem){
+    @objc func newButtonAction(sender: UIBarButtonItem){
         let awardId = ["-1"]
         performSegue(withIdentifier: "showEditAwards", sender: awardId)
     }
@@ -58,7 +58,7 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
         
         addButton.frame = CGRect(x: 8, y: 86, width: 300, height: 63)
         //addButton.setImage(UIImage(named: "add2"),for: UIControlState())
-        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControlState())
+        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControl.State())
         addButton.addTarget(self, action: #selector(addAward), for: .touchUpInside)
         addButton.setTitle("          ADD AWARDS AND ACHIEVEMENTS", for: [])
         addButton.titleLabel!.font = UIFont(name: "Helvetica Neue", size: 13)
@@ -152,7 +152,7 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
         return cell
     }
     
-    func addAward(_ button: UIButton) {
+    @objc func addAward(_ button: UIButton) {
         let awardId = ["-1"]
         performSegue(withIdentifier: "showEditAwards", sender: awardId)
     }
@@ -199,6 +199,9 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
                 } else if (status == "error"){
                     let message = server_response["message"] as? String
                     Alert.showMessage(title: "WARNING!", msg: message!)
+                    NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                    NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                    NotificationCenter.default.post(name: .reload, object: nil)
                 }
             }
         }

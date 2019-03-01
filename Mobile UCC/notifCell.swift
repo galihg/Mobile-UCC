@@ -18,7 +18,7 @@ class notifCell: UITableViewCell {
 
     
     
-    var notification: Notification! {
+    var notifikasi: Notifikasi! {
         didSet {
             self.updateUI()
         }
@@ -26,11 +26,11 @@ class notifCell: UITableViewCell {
     
     func updateUI()
     {
-        type_label.text = notification.type_notif
-        subject_label.text = notification.subject_notif
-        date_label.text = notification.date_notif
+        type_label.text = notifikasi.type_notif
+        subject_label.text = notifikasi.subject_notif
+        date_label.text = notifikasi.date_notif
         
-        let status_notif = notification.status
+        let status_notif = notifikasi.status
         
         if (status_notif == true) {
             status_label.text = ""

@@ -18,6 +18,7 @@ class ContactUs: BaseViewController, UITableViewDataSource, UITableViewDelegate 
     @IBOutlet weak var messageTextField: UITextField!
     
     let items = ["Info member gold / premium", "Info company member", "Info event"]
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,12 +33,16 @@ class ContactUs: BaseViewController, UITableViewDataSource, UITableViewDelegate 
         messageTextField.isHidden = true
         
         tableView.estimatedRowHeight = 113
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.isHidden = true
         tableView.dataSource = self
         tableView.delegate = self
         tableView.reloadData()
         self.tableView.tableFooterView = UIView()
+        
+        if (defaults.object(forKey: "session") != nil ) {
+            Auth.auth_check()
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int

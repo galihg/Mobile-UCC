@@ -13,16 +13,7 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
 
     @IBOutlet weak var tableView: UITableView!
     
-    // View which contains the loading text and the spinner
-    let loadingView = UIView()
-    
-    // Spinner shown during load the TableView
-    let spinner = UIActivityIndicatorView()
-    
-    // Text shown during load the TableView
-    let loadingLabel = UILabel()
-    
-    var notification = [Notification]()
+    var notifikasi = [Notifikasi]()
     
     let url = URL(string: "http://api.career.undip.ac.id/v1/auth/check")
     
@@ -33,12 +24,9 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
         self.addSlideMenuButton()
         
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
-        
-        downloadAllNotification()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,7 +60,7 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
     
     func downloadAllNotification () {
         
-        notification = []
+        notifikasi = []
         
         HUD.show(.progress)
         let url = "http://api.career.undip.ac.id/v1/jobseekers/notification"
@@ -90,9 +78,9 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
                         let status = eachNotification ["read"] as? Bool
                         let date_notif = eachNotification ["date_created"] as? String
                         
-                        self.notification.append(Notification(id_notif: id_notif!, type_notif: type_notif!, subject_notif: subject_notif!, status: status!, date_notif: date_notif!))
+                        self.notifikasi.append(Notifikasi(id_notif: id_notif!, type_notif: type_notif!, subject_notif: subject_notif!, status: status!, date_notif: date_notif!))
                     }
-                    print(self.notification)
+                  
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                         HUD.hide()
@@ -106,15 +94,14 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                 }
             }
         }
         
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .lightContent
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -124,8 +111,8 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if notification.count > 0 {
-            return notification.count
+        if notifikasi.count > 0 {
+            return notifikasi.count
         } else {
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noDataLabel.text          = "Tidak ada Notifikasi"
@@ -141,9 +128,9 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "notifCell", for: indexPath) as! notifCell
-        let notification = self.notification[indexPath.row]
+        let notifikasi = self.notifikasi[indexPath.row]
         
-        cell.notification = notification
+        cell.notifikasi = notifikasi
         
         return cell
     }
@@ -154,7 +141,7 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
     {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let notification = self.notification[indexPath.row]
+        let notification = self.notifikasi[indexPath.row]
         let notifId = notification.id_notif
 
         downloadDetailNotif(notifId!)
@@ -196,13 +183,11 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailNotif" {
-            
             HUD.hide()
             let Notif2VC = segue.destination as! DetailNotif
             let pass = sender as! [Any]
             Notif2VC.passedData = pass
             navigationItem.title = nil
-            
         }
     }
     

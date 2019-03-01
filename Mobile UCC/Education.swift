@@ -26,9 +26,9 @@ class Education: BaseViewController, UITableViewDataSource, UITableViewDelegate 
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
-        button.setImage(UIImage(named: "add"),for: UIControlState())
+        button.setImage(UIImage(named: "add"),for: UIControl.State())
         //add function for button
-        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControl.Event.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -40,7 +40,7 @@ class Education: BaseViewController, UITableViewDataSource, UITableViewDelegate 
         self.navigationItem.rightBarButtonItem = barButton
         
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -55,22 +55,23 @@ class Education: BaseViewController, UITableViewDataSource, UITableViewDelegate 
         
     }
     
-    func newButtonAction(sender: UIBarButtonItem){
+    @objc func newButtonAction(sender: UIBarButtonItem){
         let educationId = "-1"
         getForm(educationId)
     }
     
-    private func setAddButton() {
+    func setAddButton() {
         
         addButton.frame = CGRect(x: 8, y: 86, width: 300, height: 63)
         //addButton.setImage(UIImage(named: "add2"),for: UIControlState())
-        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControlState())
+        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControl.State())
         addButton.addTarget(self, action: #selector(addEducation), for: .touchUpInside)
         addButton.setTitle("         ADD FORMAL EDUCATION", for: [])
         self.view.addSubview(addButton)
+        addButton.isHidden = false 
     }
     
-    private func removeAddButton() {
+    func removeAddButton() {
         
         addButton.isHidden = true
         
@@ -85,10 +86,10 @@ class Education: BaseViewController, UITableViewDataSource, UITableViewDelegate 
         NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
             if let status = server_response["status"] as? String {
                 if (status == "ok"){
-                    let educationDictionaries = server_response["data"] as! NSArray
+                    let educationDictionaries = server_response["data"] as! [[String:Any]]
                     
                     for educationDictionary in educationDictionaries {
-                        let eachEducation = educationDictionary as! [String:Any]
+                        let eachEducation = educationDictionary 
                         let id_education = eachEducation ["id_pddk"] as? String
                         let id_member = eachEducation ["id_member"] as? String
                         let degree = eachEducation ["jenjang"] as? String
@@ -117,7 +118,10 @@ class Education: BaseViewController, UITableViewDataSource, UITableViewDelegate 
                     
                     DispatchQueue.main.async {
                        self.openViewControllerBasedOnIdentifier("Home")
-                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                 }
             }
@@ -161,7 +165,7 @@ class Education: BaseViewController, UITableViewDataSource, UITableViewDelegate 
         return cell
     }
     
-    func addEducation(_ button: UIButton) {
+    @objc func addEducation(_ button: UIButton) {
         
         let educationId = "-1"
         getForm(educationId)
@@ -207,7 +211,7 @@ class Education: BaseViewController, UITableViewDataSource, UITableViewDelegate 
                     DispatchQueue.main.async {
                         self.pendidikan.remove(at: row.row)
                         self.tableView.deleteRows(at: [row], with: .fade)
-                        self.downloadAllEducation()
+                        //self.downloadAllEducation()
                     }
                 }  else if (status == "error"){
                     let message = server_response["message"] as? String

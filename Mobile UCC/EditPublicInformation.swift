@@ -73,6 +73,8 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
     @IBOutlet weak var additionalInformationTopConstant: NSLayoutConstraint!
     @IBOutlet weak var originAddressTopConstant: NSLayoutConstraint!
     
+    var id_data: String!
+    
     var country : String!
     var province : String!
     var city : String!
@@ -84,8 +86,8 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
     var birthdate : String!
     var sex: String!
 
-    let maritalArray = ["Single", "Married", "Widow", "Widower"]
-    let religionArray = ["Islam", "Christian", "Catholic", "Hindu", "Buddha", "Other..."]
+    let maritalArray = ["lajang", "menikah", "janda", "duda"]
+    let religionArray = ["islam", "kristen", "katolik", "hindu", "budha", "lainnya"]
     
     var provinsi = [Provinsi]()
     var kota = [Kota]()
@@ -98,7 +100,7 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
         super.viewDidLoad()
        
         // Do any additional setup after loading the view.
-        self.title = "Edit Public Information"
+        self.title = "Edit Basic Information"
         
         _fullName.delegate = self
         _title.delegate = self
@@ -154,9 +156,9 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
         toolbar.sizeToFit()
         
         //done button & cancel button
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(EditPublicInformation.donedatePicker))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.done, target: self, action: #selector(EditPublicInformation.cancelDatePicker))
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(EditPublicInformation.donedatePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.done, target: self, action: #selector(EditPublicInformation.cancelDatePicker))
         toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
         
         datePicker.datePickerMode = .date
@@ -230,7 +232,7 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
         }
     }
     
-    func donedatePicker(){
+    @objc func donedatePicker(){
         //For date format
         dateFormatter.dateFormat = "yyyy-MM-dd"
         birthdate = dateFormatter.string(from: datePicker.date)
@@ -242,7 +244,7 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
         self.view.endEditing(true)
     }
     
-    func cancelDatePicker(){
+    @objc func cancelDatePicker(){
         //cancel button dismiss datepicker dialog
         self.view.endEditing(true)
     }
@@ -257,6 +259,8 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
             {
                 if (status == "ok"){
                     let data_dictionary = server_response["data"] as! NSDictionary
+                    
+                    let id_data = data_dictionary["id_member_dtl"] as! String
                     let fullName = data_dictionary["fullname"] as? String ?? "(empty)"
                     let academic = data_dictionary["academic_title"] as? String ?? "(empty)"
                     let birthdate = data_dictionary["birthdate"] as? String ?? "(empty)"
@@ -297,6 +301,7 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
                         self.oriCountry = origin_country
                     }
                     
+                    self.id_data = id_data
                     self.province = id_current_province
                     self.city = id_current_city
                     self.oriProvince = id_origin_province
@@ -320,13 +325,9 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
                         self.originAddress.text = origin_address
                         self.hospitalSheet.text = hospital_sheet
                         
-                        if (marriage == "lajang"){
-                            self.maritalBtn.setTitle("Single", for: [])
-                        }
+                        self.maritalBtn.setTitle(marriage, for: [])
+                        self.religionBtn.setTitle(religion, for: [])
                         
-                        if (religion == "islam"){
-                            self.religionBtn.setTitle("Islam", for: [])
-                        }
                         
                         if (self.sex == "L") {
                             self.radioBtn.isSelected = true
@@ -342,8 +343,14 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
                         let datenew = self.dateFormatter.string(from: dateFromString as Date)
                         self._tglLahir.text = datenew
                         
-                        self.currentCountryBtn.setTitle(current_country, for: [])
-                        self.originCountryBtn.setTitle(origin_country, for: [])
+                        if (current_country == "ID"){
+                            self.currentCountryBtn.setTitle("Indonesia", for: [])
+                        }
+                        
+                        if (origin_country == "ID"){
+                            self.originCountryBtn.setTitle("Indonesia", for: [])
+                        }
+                       
                         self.currentProvinceBtn.setTitle(current_province, for: [])
                         self.originProvinceBtn.setTitle(origin_province, for: [])
                         self.currentCityBtn.setTitle(current_city, for: [])
@@ -362,6 +369,9 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
 
                 }
@@ -466,7 +476,7 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
     
     func setTable(_ table:UITableView) {
         table.estimatedRowHeight = table.rowHeight
-        table.rowHeight = UITableViewAutomaticDimension
+        table.rowHeight = UITableView.automaticDimension
         table.dataSource = self
         table.delegate = self
         table.isHidden = true
@@ -484,6 +494,9 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
         _blog.resignFirstResponder()
         _ZIPCode.resignFirstResponder()
         _height.resignFirstResponder()
+        hospitalSheet.resignFirstResponder()
+        originAddress.resignFirstResponder()
+        currentAddress.resignFirstResponder()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -849,7 +862,7 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
         }
     }
     
-    func doneButtonTappedForMyNumericTextField() {
+    @objc func doneButtonTappedForMyNumericTextField() {
         print("Done");
         
         self.view.endEditing(true)
@@ -859,34 +872,40 @@ class EditPublicInformation: BaseViewController, UITextViewDelegate, UITextField
         resignResponder()
         HUD.show(.progress)
         
-        let url = "http://api.career.undip.ac.id/v1/jobseekers/edit_cv_part/basic"
+        let url = "http://api.career.undip.ac.id/v1/jobseekers/edit_cv_part/public"
         
         let paramToSend = "fullname=" + _fullName.text! + "&title=" + _title.text!
         let paramToSend2 = "&birthplace=" + _tempatLahir.text! + "&birthdate=" + birthdate
         let paramToSend3 = "&gender=" + sex + "&religion=" + religionBtn.title(for:[] )!
         let paramToSend4 = "&hobby=" + _hobi.text! + "&marriage_status=" + maritalBtn.title(for: [])!
         let paramToSend5 = "&email=" + _email.text! + "&id_number=" + _IDNumber.text!
-        let paramToSend6 = "&phone_number" + _phoneNumber.text! + "&blog=" + _blog.text!
+        let paramToSend6 = "&phone_number=" + _phoneNumber.text! + "&blog=" + _blog.text!
         let paramToSend7 = "&current_address=" + currentAddress.text! + "&current_country=" + "ID"
         let paramToSend8 = "&current_province_id=" + province + "&current_city_id=" + city
         let paramToSend9 = "&current_zip=" + _ZIPCode.text! + "&origin_address=" + originAddress.text!
         let paramToSend10 = "&origin_country=" + oriCountry + "&origin_province_id=" + oriProvince + "&origin_city_id=" + oriCity
         let paramToSend11 = "&body_height=" + _height.text! + "&hospital_sheet=" + hospitalSheet.text!
+        let paramToSend12 = "&id_data=" + id_data
         
         let paramGroup1 = paramToSend + paramToSend2 + paramToSend3 + paramToSend4
         let paramGroup2 = paramToSend5 + paramToSend6 + paramToSend7 + paramToSend8
-        let paramGroup3 = paramToSend9 + paramToSend10 + paramToSend11
+        let paramGroup3 = paramToSend9 + paramToSend10 + paramToSend11 + paramToSend12
         let paramFinal = paramGroup1 + paramGroup2 + paramGroup3
         
         NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
-            if let message = server_response["message"] as? String {
-                
-                DispatchQueue.main.async {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    HUD.hide()
+            if let status = server_response["status"] as? String {
+                if let message = server_response["message"] as? String {
+                    if (status == "ok"){
+                        Alert.showMessage(title: "SUCCESS!", msg: message)
+                    } else {
+                        Alert.showMessage(title: "WARNING!", msg: message)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
                 }
-                
-            } 
+            }
         }
     }
     

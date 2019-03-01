@@ -95,16 +95,16 @@ open class SOContainerViewController: UIViewController, UIGestureRecognizerDeleg
         }
         set {
             _topViewController?.view.removeFromSuperview()
-            _topViewController?.removeFromParentViewController()
+            _topViewController?.removeFromParent()
             
             _topViewController = newValue
             
             if let vc = _topViewController {
-                vc.willMove(toParentViewController: self)
-                self.addChildViewController(vc)
+                vc.willMove(toParent: self)
+                self.addChild(vc)
                 self.view.addSubview(vc.view)
                 vc.view.frame = self.view.bounds
-                vc.didMove(toParentViewController: self)
+                vc.didMove(toParent: self)
                 
                 if widthForPanGestureRecognizer > 0 {
                     let panView = UIView(frame: CGRect(x: 0, y: CGFloat(heightOffsetForPanGestureRecognizer), width: CGFloat(widthForPanGestureRecognizer), height: self.view.frame.size.height))
@@ -134,15 +134,15 @@ open class SOContainerViewController: UIViewController, UIGestureRecognizerDeleg
         }
         set {
             _sideViewController?.view.removeFromSuperview()
-            _sideViewController?.removeFromParentViewController()
+            _sideViewController?.removeFromParent()
             
             _sideViewController = newValue
             
             if let vc = _sideViewController {
-                vc.willMove(toParentViewController: self)
-                self.addChildViewController(vc)
+                vc.willMove(toParent: self)
+                self.addChild(vc)
                 self.view.addSubview(vc.view)
-                vc.didMove(toParentViewController: self)
+                vc.didMove(toParent: self)
                 
                 vc.view.addGestureRecognizer(self.createPanGestureRecognizer())
                 
@@ -183,7 +183,7 @@ open class SOContainerViewController: UIViewController, UIGestureRecognizerDeleg
                 self.contentCoverView.alpha = newValue ? 1.0 : 0.0
             }
             
-            UIView.animate(withDuration: SideViewControllerOpenAnimationDuration, delay: 0, options: UIViewAnimationOptions.beginFromCurrentState, animations: animations, completion: nil)
+            UIView.animate(withDuration: SideViewControllerOpenAnimationDuration, delay: 0, options: UIView.AnimationOptions.beginFromCurrentState, animations: animations, completion: nil)
         }
     }
     
@@ -271,10 +271,10 @@ open class SOContainerViewController: UIViewController, UIGestureRecognizerDeleg
 extension SOContainerViewController {
     
     fileprivate func bringSideViewToFront() {
-        self.view.bringSubview(toFront: self.contentCoverView)
+        self.view.bringSubviewToFront(self.contentCoverView)
         
         if let vc = self.sideViewController {
-            self.view.bringSubview(toFront: vc.view)
+            self.view.bringSubviewToFront(vc.view)
         }
     }
     
@@ -348,7 +348,7 @@ extension SOContainerViewController {
         
         let translatedPoint = panGesture.translation(in: self.view)
         
-        if panGesture.state == UIGestureRecognizerState.changed {
+        if panGesture.state == UIGestureRecognizer.State.changed {
             if let sidebarView = self.sideViewController?.view {
                 self.moveSidebarToVector(sidebarView, vector: translatedPoint)
             }
@@ -358,7 +358,7 @@ extension SOContainerViewController {
             if let view = self.sideViewController?.view {
                 self.contentCoverView.alpha = 1.0 - abs(view.frame.origin.x) / view.frame.size.width
             }
-        } else if panGesture.state == UIGestureRecognizerState.ended {
+        } else if panGesture.state == UIGestureRecognizer.State.ended {
             if let sidebar = self.sideViewController {
                 self.isSideViewControllerPresented = self.viewPulledOutMoreThanHalfOfItsWidth(sidebar)
             }

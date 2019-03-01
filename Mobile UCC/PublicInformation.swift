@@ -38,9 +38,9 @@ class PublicInformation: BaseViewController {
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
-        button.setImage(UIImage(named: "edit"),for: UIControlState())
+        button.setImage(UIImage(named: "edit"),for: UIControl.State())
         //add function for button
-        button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControl.Event.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -49,7 +49,6 @@ class PublicInformation: BaseViewController {
         
         //assign button to navigationbar
         self.navigationItem.rightBarButtonItem = barButton
-      
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +56,7 @@ class PublicInformation: BaseViewController {
         //This is the right place to do for instance animations on your views subviews
         
         self.navigationController?.isNavigationBarHidden = false
-        self.title = "Public Information"
+        self.title = "Basic Information"
         ambilCV()
     }
     
@@ -153,6 +152,9 @@ class PublicInformation: BaseViewController {
                         DispatchQueue.main.async {
                             self.openViewControllerBasedOnIdentifier("Home")
                             Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                            NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                            NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                            NotificationCenter.default.post(name: .reload, object: nil)
                         }
                     }
                 }
@@ -161,7 +163,7 @@ class PublicInformation: BaseViewController {
         
     }
     
-    func editButtonAction(sender: UIBarButtonItem){
+    @objc func editButtonAction(sender: UIBarButtonItem){
         self.performSegue(withIdentifier: "showEditPublic", sender: self)
     }
     

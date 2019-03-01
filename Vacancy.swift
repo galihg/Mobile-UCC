@@ -23,6 +23,5 @@ class Vacancy
         self.company_logo = company_logo
         self.total_vacancy = total_vacancy
         self.industry_type = industry_type
-        
     }
 }

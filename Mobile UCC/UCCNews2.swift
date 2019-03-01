@@ -22,12 +22,16 @@ class UCCNews2: BaseViewController, WKUIDelegate {
         super.viewDidLoad()
 
         self.title = "UCC News"
+        newsContent.scrollView.bounces = false
         
         newsTitle.text = (passedData[0] as! String)
+        newsDate.text = (passedData[3] as! String)
+        
+        //Isi Berita
         let newsContentRaw = (passedData[2] as! String)
         newsContent.loadHTMLString(newsContentRaw, baseURL: Bundle.main.bundleURL)
         
-        newsDate.text = (passedData[3] as! String)
+ 
         
     }
     

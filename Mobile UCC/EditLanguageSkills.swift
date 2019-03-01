@@ -26,8 +26,13 @@ class EditLanguageSkills: BaseViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Edit Language Skills"
+        
         // Do any additional setup after loading the view.
+        if (passedData != "-1") {
+            self.title = "Edit Language Skill"
+        } else {
+            self.title = "Add Language Skill"
+        }
         
         languageTable.isHidden = true
         skillTable.isHidden = true
@@ -67,6 +72,9 @@ class EditLanguageSkills: BaseViewController, UITableViewDelegate, UITableViewDa
                         HUD.hide()
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                     
                 }
@@ -160,7 +168,7 @@ class EditLanguageSkills: BaseViewController, UITableViewDelegate, UITableViewDa
     
     func setTable(_ table:UITableView) {
         table.estimatedRowHeight = table.rowHeight
-        table.rowHeight = UITableViewAutomaticDimension
+        table.rowHeight = UITableView.automaticDimension
         table.dataSource = self
         table.delegate = self
         table.isHidden = true
@@ -249,10 +257,16 @@ class EditLanguageSkills: BaseViewController, UITableViewDelegate, UITableViewDa
             let paramToSend = "bahasa=" + language + "&kemampuan=" + skill
             
             NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
-                if let message = server_response["message"] as? String {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                if let status = server_response["status"] as? String {
+                    if let message = server_response["message"] as? String {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                        if (status == "ok"){
+                            Alert.showMessage(title: "SUCCESS!", msg: message)
+                        } else {
+                            Alert.showMessage(title: "WARNING!", msg: message)
+                        }
                     }
                 }
             }
@@ -263,10 +277,16 @@ class EditLanguageSkills: BaseViewController, UITableViewDelegate, UITableViewDa
             let paramToSend = "bahasa=" + language + "&kemampuan=" + skill + "&id_bahasa_asing=" + passedData
             
             NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
-                if let message = server_response["message"] as? String {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                if let status = server_response["status"] as? String {
+                    if let message = server_response["message"] as? String {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                        if (status == "ok"){
+                            Alert.showMessage(title: "SUCCESS!", msg: message)
+                        } else {
+                            Alert.showMessage(title: "WARNING!", msg: message)
+                        }
                     }
                 }
             }

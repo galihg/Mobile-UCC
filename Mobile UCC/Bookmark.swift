@@ -14,7 +14,7 @@ class Bookmark: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.addSlideMenuButton()
+        //self.addSlideMenuButton()
         self.title = "Bookmark"
     }
 

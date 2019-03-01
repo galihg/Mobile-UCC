@@ -53,13 +53,17 @@ class EditProfileSummary: UIViewController {
         let paramToSend = "profil=" + profil
 
         NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
-            if let message = server_response["message"] as? String {
-                
-                DispatchQueue.main.async {
-                    HUD.hide()
-                    Alert.showMessage(title: "WARNING!", msg: message)
+            if let status = server_response["status"] as? String {
+                if let message = server_response["message"] as? String {
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                    if (status == "ok"){
+                        Alert.showMessage(title: "SUCCESS!", msg: message)
+                    } else {
+                        Alert.showMessage(title: "WARNING!", msg: message)
+                    }
                 }
-                
             }
         }
         

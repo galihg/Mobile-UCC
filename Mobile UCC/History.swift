@@ -27,7 +27,6 @@ class History
         self.tgl_apply = tgl_apply
         self.status_apply = status_apply
         self.status_cancel = status_cancel
-        
     }
 }
 

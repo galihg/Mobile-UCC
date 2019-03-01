@@ -25,9 +25,9 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
-        button.setImage(UIImage(named: "add"),for: UIControlState())
+        button.setImage(UIImage(named: "add"),for: UIControl.State())
         //add function for button
-        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControl.Event.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -38,7 +38,7 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
         self.navigationItem.rightBarButtonItem = barButton
         
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
 
@@ -49,7 +49,7 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
         downloadAllOrganization()
     }
     
-    func newButtonAction(sender: UIBarButtonItem){
+    @objc func newButtonAction(sender: UIBarButtonItem){
         let orgId = "-1"
         performSegue(withIdentifier: "showEditOrganization", sender: orgId)
     }
@@ -57,7 +57,7 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
     private func setAddButton() {
         
         addButton.frame = CGRect(x: 8, y: 86, width: 300, height: 63)
-        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControlState())
+        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControl.State())
         addButton.addTarget(self, action: #selector(addOrganization), for: .touchUpInside)
         addButton.setTitle("          ADD ORGANIZATION EXPERIENCE", for: [])
         addButton.titleLabel!.font = UIFont(name: "Helvetica Neue", size: 12)
@@ -110,6 +110,9 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                 }
             }
@@ -153,7 +156,7 @@ class OrganizationExperience: BaseViewController, UITableViewDataSource, UITable
         return cell
     }
     
-    func addOrganization(_ button: UIButton) {
+    @objc func addOrganization(_ button: UIButton) {
         let orgId = "-1"
         performSegue(withIdentifier: "showEditOrganization", sender: orgId)
     }

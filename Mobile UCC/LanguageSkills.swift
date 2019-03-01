@@ -28,9 +28,9 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
-        button.setImage(UIImage(named: "add"),for: UIControlState())
+        button.setImage(UIImage(named: "add"),for: UIControl.State())
         //add function for button
-        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(newButtonAction(sender:)), for: UIControl.Event.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -41,7 +41,7 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
         self.navigationItem.rightBarButtonItem = barButton
         
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
     
@@ -52,7 +52,7 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
         downloadAllLanguage()
     }
     
-    func newButtonAction(sender: UIBarButtonItem){
+    @objc func newButtonAction(sender: UIBarButtonItem){
         let languageId = "-1"
         getForm(languageId)
     }
@@ -60,7 +60,7 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
     private func setAddButton() {
         
         addButton.frame = CGRect(x: 8, y: 86, width: 300, height: 63)
-        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControlState())
+        addButton.setBackgroundImage(UIImage(named: "add2"), for: UIControl.State())
         addButton.addTarget(self, action: #selector(addLanguage), for: .touchUpInside)
         addButton.setTitle("         ADD LANGUAGE SKILLS", for: [])
         self.view.addSubview(addButton)
@@ -92,6 +92,7 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
                         
                         
                         self.language.append(Language(id_bahasa: id_bahasa!, id_member: id_member!, bahasa: bahasa!, kemampuan: skill!))
+                       
                     }
                     print(self.language)
                     DispatchQueue.main.async {
@@ -109,6 +110,9 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                 }
             }
@@ -157,7 +161,7 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
         return cell
     }
     
-    func addLanguage(_ button: UIButton) {
+    @objc func addLanguage(_ button: UIButton) {
         let languageId = "-1"
         getForm(languageId)
     }
@@ -180,7 +184,6 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
         let indexPath = tableView.indexPathForRow(at: buttonPosition)
         
         let languageId = data.id_bahasa
-        
         deleteLanguage(indexPath!, languageId!)
     }
     
@@ -188,7 +191,7 @@ class LanguageSkills: BaseViewController, UITableViewDataSource, UITableViewDele
         
         let url = "http://api.career.undip.ac.id/v1/jobseekers/delete_cv_part/foreignlanguage/"
         
-        let paramToSend = "id_bahasa_asing" + id
+        let paramToSend = "id_bahasa_asing=" + id
         
         NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
             if let status = server_response["status"] as? String {

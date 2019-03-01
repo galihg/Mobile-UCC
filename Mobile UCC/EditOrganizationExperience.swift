@@ -58,9 +58,9 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
         toolbar.sizeToFit()
         
         //done button & cancel button
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(EditOrganizationExperience.donedatePicker))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.done, target: self, action: #selector(EditOrganizationExperience.cancelDatePicker))
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(EditOrganizationExperience.donedatePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.done, target: self, action: #selector(EditOrganizationExperience.cancelDatePicker))
         toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
         
         datePicker.datePickerMode = .date
@@ -99,6 +99,9 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
                         HUD.hide()
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                     
                 }
@@ -129,11 +132,20 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
                     
                     if (self.active == "1") {
                         DispatchQueue.main.async {
-                            self.activeBtn.setImage(UIImage(named: "checked box.png")!, for: UIControlState.normal)
+                            self.activeBtn.setImage(UIImage(named: "checked box.png")!, for: UIControl.State.normal)
+                            self.yearEnd.isHidden = true
+                            self._yearEnd.isHidden = true
                         }
                     } else {
                         DispatchQueue.main.async {
-                            self.activeBtn.setImage(UIImage(named: "unchecked box.png")!, for: UIControlState.normal)
+                            self.activeBtn.setImage(UIImage(named: "unchecked box.png")!, for: UIControl.State.normal)
+                            
+                            self.dateFormatter.dateFormat = "yyyy-MM-dd"
+                            let dateFromString2 : NSDate  = self.dateFormatter.date(from: tgl_keluar)! as NSDate
+                            
+                            self.dateFormatter.dateFormat = "dd MMM yyyy"
+                            let datenew2 = self.dateFormatter.string(from: dateFromString2 as Date)
+                            self._yearEnd.text = datenew2
                         }
                     }
                     
@@ -152,13 +164,6 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
                         let datenew = self.dateFormatter.string(from: dateFromString as Date)
                         self._yearStart.text = datenew
                         
-                        self.dateFormatter.dateFormat = "yyyy-MM-dd"
-                        let dateFromString2 : NSDate  = self.dateFormatter.date(from: tgl_keluar)! as NSDate
-                        
-                        self.dateFormatter.dateFormat = "dd MMM yyyy"
-                        let datenew2 = self.dateFormatter.string(from: dateFromString2 as Date)
-                        self._yearEnd.text = datenew2
-                        
                     }
                     
                 }
@@ -171,7 +176,7 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
         self.activeTextField = textField
     }
     
-    func donedatePicker(){
+    @objc func donedatePicker(){
         //For date format
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
@@ -193,7 +198,7 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
 
     }
     
-    func cancelDatePicker(){
+    @objc func cancelDatePicker(){
         //cancel button dismiss datepicker dialog
         self.view.endEditing(true)
         resignFirstResponder()
@@ -239,13 +244,13 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
     @IBAction func activeSet(_ sender: Any) {
         if (active == "0") {
             active = "1"
-            activeBtn.setImage(UIImage(named: "checked box.png")!, for: UIControlState.normal)
+            activeBtn.setImage(UIImage(named: "checked box.png")!, for: UIControl.State.normal)
             tgl_selesai = ""
             setConstraint()
         }
         else if (active == "1"){
             active = "0"
-            activeBtn.setImage(UIImage(named: "unchecked box.png")!, for: UIControlState.normal)
+            activeBtn.setImage(UIImage(named: "unchecked box.png")!, for: UIControl.State.normal)
             setConstraint()
         }
     }
@@ -266,10 +271,16 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
             let paramFinal = paramToSend + paramToSend2 + paramToSend3 + paramToSend4
             
             NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
-                if let message = server_response["message"] as? String {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                if let status = server_response["status"] as? String {
+                    if let message = server_response["message"] as? String {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                        if (status == "ok"){
+                            Alert.showMessage(title: "SUCCESS!", msg: message)
+                        } else {
+                            Alert.showMessage(title: "WARNING!", msg: message)
+                        }
                     }
                 }
             }
@@ -283,10 +294,16 @@ class EditOrganizationExperience: BaseViewController, UITextFieldDelegate, UITex
             let paramFinal = paramToSend + paramToSend2 + paramToSend3
             
             NetworkService.parseJSONFromURL(url, "POST", parameter: paramFinal){ (server_response) in
-                if let message = server_response["message"] as? String {
-                    Alert.showMessage(title: "WARNING!", msg: message)
-                    DispatchQueue.main.async {
-                        HUD.hide()
+                if let status = server_response["status"] as? String {
+                    if let message = server_response["message"] as? String {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                        }
+                        if (status == "ok"){
+                            Alert.showMessage(title: "SUCCESS!", msg: message)
+                        } else {
+                            Alert.showMessage(title: "WARNING!", msg: message)
+                        }
                     }
                 }
             }

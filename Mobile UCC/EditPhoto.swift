@@ -9,29 +9,33 @@
 import UIKit
 import PKHUD
 import Photos
+import KeychainSwift
 
 class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
-    
     @IBOutlet var profPic: UIImageView!
     
     let imagePicker = UIImagePickerController()
-    let url = "http://api.career.undip.ac.id/v1/jobseekers/edit_cv_part/edit_photo"
+    let url = "http://api.career.undip.ac.id/v1/jobseekers/edit_photo"
     
-    var passedData : String = ""
+    let keychain = KeychainSwift()
+    
+    var passedData : UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.title = "Edit Photo"
+        profPic.image = passedData
+        imagePicker.delegate = self
         
         //create a new button
         let button = UIButton.init(type: .custom)
         //set image for button
-        button.setImage(UIImage(named: "edit"),for: UIControlState())
+        button.setImage(UIImage(named: "edit"),for: UIControl.State())
         //add function for button
-        button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(editButtonAction(sender:)), for: UIControl.Event.touchUpInside)
         //set frame
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -40,20 +44,6 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
         //assign button to navigationbar
         self.navigationItem.rightBarButtonItem = barButton
         
-        
-        let urlPicRaw = passedData
-        let urlPic = URL (string: urlPicRaw)
-        /*let networkService = NetworkService(url: urlPic!)
-        networkService.downloadImage({ (imageData) in
-            let image = UIImage(data: imageData as Data)
-            DispatchQueue.main.async(execute: {
-                self.profPic.image = image
-            })
-        })*/
-        
-        parseImagetoView(urlPic!)
-        
-        imagePicker.delegate = self
     }
     
     func parseImagetoView(_ urlPic: URL) {
@@ -66,7 +56,7 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
         })
     }
 
-    func editButtonAction(sender: UIBarButtonItem){
+    @objc func editButtonAction(sender: Any){
         
         let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
@@ -84,8 +74,8 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
          otherwise app will crash on iPad */
         switch UIDevice.current.userInterfaceIdiom {
             case .pad:
-                //alert.popoverPresentationController?.sourceView = sender
-                //alert.popoverPresentationController?.sourceRect = sender.bounds
+                alert.popoverPresentationController?.sourceView = sender as? UIView
+                alert.popoverPresentationController?.sourceRect = (sender as AnyObject).bounds
                 alert.popoverPresentationController?.permittedArrowDirections = .up
         default:
             break
@@ -96,10 +86,11 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
     
     func openCamera()
     {
-    if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera))
+    if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerController.SourceType.camera))
         {
-            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.sourceType = UIImagePickerController.SourceType.camera
             imagePicker.allowsEditing = true
+            imagePicker.cameraCaptureMode = .photo
             self.present(imagePicker, animated: true, completion: nil)
         }
         else
@@ -112,7 +103,7 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
     
     func openGallery()
     {
-        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
         imagePicker.allowsEditing = true
         self.present(imagePicker, animated: true, completion: nil)
     }
@@ -228,13 +219,104 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
         self.present(alert, animated: true, completion: nil)
     }*/
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // Local variable inserted by Swift 4.2 migrator.
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         HUD.show(.progress)
-        if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+        if let pickedImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.editedImage)] as? UIImage {
+            
             // imageViewPic.contentMode = .scaleToFill
-            let imageData:Data = UIImagePNGRepresentation(pickedImage)!
-            let imageStr = imageData.base64EncodedString()
-            let imageUrl = info[UIImagePickerControllerImageURL] as? URL
+            // profPic.image = pickedImage
+            
+            let imageData:Data =  pickedImage.jpegData(compressionQuality: 1.0)!
+            let imageStr = imageData.base64EncodedString(options: .lineLength64Characters)
+            let imageUrl = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.imageURL)] as? URL
+            let imageName = "\(imageUrl?.lastPathComponent ?? "Profile Photo.jpeg")"
+            print(imageName)
+            self.dismiss(animated: true, completion: nil)
+            
+            let uploadUrl = URL(string: url);
+            let request = NSMutableURLRequest(url:uploadUrl!);
+            
+            let userName = keychain.get("USER_NAME_KEY")
+            let userToken = keychain.get("USER_TOKEN_KEY")
+            
+            let loginString = String(format: "%@:%@", userName!, userToken!)
+            let loginData = loginString.data(using: String.Encoding.utf8)!
+            let base64LoginString = loginData.base64EncodedString()
+            
+            request.httpMethod = "POST";
+            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+            request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
+            
+            let boundary = generateBoundaryString()
+            
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            let params = [
+                "avatar"  : imageStr,
+                "filename"    : imageName
+            ]
+            
+            request.httpBody = createBodyWithParameters(parameters: params, filePathKey: "file", imageDataKey: imageData as NSData, boundary: boundary) as Data
+            
+            HUD.show(.progress)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest) {
+                data, response, error in
+                
+                if error != nil {
+                    print("error=\(error)")
+                    return
+                }
+            
+                // Print out reponse body
+                let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                print("****** response data = \(responseString!)")
+                
+                let json:Any?
+                
+                do {
+                    json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                }
+                catch
+                {
+                    print(error)
+                    return
+                }
+                
+                guard let server_response = json as? [String:Any] else
+                {
+                    return
+                }
+                
+                if let status = server_response["status"] as? String
+                {
+                    let message = server_response["message"] as? String
+                    
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                    
+                    if (status == "ok") {
+                        let data_dictionary = server_response["data"] as? NSDictionary
+                        let avatarURL = data_dictionary?["avatar"] as? String
+                        print(avatarURL!)
+                        let urlPicNew = URL (string: avatarURL!)
+                        
+                        self.parseImagetoView(urlPicNew!)
+                        
+                        Alert.showMessage(title: "SUCCESS!", msg: "Profile photo changed")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                    } else {
+                        Alert.showMessage(title: "WARNING!", msg: message!)
+                    }
+                }
+            }
+            
+            task.resume()
+        }
             //let result = PHAssetResource.assetResources(for: imageUrl!)
             //let asset = result.firstObject
             //let imageName = "\(result.first!.originalFilename)"
@@ -245,12 +327,12 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
                 print(asset?.value(forKey: "filename"))
                 
             }*/
-            let imageName = imageUrl?.lastPathComponent
-            print(imageName ?? "nil")
-            let paramToSend = "avatar=" + imageStr + "&filename=" + imageName!
+
+            /*let paramToSend = "avatar=" + imageStr + "&filename=" + imageName
             
             NetworkService.parseJSONFromURL(self.url, "POST", parameter: paramToSend){ (server_response) in
                 if let status = server_response["status"] as? String {
+                    let message = server_response["message"] as? String
                     if (status == "ok") {
                         let data_dictionary = server_response["data"] as? NSDictionary
                         let avatarURL = data_dictionary?["avatar"] as? String
@@ -261,9 +343,9 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
                         
                         DispatchQueue.main.async {
                             HUD.hide()
+                            Alert.showMessage(title: "WARNING!", msg: message!)
                         }
                     } else {
-                        let message = server_response["message"] as? String
                         
                         DispatchQueue.main.async {
                             HUD.hide()
@@ -274,7 +356,54 @@ class EditPhoto: UIViewController, UINavigationControllerDelegate, UIImagePicker
             }
             
         }
-        picker.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)*/
     }
 
+    func createBodyWithParameters(parameters: [String: String]?, filePathKey: String?, imageDataKey: NSData, boundary: String) -> NSData {
+        let body = NSMutableData();
+        
+        if parameters != nil {
+            for (key, value) in parameters! {
+                body.appendString(string: "--\(boundary)\r\n")
+                body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.appendString(string: "\(value)\r\n")
+            }
+        }
+        
+        let filename = "user-profile.jpg"
+        let mimetype = "image/jpg"
+        
+        body.appendString(string: "--\(boundary)\r\n")
+        body.appendString(string: "Content-Disposition: form-data; name=\"\(filePathKey!)\"; filename=\"\(filename)\"\r\n")
+        body.appendString(string: "Content-Type: \(mimetype)\r\n\r\n")
+        body.append(imageDataKey as Data)
+        body.appendString(string: "\r\n")
+        body.appendString(string: "--\(boundary)--\r\n")
+        
+        return body
+    }
+    
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().uuidString)"
+    }
+    
+}
+
+extension NSMutableData {
+    
+    func appendString(string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: true)
+        append(data!)
+    }
+}
+
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

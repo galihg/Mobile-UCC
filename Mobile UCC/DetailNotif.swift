@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class DetailNotif: BaseViewController, WKUIDelegate{
+class DetailNotif: BaseViewController, WKUIDelegate {
 
     @IBOutlet weak var type: UILabel!
     @IBOutlet weak var subject: UILabel!
@@ -22,20 +22,17 @@ class DetailNotif: BaseViewController, WKUIDelegate{
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.title = "Detail Notification"
+        self.title = "Notification Detail"
         content.sizeToFit()
+        content.scrollView.bounces = false
         
         type.text = (passedData[0] as! String)
         subject.text = (passedData[1] as! String)
         date.text = (passedData[2] as! String)
         
+        //Isi Notifikasi
         let rawContent = (passedData[3] as! String)
         content.loadHTMLString(rawContent, baseURL: Bundle.main.bundleURL)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //ViewControllers view ist still not in the window hierarchy
-        //This is the right place to do for instance animations on your views subviews
     }
     
     override func viewDidAppear(_ animated: Bool) {

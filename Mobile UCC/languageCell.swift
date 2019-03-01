@@ -27,7 +27,7 @@ class languageCell: UITableViewCell {
     
     func updateUI()
     {
-        let langRaw = bahasa.id_bahasa
+        let langRaw = bahasa.bahasa
         if (langRaw == "1") {
             language.text = "Jepang"
         } else if (langRaw == "2") {

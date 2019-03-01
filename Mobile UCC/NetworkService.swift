@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import KeychainSwift
 
 class NetworkService {
     
     lazy var configuration: URLSessionConfiguration = URLSessionConfiguration.default
     lazy var session: URLSession = URLSession(configuration: self.configuration)
-    
+
     let url: URL
     
     init(url: URL) {
@@ -48,7 +49,8 @@ class NetworkService {
     
     static func parseJSONFromURL(_ urlString: String, _ method: String, parameter: String, _ completion: @escaping jsonHandler){
         
-        let defaults = UserDefaults.standard
+        //let defaults = UserDefaults.standard
+        let keychain = KeychainSwift()
         let session = URLSession.shared
         let url = URL(string: urlString)
         var request = URLRequest(url: url!)
@@ -56,16 +58,13 @@ class NetworkService {
         
         request.httpMethod = method
         request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
-        
-        if (defaults.object(forKey: "session") != nil ){
+
+        if (keychain.get("USER_NAME_KEY") != nil && keychain.get("USER_TOKEN_KEY") != nil){
             
-            let preference_block = defaults.object(forKey: "session")
-            var preferences = preference_block as! [Any]
+            let userName = keychain.get("USER_NAME_KEY")
+            let userToken = keychain.get("USER_TOKEN_KEY")
             
-            let username = preferences[0] as! String
-            let token = preferences[1] as! String
-            
-            let loginString = String(format: "%@:%@", username, token)
+            let loginString = String(format: "%@:%@", userName!, userToken!)
             let loginData = loginString.data(using: String.Encoding.utf8)!
             let base64LoginString = loginData.base64EncodedString()
             
@@ -99,8 +98,6 @@ class NetworkService {
                 task.resume()
                 
             } else {
-                
-                //request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
                 
                 let task = session.dataTask(with: request as URLRequest, completionHandler: {
                     (data, response, error) in

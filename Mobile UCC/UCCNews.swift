@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 class UCCNews: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -19,27 +20,24 @@ class UCCNews: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         
         // Do any additional setup after loading the view.
         
-        news = News.downloadAllNews()
-        
         self.addSlideMenuButton()
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.reloadData()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
-        
-        self.title = "UCC News"
+
         self.navigationItem.title="UCC News"
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
             Auth.auth_check()
         }
+        
+        downloadAllNews()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,20 +49,46 @@ class UCCNews: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         }
         else
         {
-            let controller = UIAlertController(title: "No Internet Detected", message: "This app requires an Internet connection", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            Alert.showMessage(title: "No Internet Detected", msg: "This app requires an Internet connection")
             
-            controller.addAction(ok)
-            controller.addAction(cancel)
-            
-            present(controller, animated: true, completion: nil)
+            HUD.hide()
         }
-        
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .lightContent
+    func downloadAllNews() {
+        HUD.show(.progress)
+        
+        let urlString = "http://api.career.undip.ac.id/v1/news/list"
+        
+        NetworkService.parseJSONFromURL(urlString, "GET", parameter: ""){ (server_response) in
+            
+            if let status = server_response["status"] as? String {
+                if (status == "ok"){
+                    let dataDictionary = server_response["data"] as! [String:Any]
+                    let newsDictionaries = dataDictionary["news"] as! [[String:Any]]
+                    
+                    for newsDictionary in newsDictionaries {
+                        let eachNews = newsDictionary
+                        let title = eachNews["title"] as? String
+                        let ringkasan = eachNews["ringkasan"] as? String
+                        let tgl_post = eachNews["tgl_post"] as? String
+                        let deskripsi = eachNews["deskripsi"] as? String
+                        
+                        // image URL
+                        let thumb_image = URL(string: eachNews["thumb_url"] as! String)
+                        let foto =  URL(string: eachNews["foto"] as! String)
+                        
+                        self.news.append(News(title: title!, ringkasan: ringkasan!, thumb_image: thumb_image!, tgl_post: tgl_post!, foto: foto!, deskripsi: deskripsi!))
+                    }
+                    
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -87,7 +111,6 @@ class UCCNews: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath:
         IndexPath)
     {
@@ -98,7 +121,6 @@ class UCCNews: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         let newsPhoto = news.foto
         let newsDescription = news.deskripsi
         let newsDate = news.tgl_post
-        
         
         let passedArray = [newsName!, newsPhoto!, newsDescription!, newsDate!] as [Any]
 

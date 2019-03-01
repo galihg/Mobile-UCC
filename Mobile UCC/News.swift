@@ -38,23 +38,4 @@ class News
         foto =  URL(string: newsDictionary["foto"] as! String)
     }
     
-    static func downloadAllNews() -> [News]
-    {
-        var news = [News]()
-        
-        let url = URL(string: "http://api.career.undip.ac.id/v1/news/list")
-        let jsonData = try? Data(contentsOf: url!)
-        
-        if let jsonDictionary = NetworkService.parseJSONFromData(jsonData) {
-            let newsDictionaries = jsonDictionary["data"] as! NSDictionary
-            let newsDictionaries2 = newsDictionaries ["news"] as! [[String : Any]]
-            for newsDictionary in newsDictionaries2 {
-                let newNews = News(newsDictionary: newsDictionary)
-                news.append(newNews)
-            }
-        }
-        print(news)
-        return news
-        
-    }
 }

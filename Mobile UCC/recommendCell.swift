@@ -30,7 +30,7 @@ class recommendCell: UITableViewCell {
         nama_rekomendasi.text = rekomendasi.nama_rekomendasi
         posisi.text = rekomendasi.posisi
         phone.text = rekomendasi.no_telp
-        
+        print(phone.text)
     }
     
 }

@@ -14,7 +14,10 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
     @IBOutlet weak var tableView: UITableView!
     
     var vacancy = [Vacancy]()
-   
+    //var refresher: UIRefreshControl!
+    //var refreshControl = RefreshControl()
+    //var refreshView = refreshControl.refresher
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,24 +25,25 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
         
         self.addSlideMenuButton()
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
         
-        downloadAllVacancy()
-        
+        //getRefreshcontrol()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //ViewControllers view ist still not in the window hierarchy
         //This is the right place to do for instance animations on your views subviews
-        self.navigationController?.isNavigationBarHidden = false
+        
         self.title = "Vacancy"
-        self.navigationItem.title="Vacancy"
+        self.navigationItem.title = "Vacancy"
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "session") != nil ) {
            Auth.auth_check()
         }
+        
+        downloadAllVacancy("load")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,32 +55,72 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
         }
         else
         {
-            let controller = UIAlertController(title: "No Internet Detected", message: "This app requires an Internet connection", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            
-            controller.addAction(ok)
-            controller.addAction(cancel)
-            
-            present(controller, animated: true, completion: nil)
+            Alert.showMessage(title: "No Internet Detected", msg: "This app requires an Internet connection")
+         
             HUD.hide()
         }
-        
     }
     
-    /*override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    /*func getRefreshcontrol() {
+        //let refreshView = refreshControl.refresher
+        //refreshView.addTarget(self, action: #selector(populate), for: .valueChanged)
         
-        // Show the navigation bar on other view controllers
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        refresher = UIRefreshControl()
+        refresher.attributedTitle = NSAttributedString(string: "Loading...")
+        refresher.addTarget(self, action: #selector(populate), for: .valueChanged)
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = refresher
+        } else {
+            tableView.addSubview(refresher)
+        }
+    }
+    
+    @objc func populate() {
+        //downloadAllVacancy("refresh")
+        
+        if Reachability.isConnectedToNetwork() == true
+        {
+            downloadAllVacancy("refresh")
+        }
+        else
+        {
+            Alert.showMessage(title: "No Internet Detected", msg: "This app requires an Internet connection")
+            
+            let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text = "Tidak ada lowongan pekerjaan"
+            noDataLabel.textColor = UIColor.black
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView  = noDataLabel
+            tableView.separatorStyle  = .none
+            
+            refresher.endRefreshing()
+            //HUD.hide()
+        }
     }*/
     
+    func emptyView(_ state: Bool) {
+        let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.size.width, height: self.tableView.bounds.size.height))
+        noDataLabel.text          = "Tidak ada lowongan pekerjaan"
+        noDataLabel.textColor     = UIColor.black
+        noDataLabel.textAlignment = .center
+        
+        if state == true {
+            self.tableView.backgroundView  = noDataLabel
+            self.tableView.separatorStyle  = .none
+        } else {
+            self.tableView.backgroundView?.isHidden = true
+            self.tableView.separatorStyle  = .singleLine
+        }
+    }
     
-    func downloadAllVacancy () {
-        
+    func downloadAllVacancy(_ loadType: String) {
+        //let refreshView = refreshControl.refresher
         vacancy = []
-        
         HUD.show(.progress)
+        /*if (loadType != "refresh") {
+            HUD.show(.progress)
+        }*/
+        
         let url = "http://api.career.undip.ac.id/v1/employers"
         
         NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
@@ -103,22 +147,21 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
                     self.vacancy.append(Vacancy(company_name: company_name!, id_vacancy: id_vacancy!, company_logo: company_logo!, total_vacancy: total_vacancy!, industry_type: industry_type!))
                     }
                     
-                    print(self.vacancy)
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
+
                         HUD.hide()
+                        /*if (loadType != "refresh") {
+                            HUD.hide()
+                        } else {
+                            self.refresher.endRefreshing()
+                        }*/
                     }
                     
                 }
             }
             
-            
-            
         }
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .lightContent
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -128,16 +171,21 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return vacancy.count
+        if vacancy.count > 0 {
+            emptyView(false)
+            return vacancy.count
+        } else {
+            emptyView(true)
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "vacancyCell", for: indexPath) as! vacancyCell
         let vacancy = self.vacancy[indexPath.row]
-        
         cell.vacancy = vacancy
-        
+
         return cell
     }
     

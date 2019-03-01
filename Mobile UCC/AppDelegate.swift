@@ -18,14 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //static var shared: AppDelegate { return UIApplication.shared.delegate as! AppDelegate }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
         application.registerForRemoteNotifications()
         
         requestNotificationAuthorization(application: application)
         
-        if let userInfo = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] {
+        if let userInfo = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] {
             NSLog("[RemoteNotification] applicationState: \(applicationStateString) didFinishLaunchingWithOptions for iOS9: \(userInfo)")
             //TODO: Handle background notification
         }
@@ -37,7 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let loginVC = mainStoryboard.instantiateViewController(withIdentifier: "Reset Password") as! ResetPassword*/
         /*var initialViewController: UIViewController
         //var initialViewController2: BaseViewController
-        
         
         let preferences = UserDefaults.standard
         
@@ -54,10 +53,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = initialViewController2
         }*/
         
+        //window = UIWindow(frame: UIScreen.main.bounds)
+        //window?.makeKeyAndVisible()
+        //window?.rootViewController = ContainerViewController()
         
         UINavigationBar.appearance().barTintColor = UIColor(red: 23/255, green: 41/255, blue: 83/255, alpha: 1)
         UINavigationBar.appearance().tintColor = UIColor.white
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        UINavigationBar.appearance().titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue:UIColor.white])
         UINavigationBar.appearance().isTranslucent = false
         
         return true
@@ -186,3 +188,9 @@ extension UIApplication {
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}

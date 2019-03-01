@@ -54,6 +54,9 @@ class EditStrengthWeakness: BaseViewController, UITextViewDelegate {
                         HUD.hide()
                         self.openViewControllerBasedOnIdentifier("Home")
                         Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                     
                 }
@@ -83,10 +86,16 @@ class EditStrengthWeakness: BaseViewController, UITextViewDelegate {
         let paramToSend = "kelebihan=" + kelebihan.text! + "&kekurangan=" + kekurangan.text!
         
         NetworkService.parseJSONFromURL(url, "POST", parameter: paramToSend){ (server_response) in
-            if let message = server_response["message"] as? String {
-                Alert.showMessage(title: "WARNING!", msg: message)
-                DispatchQueue.main.async {
-                    HUD.hide()
+            if let status = server_response["status"] as? String {
+                if let message = server_response["message"] as? String {
+                    DispatchQueue.main.async {
+                        HUD.hide()
+                    }
+                    if (status == "ok"){
+                        Alert.showMessage(title: "SUCCESS!", msg: message)
+                    } else {
+                        Alert.showMessage(title: "WARNING!", msg: message)
+                    }
                 }
             }
         }

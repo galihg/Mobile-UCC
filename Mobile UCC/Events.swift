@@ -31,7 +31,7 @@ class Events
         self.tgl_event = tgl_event
     }
     
-    init(eventsDictionary: [String : Any]) {
+    /*init(eventsDictionary: [String : Any]) {
         name = eventsDictionary["event_name"] as? String
         desc = eventsDictionary["event_desc"] as? String
         desc_full = eventsDictionary["html_desc"] as? String
@@ -42,23 +42,6 @@ class Events
         // image URL
         small_banner = eventsDictionary["smallbanner_url"] as? String ?? "nil"
         banner =  eventsDictionary["banner_url"] as? String ?? "nil"
-    }
+    }*/
     
-    static func downloadAllEvents() -> [Events]
-    {
-        var events = [Events]()
-        
-        let url = URL(string: "http://api.career.undip.ac.id/v1/event/list")
-        let jsonData = try? Data(contentsOf: url!)
-        
-        if let jsonDictionary = NetworkService.parseJSONFromData(jsonData) {
-            let eventsDictionaries = jsonDictionary["data"] as! [[String : Any]]
-            for eventsDictionary in eventsDictionaries {
-                let newEvents = Events(eventsDictionary: eventsDictionary)
-                events.append(newEvents)
-            }
-        }
-        
-        return events
-    }
 }
