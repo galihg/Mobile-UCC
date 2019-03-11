@@ -291,7 +291,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
                             self.keychain.clear()
                             self.defaults.removeObject(forKey: "session")
                             
-                            Alert.showMessage(title: "SUCCESS!", msg: "Anda telah logout")
+                            Alert.showMessage(title: "SUCCESS!", msg: "Logout success!")
                             DispatchQueue.main.async {
                                 HUD.hide()
                                 self.openViewControllerBasedOnIdentifier("Home")

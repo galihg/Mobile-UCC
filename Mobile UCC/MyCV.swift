@@ -8,6 +8,7 @@
 
 import UIKit
 import PKHUD
+import KeychainSwift
 
 class MyCV: BaseViewController {
 
@@ -67,7 +68,13 @@ class MyCV: BaseViewController {
                     let cvDictionaries = server_response["data"] as! [String:Any]
                     let photoDictionaries = cvDictionaries["profile_photo"] as! [String:Any]
                     let imageOri = photoDictionaries["original"] as! String
-                    
+                    if (imageOri == "https://career.undip.ac.id/assets/upload/memberfiles/profile/") {
+                        DispatchQueue.main.async {
+                            HUD.hide()
+                            return
+                        }
+                    }
+    
                     let urlPic = URL (string: imageOri)
                     let networkService = NetworkService(url: urlPic!)
                     networkService.downloadImage({ (imageData) in
@@ -112,13 +119,17 @@ class MyCV: BaseViewController {
                     }
                     
                 } else if (status == "invalid-session"){
-                    
+                    let keychain = KeychainSwift()
                     let preferences = UserDefaults.standard
+                    
+                    keychain.clear()
                     preferences.removeObject(forKey: "session")
+                    
+                    Alert.showMessage(title: "WARNING!", msg: session_end_message)
                     
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
-                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+   
                         NotificationCenter.default.post(name: .updatePhoto, object: nil)
                         NotificationCenter.default.post(name: .updateProfileSection, object: nil)
                         NotificationCenter.default.post(name: .reload, object: nil)
@@ -132,9 +143,7 @@ class MyCV: BaseViewController {
     }
     
     @IBAction func editPhoto(_ sender: Any) {
-        
         performSegue(withIdentifier: "showEditPhoto", sender: profPic.image(for: []))
-    
     }
     
     @IBAction func publicInfo(_ sender: Any) {
@@ -171,7 +180,6 @@ class MyCV: BaseViewController {
     
     @IBAction func showRecommendation(_ sender: Any) {
         performSegue(withIdentifier:"showRecommendation" , sender: self)
-        
     }
     
     @IBAction func showStrength(_ sender: Any) {
@@ -188,17 +196,14 @@ class MyCV: BaseViewController {
     
     @IBAction func showPortofolio(_ sender: Any) {
         performSegue(withIdentifier: "showPortofolio", sender: self)
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showEditPhoto" {
-            
             let PhotoVC = segue.destination as! EditPhoto
             let pass = sender as! UIImage
             PhotoVC.passedData = pass
             navigationItem.title = nil
-            
         }
         
         if segue.identifier == "showPublicInfo" {

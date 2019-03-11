@@ -8,6 +8,7 @@
 
 import UIKit
 import PKHUD
+import KeychainSwift
 
 class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -101,13 +102,20 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
                         HUD.hide()
                     }
                 } else if (status == "invalid-session"){
-                    
+                    let keychain = KeychainSwift()
                     let preferences = UserDefaults.standard
+                    
+                    keychain.clear()
                     preferences.removeObject(forKey: "session")
+                    
+                    Alert.showMessage(title: "WARNING!", msg: session_end_message)
                     
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
-                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                 }
             }
@@ -199,9 +207,6 @@ class AwardsAchievements: BaseViewController, UITableViewDataSource, UITableView
                 } else if (status == "error"){
                     let message = server_response["message"] as? String
                     Alert.showMessage(title: "WARNING!", msg: message!)
-                    NotificationCenter.default.post(name: .updatePhoto, object: nil)
-                    NotificationCenter.default.post(name: .updateProfileSection, object: nil)
-                    NotificationCenter.default.post(name: .reload, object: nil)
                 }
             }
         }

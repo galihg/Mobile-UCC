@@ -26,7 +26,6 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
         tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
-        //tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,7 +108,7 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
             return merchant.count
         } else {
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-            noDataLabel.text          = "Tidak ada Merchant"
+            noDataLabel.text          = "No Merchant"
             noDataLabel.textColor     = UIColor.black
             noDataLabel.textAlignment = .center
             tableView.backgroundView  = noDataLabel

@@ -8,6 +8,7 @@
 
 import UIKit
 import PKHUD
+import KeychainSwift
 
 class EditEnglishSkill: BaseViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
    
@@ -116,14 +117,18 @@ class EditEnglishSkill: BaseViewController, UITableViewDelegate, UITableViewData
                         HUD.hide()
                     }
                 } else if (status == "invalid-session"){
-                    
+                    let keychain = KeychainSwift()
                     let preferences = UserDefaults.standard
+                    
+                    keychain.clear()
                     preferences.removeObject(forKey: "session")
+                    
+                    Alert.showMessage(title: "WARNING!", msg: session_end_message)
                     
                     DispatchQueue.main.async {
                         HUD.hide()
                         self.openViewControllerBasedOnIdentifier("Home")
-                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        
                         NotificationCenter.default.post(name: .updatePhoto, object: nil)
                         NotificationCenter.default.post(name: .updateProfileSection, object: nil)
                         NotificationCenter.default.post(name: .reload, object: nil)

@@ -100,7 +100,7 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
     
     func emptyView(_ state: Bool) {
         let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.size.width, height: self.tableView.bounds.size.height))
-        noDataLabel.text          = "Tidak ada lowongan pekerjaan"
+        noDataLabel.text          = "No Vacancy"
         noDataLabel.textColor     = UIColor.black
         noDataLabel.textAlignment = .center
         

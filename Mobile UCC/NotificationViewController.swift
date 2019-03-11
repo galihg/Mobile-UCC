@@ -8,6 +8,7 @@
 
 import UIKit
 import PKHUD
+import KeychainSwift
 
 class NotificationViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -87,13 +88,15 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
                     }
                     
                 } else if (status == "invalid-session"){
-                    
+                    let keychain = KeychainSwift()
                     let preferences = UserDefaults.standard
+                    
+                    keychain.clear()
                     preferences.removeObject(forKey: "session")
                     
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
-                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+                        Alert.showMessage(title: "WARNING!", msg: "Login session has ended, please login again")
                         NotificationCenter.default.post(name: .updatePhoto, object: nil)
                         NotificationCenter.default.post(name: .updateProfileSection, object: nil)
                         NotificationCenter.default.post(name: .reload, object: nil)
@@ -115,7 +118,7 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
             return notifikasi.count
         } else {
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-            noDataLabel.text          = "Tidak ada Notifikasi"
+            noDataLabel.text          = "No Notification"
             noDataLabel.textColor     = UIColor.black
             noDataLabel.textAlignment = .center
             tableView.backgroundView  = noDataLabel
@@ -168,12 +171,20 @@ class NotificationViewController: BaseViewController, UITableViewDataSource, UIT
                     }
                 }
                 else if (status == "invalid-session"){
+                    let keychain = KeychainSwift()
                     let preferences = UserDefaults.standard
+                    
+                    keychain.clear()
                     preferences.removeObject(forKey: "session")
+                    
+                    Alert.showMessage(title: "WARNING!", msg: session_end_message)
                     
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
-                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+
+                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+                        NotificationCenter.default.post(name: .reload, object: nil)
                     }
                     
                 }

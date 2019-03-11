@@ -46,11 +46,11 @@ class LoginScreen: BaseViewController, UITextFieldDelegate {
         let password = _password.text
         let data = password!.data(using: String.Encoding.utf8)
         let auth_passw = data!.base64EncodedString()
-        let client_ver = "ios-v1.1"
+        let client_ver = "ios-v1.4"
         
         if(auth_uname == "" || password == "")
         {
-            Alert.showMessage(title: "WARNING!", msg: "Masukkan username dan password terlebih dahulu")
+            Alert.showMessage(title: "WARNING!", msg: "Enter your username and password first")
         } else {
             DoLogin(auth_uname!, auth_passw, client_ver)
         }

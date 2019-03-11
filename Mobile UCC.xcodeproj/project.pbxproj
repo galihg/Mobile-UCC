@@ -77,6 +77,7 @@
 		FA1C4D05200C88DE00A88A04 /* CTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4D04200C88DE00A88A04 /* CTC.swift */; };
 		FA1C4D07200C8ADB00A88A04 /* CTCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4D06200C8ADB00A88A04 /* CTCCell.swift */; };
 		FA1D067821B549DF0085F41C /* ExtenNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1D067721B549DF0085F41C /* ExtenNotif.swift */; };
+		FA219E37223655AC0042192B /* ClearSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA219E36223655AC0042192B /* ClearSession.swift */; };
 		FA2282AB2011952D007C0642 /* DLRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2282A92011952D007C0642 /* DLRadioButton.m */; };
 		FA2778D921AA702A00143D2F /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2778D821AA702A00143D2F /* ContainerViewController.swift */; };
 		FA28C60721BD406F00149BE0 /* Mobile_UCCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA28C60621BD406F00149BE0 /* Mobile_UCCTests.swift */; };
@@ -204,6 +205,7 @@
 		FA1C4D04200C88DE00A88A04 /* CTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTC.swift; sourceTree = "<group>"; };
 		FA1C4D06200C8ADB00A88A04 /* CTCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTCCell.swift; sourceTree = "<group>"; };
 		FA1D067721B549DF0085F41C /* ExtenNotif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtenNotif.swift; sourceTree = "<group>"; };
+		FA219E36223655AC0042192B /* ClearSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearSession.swift; sourceTree = "<group>"; };
 		FA2282A82011952B007C0642 /* Mobile UCC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mobile UCC-Bridging-Header.h"; sourceTree = "<group>"; };
 		FA2282A92011952D007C0642 /* DLRadioButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLRadioButton.m; sourceTree = "<group>"; };
 		FA2282AA2011952D007C0642 /* DLRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLRadioButton.h; sourceTree = "<group>"; };
@@ -541,6 +543,7 @@
 				FA1722442060106D00A6ECA9 /* Auth.swift */,
 				FACAAA37205A7969008E35E5 /* NetworkService.swift */,
 				463216C81F6A5E4300E8C781 /* NetworkTest.swift */,
+				FA219E36223655AC0042192B /* ClearSession.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -786,6 +789,7 @@
 				4636E8DF1F385C1D003C53D7 /* Vacancy.swift in Sources */,
 				FAF7D56A20027B8D00483C08 /* AwardsAchievements.swift in Sources */,
 				FA2D065B21721F6D00FBCF2D /* ResetPassword.swift in Sources */,
+				FA219E37223655AC0042192B /* ClearSession.swift in Sources */,
 				462CE93F1FDC173F00974399 /* educationCell.swift in Sources */,
 				FA2778D921AA702A00143D2F /* ContainerViewController.swift in Sources */,
 				FA5FBF8C214D4457008AEFE4 /* JobType.swift in Sources */,

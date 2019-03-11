@@ -107,7 +107,7 @@ class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDeleg
             noDataLabel.isHidden = true
             return events.count
         } else {
-            noDataLabel.text          = "Tidak ada Event"
+            noDataLabel.text          = "No Event"
             noDataLabel.textColor     = UIColor.black
             noDataLabel.textAlignment = .center
             tableView.backgroundView  = noDataLabel

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import KeychainSwift
 
 class Auth: BaseViewController {
     
@@ -26,17 +27,7 @@ class Auth: BaseViewController {
                     
                 } else if (status == "invalid-session"){
                     
-                    let preferences = UserDefaults.standard
-                    preferences.removeObject(forKey: "session")
-                    
-                    DispatchQueue.main.async {
-                        
-                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
-                        
-                        NotificationCenter.default.post(name: .updatePhoto, object: nil)
-                        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
-                        NotificationCenter.default.post(name: .reload, object: nil)
-                    }
+                    ClearSession.delete_session()
                     
                 }
             }

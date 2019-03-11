@@ -8,6 +8,7 @@
 
 import UIKit
 import PKHUD
+import KeychainSwift
 
 class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -59,7 +60,7 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
     
     func emptyView(_ state: Bool) {
         let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.size.width, height: self.tableView.bounds.size.height))
-        noDataLabel.text          = "Tidak ada riwayat lamaran"
+        noDataLabel.text          = "No application history"
         noDataLabel.textColor     = UIColor.black
         noDataLabel.textAlignment = .center
         
@@ -100,22 +101,21 @@ class ApplicationHistory: BaseViewController, UITableViewDataSource, UITableView
 
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
-                        /*if (self.history.count == 0){
-                            self.emptyView(true)
-                        } else {
-                            self.emptyView(false)
-                        }*/
                         
                         HUD.hide()
                     }
                 } else if (status == "invalid-session"){
-                    
+                    let keychain = KeychainSwift()
                     let preferences = UserDefaults.standard
+                    
+                    keychain.clear()
                     preferences.removeObject(forKey: "session")
+                    
+                    Alert.showMessage(title: "WARNING!", msg: session_end_message)
                     
                     DispatchQueue.main.async {
                         self.openViewControllerBasedOnIdentifier("Home")
-                        Alert.showMessage(title: "WARNING!", msg: "Sesi Login telah berakhir, silahkan login ulang")
+
                         NotificationCenter.default.post(name: .updatePhoto, object: nil)
                         NotificationCenter.default.post(name: .updateProfileSection, object: nil)
                         NotificationCenter.default.post(name: .reload, object: nil)

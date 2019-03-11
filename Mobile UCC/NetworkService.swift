@@ -49,7 +49,6 @@ class NetworkService {
     
     static func parseJSONFromURL(_ urlString: String, _ method: String, parameter: String, _ completion: @escaping jsonHandler){
         
-        //let defaults = UserDefaults.standard
         let keychain = KeychainSwift()
         let session = URLSession.shared
         let url = URL(string: urlString)
