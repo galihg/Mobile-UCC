@@ -69,10 +69,10 @@ class PublicInformation: BaseViewController {
         
         if let preference_block = defaults.object(forKey: "session") {
             let preferences = preference_block as! [Any]
-            let phone = preferences[6] as! String
-            let verifPhone = preferences[7] as! Bool
-            let email = preferences[3] as! String
-            let verifEmail = preferences[5] as! Bool
+            let phone = preferences[4] as? String ?? "(empty)"
+            let verifPhone = preferences[5] as! Bool
+            let email = preferences[1] as! String
+            let verifEmail = preferences[3] as! Bool
             
             NetworkService.parseJSONFromURL(url, "GET", parameter: ""){ (server_response) in
                 
