@@ -54,9 +54,10 @@ class NetworkService {
         let url = URL(string: urlString)
         var request = URLRequest(url: url!)
         
-        
         request.httpMethod = method
-        request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
+        
+        //HTTP Header & API Key. This is just a template
+        request.setValue("insert API Key here", forHTTPHeaderField: "insert HTTP Header here")
 
         if (keychain.get("USER_NAME_KEY") != nil && keychain.get("USER_TOKEN_KEY") != nil){
             
