@@ -95,7 +95,6 @@ class EditAwardsAndAchievements: BaseViewController, UITextFieldDelegate, UIText
         self.view.layoutIfNeeded()
         
         return true
-        
     }
     
     @objc func doneButtonTappedForMyNumericTextField() {

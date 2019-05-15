@@ -9,7 +9,7 @@
 import UIKit
 import PKHUD
 
-class Vacancy3: BaseViewController {
+class VacancyDetail: BaseViewController {
 
     @IBOutlet weak var jobPosition: UILabel!
     @IBOutlet weak var batasWaktu: UILabel!

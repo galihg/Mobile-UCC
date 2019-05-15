@@ -52,12 +52,10 @@ class eventCell: UITableViewCell {
         if (urlString_smallBanner != "nil") {
             let url_smallBanner = URL (string: urlString_smallBanner!)
             let networkService = NetworkService(url: url_smallBanner!)
-            networkService.downloadImage({ (imageData) in
+            networkService.downloadImage { (imageData) in
                 let image = UIImage(data: imageData as Data)
-                DispatchQueue.main.async(execute: {
-                    self.eventImage.image = image
-                })
-            })
+                self.eventImage.image = image
+            }
         } else {
             self.eventImage.image = UIImage(named: "Logo UCC putih")
         }

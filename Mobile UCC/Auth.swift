@@ -21,9 +21,7 @@ class Auth: BaseViewController {
             {
                 if (status == "ok"){
                     
-                    DispatchQueue.main.async {
-                        return
-                    }
+                    return
                     
                 } else if (status == "invalid-session"){
                     

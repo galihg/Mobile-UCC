@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Events
+struct Events
 {
     var name: String?
     var desc: String?
@@ -19,7 +19,7 @@ class Events
     var desc_location: String?
     var tgl_event: String?
     
-    init(name: String, desc: String, desc_full: String, small_banner: String, banner: String, location: String, desc_location: String, tgl_event: String)
+    /*init(name: String, desc: String, desc_full: String, small_banner: String, banner: String, location: String, desc_location: String, tgl_event: String)
     {
         self.name = name
         self.desc = desc
@@ -29,19 +29,27 @@ class Events
         self.location = location
         self.desc_location = desc_location
         self.tgl_event = tgl_event
-    }
-    
-    /*init(eventsDictionary: [String : Any]) {
-        name = eventsDictionary["event_name"] as? String
-        desc = eventsDictionary["event_desc"] as? String
-        desc_full = eventsDictionary["html_desc"] as? String
-        location = eventsDictionary["label_location"] as? String
-        desc_location = eventsDictionary["desc_location"] as? String
-        tgl_event = eventsDictionary["date_start"] as? String
-        
-        // image URL
-        small_banner = eventsDictionary["smallbanner_url"] as? String ?? "nil"
-        banner =  eventsDictionary["banner_url"] as? String ?? "nil"
     }*/
+}
+
+class EventsModel
+{
+    var events = [Events]()
     
+    init(eventsArray: [[String:Any]]) {
+        for eventDictionary in eventsArray {
+            let name = eventDictionary["event_name"] as! String
+            let desc = eventDictionary["event_desc"] as! String
+            let desc_full = eventDictionary["html_desc"] as! String
+            let location = eventDictionary["label_location"] as! String
+            let desc_location = eventDictionary["desc_location"] as! String
+            let tgl_event = eventDictionary["date_start"] as! String
+            
+            // image URL
+            let small_banner = eventDictionary["smallbanner_url"] as? String ?? "nil"
+            let banner =  eventDictionary["banner_url"] as? String ?? "nil"
+            
+            self.events.append(Events(name: name, desc: desc, desc_full: desc_full, small_banner: small_banner, banner: banner, location: location, desc_location: desc_location, tgl_event: tgl_event))
+        }
+    }
 }

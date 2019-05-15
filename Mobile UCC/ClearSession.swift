@@ -22,10 +22,8 @@ class ClearSession {
        
         Alert.showMessage(title: "WARNING!", msg: session_end_message)
     
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .updatePhoto, object: nil)
-            NotificationCenter.default.post(name: .updateProfileSection, object: nil)
-            NotificationCenter.default.post(name: .reload, object: nil)
-        }
+        NotificationCenter.default.post(name: .updatePhoto, object: nil)
+        NotificationCenter.default.post(name: .updateProfileSection, object: nil)
+        NotificationCenter.default.post(name: .reload, object: nil)
     }
 }

@@ -9,12 +9,12 @@
 import UIKit
 import PKHUD
 
-class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+class UpcomingEvent: BaseViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var events = [Events]()
-    
+    //var events = [Events]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,7 +24,9 @@ class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDeleg
        
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.dataSource = self
+        
+        let viewModel = EventsViewModel(tableView: tableView)
+        tableView.dataSource = viewModel
         tableView.delegate = self
     }
     
@@ -59,6 +61,15 @@ class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     func downloadAllEvents() {
+        let viewModel = EventsViewModel(tableView: tableView)
+        HUD.show(.progress)
+        viewModel.requestData {
+            self.tableView.reloadData()
+            HUD.hide()
+        }
+    }
+    
+    /*func downloadAllEvents() {
         HUD.show(.progress)
         
         let urlString = "http://api.career.undip.ac.id/v1/event/list"
@@ -124,27 +135,7 @@ class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDeleg
         cell.events = events
         
         return cell
-    }
-    
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath:
-        IndexPath)
-    {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let events = self.events[indexPath.row]
-        let eventName = events.name
-        let eventBanner = events.banner
-        //let URLeventBanner = URL (string: eventBanner!)
-        let eventDescription = events.desc_full
-        let eventLocation = events.desc_location
-        let eventDate = events.tgl_event
-       
-        let passedArray = [eventName!, eventBanner!, eventDescription!, eventLocation!, eventDate! ] as [Any]
-        performSegue(withIdentifier: "detailEvent", sender: passedArray )
-        
-        
-    }
+    }*/
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailEvent" {
@@ -157,5 +148,26 @@ class UpcomingEvent: BaseViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
     
+}
+
+extension UpcomingEvent: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath:
+        IndexPath)
+    {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let viewModel = EventsViewModel(tableView: tableView)
+        let events = viewModel.events[indexPath.row]
+        let eventName = events.name
+        let eventBanner = events.banner
+        //let URLeventBanner = URL (string: eventBanner!)
+        let eventDescription = events.desc_full
+        let eventLocation = events.desc_location
+        let eventDate = events.tgl_event
+        
+        let passedArray = [eventName!, eventBanner!, eventDescription!, eventLocation!, eventDate! ] as [Any]
+        performSegue(withIdentifier: "detailEvent", sender: passedArray )
+        
+    }
 }
 

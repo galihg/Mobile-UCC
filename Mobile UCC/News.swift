@@ -8,7 +8,7 @@
 
 import Foundation
 
-class News
+struct News
 {
     var title: String?
     var ringkasan: String?
@@ -16,26 +16,25 @@ class News
     var tgl_post: String?
     var foto: URL?
     var deskripsi: String?
+}
+
+class NewsModel
+{
+    var news = [News]()
     
-    init(title: String, ringkasan: String, thumb_image: URL, tgl_post: String, foto: URL, deskripsi: String)
-    {
-        self.title = title
-        self.ringkasan = ringkasan
-        self.thumb_image = thumb_image
-        self.tgl_post = tgl_post
-        self.foto = foto
-        self.deskripsi = deskripsi
-    }
-    
-    init(newsDictionary: [String : Any]) {
-        title = newsDictionary["title"] as? String
-        ringkasan = newsDictionary["ringkasan"] as? String
-        tgl_post = newsDictionary["tgl_post"] as? String
-        deskripsi = newsDictionary["deskripsi"] as? String
-        
-        // image URL
-        thumb_image = URL(string: newsDictionary["thumb_url"] as! String)
-        foto =  URL(string: newsDictionary["foto"] as! String)
+    init(newsArray: [[String:Any]]) {
+        for newsDictionary in newsArray {
+            let title = newsDictionary["title"] as? String ?? ""
+            let ringkasan = newsDictionary["ringkasan"] as? String ?? ""
+            let tgl_post = newsDictionary["tgl_post"] as? String ?? ""
+            let deskripsi = newsDictionary["deskripsi"] as? String ?? ""
+            
+            // image URL
+            let thumb_image = URL(string: newsDictionary["thumb_url"] as? String ?? "")
+            let foto =  URL(string: newsDictionary["foto"] as? String ?? "")
+            
+            self.news.append(News(title: title, ringkasan: ringkasan, thumb_image: thumb_image!, tgl_post: tgl_post, foto: foto!, deskripsi: deskripsi))
+        }
     }
     
 }

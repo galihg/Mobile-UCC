@@ -2,11 +2,12 @@
 //  Mobile_UCCTests.swift
 //  Mobile UCCTests
 //
-//  Created by MacbookPRO on 09/12/18.
-//  Copyright © 2018 LabSE Siskom. All rights reserved.
+//  Created by MacbookPRO on 14/05/19.
+//  Copyright © 2019 LabSE Siskom. All rights reserved.
 //
 
 import XCTest
+//@testable import Mobile_UCC
 
 class Mobile_UCCTests: XCTestCase {
 

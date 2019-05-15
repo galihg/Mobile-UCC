@@ -26,9 +26,9 @@ class RefreshControl {
         return refreshControl
     }()
 
-}*/
     /*var viewController: UIViewController?
     var tableView: UITableView?
+    @objc var populate = {(()->Void?).self}
     
     init(viewController: UIViewController, tableView: UITableView) {
         self.viewController = viewController
@@ -37,9 +37,9 @@ class RefreshControl {
     
     func addRefreshControl() {
         refresher.attributedTitle = NSAttributedString(string: "Loading")
-        refresher.addTarget(viewController, action: viewController.populate, for: UIControlEvents.valueChanged)
-    }
+        refresher.addTarget(self.viewController, action: #selector(getter: populate), for: UIControl.Event.valueChanged)
+    }*/
     
     
-}
-*/
+}*/
+

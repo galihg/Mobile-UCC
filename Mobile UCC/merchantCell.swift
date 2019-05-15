@@ -30,12 +30,10 @@ class merchantCell: UITableViewCell {
         
         if let logo = merchant.banner {
             let networkService = NetworkService(url: logo)
-            networkService.downloadImage({ (imageData) in
+            networkService.downloadImage { (imageData) in
                 let image = UIImage(data: imageData as Data)
-                DispatchQueue.main.async(execute: {
-                    self.merchantBanner.image = image
-                })
-            })
+                self.merchantBanner.image = image
+            }
         }
     }
 }

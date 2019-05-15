@@ -9,7 +9,7 @@
 import UIKit
 import PKHUD
 
-class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+class VacancyList: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var namaPerusahaan: UILabel!
     @IBOutlet weak var imgPerusahaan: UIButton!
@@ -28,12 +28,10 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         let passedURL = passedData[1]
         
         let networkService = NetworkService(url: passedURL as! URL)
-        networkService.downloadImage({ (imageData) in
+        networkService.downloadImage { (imageData) in
             let image = UIImage(data: imageData as Data)
-            DispatchQueue.main.async(execute: {
-                self.imgPerusahaan.setImage(image, for: UIControl.State())
-            })
-        })
+            self.imgPerusahaan.setImage(image, for: UIControl.State())
+        }
         
         namaPerusahaan.text = (passedData[2] as! String)
         
@@ -201,9 +199,9 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         } else if segue.identifier == "detailVacancy" {
            
             HUD.hide()
-            let Vacancy3VC = segue.destination as! Vacancy3
+            let VacancyDetailVC = segue.destination as! VacancyDetail
             let pass = sender as! [Any]
-            Vacancy3VC.passedData = pass
+            VacancyDetailVC.passedData = pass
             navigationItem.title = nil
             
         }
@@ -230,7 +228,7 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         
         cell.detailVacancy = detailVacancy
         cell.detailPass.tag = indexPath.row
-        cell.detailPass.addTarget(self, action: #selector(Vacancy2.buttonPass(_:)), for: .touchUpInside)
+        cell.detailPass.addTarget(self, action: #selector(VacancyList.buttonPass(_:)), for: .touchUpInside)
         
         return cell
     }
@@ -242,9 +240,7 @@ class Vacancy2: BaseViewController, UITableViewDataSource, UITableViewDelegate {
         let idString = "\(vacancyId!)"
         let urlString3 = "http://api.career.undip.ac.id/v1/vacancies/detail/" + idString
         
-       
         ambilVacancy(urlString3, vacancyId!)
-        
         
     }
     

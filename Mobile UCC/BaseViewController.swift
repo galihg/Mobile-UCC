@@ -25,15 +25,13 @@ class BaseViewController: UIViewController {
         let destViewController : UIViewController = self.storyboard!.instantiateViewController(withIdentifier: strIdentifier)
         
         let topViewController : UIViewController = self.so_containerViewController!.topViewController!
-            
-        DispatchQueue.main.async {
-            if (topViewController.restorationIdentifier == destViewController.restorationIdentifier!){
-                print("Same VC")
-            } else {
-                self.so_containerViewController!.topViewController = destViewController
-            }
+        
+        if (topViewController.restorationIdentifier == destViewController.restorationIdentifier!){
+            print("Same VC")
+        } else {
+            self.so_containerViewController!.topViewController = destViewController
         }
-       
+        
     }
     
     func addSlideMenuButton(){

@@ -9,7 +9,7 @@
 import UIKit
 import PKHUD
 
-class ViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+class EmployerList: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -147,16 +147,8 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
                     self.vacancy.append(Vacancy(company_name: company_name!, id_vacancy: id_vacancy!, company_logo: company_logo!, total_vacancy: total_vacancy!, industry_type: industry_type!))
                     }
                     
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-
-                        HUD.hide()
-                        /*if (loadType != "refresh") {
-                            HUD.hide()
-                        } else {
-                            self.refresher.endRefreshing()
-                        }*/
-                    }
+                    self.tableView.reloadData()
+                    HUD.hide()
                     
                 }
             }
@@ -210,9 +202,9 @@ class ViewController: BaseViewController, UITableViewDataSource, UITableViewDele
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "passVacancy" {
-            let Vacancy2VC = segue.destination as! Vacancy2
+            let VacancyListVC = segue.destination as! VacancyList
             let pass = sender as! [Any]
-            Vacancy2VC.passedData = pass
+            VacancyListVC.passedData = pass
             navigationItem.title = nil
             
         }

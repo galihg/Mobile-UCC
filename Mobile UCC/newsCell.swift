@@ -15,8 +15,7 @@ class newsCell: UITableViewCell {
     @IBOutlet weak var newsDate: UILabel!
     @IBOutlet weak var newsContent: UILabel!
     
-    
-    
+
     var news: News! {
         didSet {
             self.updateUI()
@@ -29,15 +28,12 @@ class newsCell: UITableViewCell {
         newsContent.text = news.ringkasan
         newsDate.text = news.tgl_post
         
-        
         if let thumb_image = news.thumb_image {
             let networkService = NetworkService(url: thumb_image)
-            networkService.downloadImage({ (imageData) in
+            networkService.downloadImage { (imageData) in
                 let image = UIImage(data: imageData as Data)
-                DispatchQueue.main.async(execute: {
-                    self.newsImage.image = image
-                })
-            })
+                self.newsImage.image = image
+            }
         }
     }
     

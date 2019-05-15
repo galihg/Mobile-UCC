@@ -25,7 +25,6 @@ class MyCV: BaseViewController {
         self.addSlideMenuButton()
         profPic.contentMode = .center
         profPic.imageView?.contentMode = .scaleAspectFit
-
     }
     
     override func viewWillAppear(_ animated: Bool) {

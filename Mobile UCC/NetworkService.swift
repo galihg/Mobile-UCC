@@ -9,6 +9,10 @@
 import Foundation
 import KeychainSwift
 
+
+typealias ImageDataHandler = ((Data) -> Void)
+typealias JSONHandler = (([String:Any]) -> Void)
+
 class NetworkService {
     
     lazy var configuration: URLSessionConfiguration = URLSessionConfiguration.default
@@ -19,10 +23,7 @@ class NetworkService {
     init(url: URL) {
         self.url = url
     }
-    
-    typealias ImageDataHandler = ((Data) -> Void)
-    typealias jsonHandler = (([String:Any]) -> Void)
-    
+
     func downloadImage(_ completion: @escaping ImageDataHandler)
     {
         let request = URLRequest(url: self.url)
@@ -33,7 +34,9 @@ class NetworkService {
                     switch (httpResponse.statusCode) {
                     case 200:
                         if let data = data {
-                            completion(data)
+                            DispatchQueue.main.async {
+                                completion(data)
+                            }
                         }
                     default:
                         print(httpResponse.statusCode)
@@ -47,7 +50,7 @@ class NetworkService {
         dataTask.resume()
     }
     
-    static func parseJSONFromURL(_ urlString: String, _ method: String, parameter: String, _ completion: @escaping jsonHandler){
+    /*static func parseJSONFromURL(_ urlString: String, _ method: String, parameter: String, _ completion: @escaping JSONHandler){
         
         let keychain = KeychainSwift()
         let session = URLSession.shared
@@ -56,8 +59,7 @@ class NetworkService {
         
         request.httpMethod = method
         
-        //HTTP Header & API Key. This is just a template
-        request.setValue("insert API Key here", forHTTPHeaderField: "insert HTTP Header here")
+        request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
 
         if (keychain.get("USER_NAME_KEY") != nil && keychain.get("USER_TOKEN_KEY") != nil){
             
@@ -91,7 +93,9 @@ class NetworkService {
                     
                     guard let server_response = json as? [String:Any] else { return }
                     
-                    completion(server_response)
+                    DispatchQueue.main.async {
+                        completion(server_response)
+                    }
                     
                 })
                 
@@ -115,7 +119,9 @@ class NetworkService {
                     
                     guard let server_response = json as? [String:Any] else { return }
                     
-                    completion(server_response)
+                    DispatchQueue.main.async {
+                        completion(server_response)
+                    }
                     
                 })
                 
@@ -144,7 +150,9 @@ class NetworkService {
                     
                     guard let server_response = json as? [String:Any] else { return }
                     
-                    completion(server_response)
+                    DispatchQueue.main.async {
+                        completion(server_response)
+                    }
                     
                 })
                 
@@ -167,13 +175,69 @@ class NetworkService {
                     
                     guard let server_response = json as? [String:Any] else { return }
                     
-                    completion(server_response)
-                    
+                    DispatchQueue.main.async {
+                         completion(server_response)
+                    }
+                   
                 })
                 
                 task.resume()
             }
         }
+    }*/
+    
+    //New Network Request
+    static func parseJSONFromURL(_ urlString: String, _ method: String, parameter: String, _ completion: @escaping JSONHandler){
+        
+        let keychain = KeychainSwift()
+        let session = URLSession.shared
+        let url = URL(string: urlString)
+        var request = URLRequest(url: url!)
+        
+        request.httpMethod = method
+        
+        request.setValue("fjJMPaeBaEWpMFnybMwbT5fSSLt8kUU", forHTTPHeaderField: "X-UndipCC-API-Key")
+        
+        if (keychain.get("USER_NAME_KEY") != nil && keychain.get("USER_TOKEN_KEY") != nil){
+            
+            let userName = keychain.get("USER_NAME_KEY")
+            let userToken = keychain.get("USER_TOKEN_KEY")
+            
+            let loginString = String(format: "%@:%@", userName!, userToken!)
+            let loginData = loginString.data(using: String.Encoding.utf8)!
+            let base64LoginString = loginData.base64EncodedString()
+            
+            request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+        }
+            
+        if (method == "POST") {
+            let paramToSend = parameter
+            request.httpBody = paramToSend.data(using: String.Encoding.utf8)
+        }
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {
+            (data, response, error) in
+            
+            guard let _:Data = data else { return }
+            
+            let json:Any?
+            
+            do {
+                json = try JSONSerialization.jsonObject(with: data!, options: [])
+            }
+            catch {
+                return
+            }
+            
+            guard let server_response = json as? [String:Any] else { return }
+            
+            DispatchQueue.main.async {
+                completion(server_response)
+            }
+            
+        })
+        
+        task.resume()
     }
 }
 

@@ -42,6 +42,7 @@ class vacancy2Cell: UITableViewCell {
                 daysLeft.text = ""
             } else {
                 due_date.text = "\(remainingDays)"
+                daysLeft.text = "days left"
             }
         } else {
             due_date.text = "-"

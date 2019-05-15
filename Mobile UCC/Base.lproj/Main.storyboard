@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ssE-bM-UD9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ssE-bM-UD9">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -282,7 +282,7 @@
         <!--Vacancy-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Mobile_UCC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="EmployerList" customModule="Mobile_UCC" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -607,10 +607,10 @@ Telephone: (024) 769 226 40   www.career.undip.ac.id  </string>
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAr-B7-h70" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="701"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="783"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="a4K-Tr-IKv">
-                                                <rect key="frame" x="8" y="8" width="359" height="685"/>
+                                                <rect key="frame" x="8" y="8" width="359" height="767"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wom-uu-k56">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="60"/>
@@ -696,7 +696,7 @@ Telephone: (024) 769 226 40   www.career.undip.ac.id  </string>
                                                         </constraints>
                                                     </imageView>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="248" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kCw-er-lD1">
-                                                        <rect key="frame" x="0.0" y="362" width="359" height="323"/>
+                                                        <rect key="frame" x="0.0" y="362" width="359" height="405"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. aaaaaaaaaaaaasdfiuwefiuewfiuebfiuerbiuebrgiuebriugbergberuiwgbeirgwberiwgbeiuwgrbiuergbieurgbiuergbierbgiuerbgiuerbigberigberigbiuerbgiuergbiuerbgierbgierbgierbgegbuiergbiuergbuierbgiebgiuereiufguiewfiuwefuiwegfiugewfiuewgfuiwefguiwefgiuewfgeiuwfgefigweiufwuifguiwqfgwiufguifgiuegwfuiewguigewuifgweuifgiuwefgewfgfiwegfiuewfgiuwe</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -8198,10 +8198,10 @@ Telephone: (024) 769 226 40   www.career.undip.ac.id  </string>
             </objects>
             <point key="canvasLocation" x="248.80000000000001" y="-1487.4062968515743"/>
         </scene>
-        <!--Vacancy2-->
+        <!--Vacancy List-->
         <scene sceneID="nuQ-Df-3ah">
             <objects>
-                <viewController id="L2g-HX-ARl" customClass="Vacancy2" customModule="Mobile_UCC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="L2g-HX-ARl" customClass="VacancyList" customModule="Mobile_UCC" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wE4-jG-yU8"/>
                         <viewControllerLayoutGuide type="bottom" id="2Tj-Qk-1Hl"/>
@@ -8714,10 +8714,10 @@ Telephone: (024) 769 226 40   www.career.undip.ac.id  </string>
             </objects>
             <point key="canvasLocation" x="1996" y="-2243.0284857571214"/>
         </scene>
-        <!--Vacancy3-->
+        <!--Vacancy Detail-->
         <scene sceneID="Bh1-S4-eSu">
             <objects>
-                <viewController id="LcA-j4-YR0" customClass="Vacancy3" customModule="Mobile_UCC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="LcA-j4-YR0" customClass="VacancyDetail" customModule="Mobile_UCC" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mxC-Wh-t9U"/>
                         <viewControllerLayoutGuide type="bottom" id="ksF-rC-qWR"/>
@@ -9366,7 +9366,7 @@ Telephone: (024) 769 226 40   www.career.undip.ac.id  </string>
                                                 <rect key="frame" x="8" y="118" width="359" height="391"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="logo_ucc_awal" translatesAutoresizingMaskIntoConstraints="NO" id="2dq-KW-YE0">
-                                                        <rect key="frame" x="114.5" y="0.0" width="130" height="66"/>
+                                                        <rect key="frame" x="114.5" y="0.0" width="130" height="66.5"/>
                                                     </imageView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="0BC-KH-kTp">
                                                         <rect key="frame" x="86.5" y="242" width="186" height="149"/>
@@ -9768,26 +9768,26 @@ Telephone: (024) 769 226 40   www.career.undip.ac.id  </string>
         </scene>
     </scenes>
     <resources>
-        <image name="Logo UCC 2" width="300" height="300"/>
-        <image name="Logo UCC Eksternal Circle" width="538.08001708984375" height="538.08001708984375"/>
-        <image name="Logo UCC putih" width="245.25" height="245.25"/>
-        <image name="Undip" width="1600" height="1200"/>
+        <image name="Logo UCC 2" width="150" height="150"/>
+        <image name="Logo UCC Eksternal Circle" width="2242" height="2242"/>
+        <image name="Logo UCC putih" width="327" height="327"/>
+        <image name="Undip" width="800" height="600"/>
         <image name="add2" width="511" height="130.5"/>
         <image name="arrow" width="627.5" height="86"/>
         <image name="avatar" width="240.5" height="240.5"/>
         <image name="background_start" width="259.5" height="461"/>
         <image name="blue-line-png-1" width="1024" height="576"/>
         <image name="button" width="173" height="22.5"/>
-        <image name="calendarIcon" width="40" height="40"/>
-        <image name="contactIcon" width="51.200000762939453" height="51.200000762939453"/>
+        <image name="calendarIcon" width="1600" height="1600"/>
+        <image name="contactIcon" width="1600" height="1600"/>
         <image name="edit2" width="511" height="130.5"/>
-        <image name="edit3" width="192" height="192"/>
-        <image name="iconEmail" width="626" height="626"/>
-        <image name="iconHome" width="2000" height="2000"/>
+        <image name="edit3" width="96" height="96"/>
+        <image name="iconEmail" width="313" height="313"/>
+        <image name="iconHome" width="1000" height="1000"/>
         <image name="locationIcon" width="200" height="200"/>
         <image name="logo_ucc_awal" width="130" height="66.5"/>
         <image name="placeholder" width="173" height="23"/>
-        <image name="trash" width="512" height="512"/>
+        <image name="trash" width="256" height="256"/>
         <image name="unchecked box" width="200" height="200"/>
         <image name="website-icon" width="1200" height="1200"/>
     </resources>

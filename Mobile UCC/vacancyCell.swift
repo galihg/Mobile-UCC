@@ -15,8 +15,6 @@ class vacancyCell: UITableViewCell {
     @IBOutlet weak var bidangIndustri: UILabel!
     @IBOutlet weak var jumlahLowongan: UILabel!
     
-    
-
     var vacancy: Vacancy! {
         didSet {
             self.updateUI()
@@ -29,15 +27,12 @@ class vacancyCell: UITableViewCell {
         jumlahLowongan.text = "\(vacancy.total_vacancy ?? 1)"
         bidangIndustri.text = vacancy.industry_type
         
-        
         if let company_logo = vacancy.company_logo {
             let networkService = NetworkService(url: company_logo)
-            networkService.downloadImage({ (imageData) in
+            networkService.downloadImage { (imageData) in
                 let image = UIImage(data: imageData as Data)
-                DispatchQueue.main.async(execute: {
-                    self.companyLogo.image = image
-                })
-            })
+                self.companyLogo.image = image
+            }
         }
     }
     

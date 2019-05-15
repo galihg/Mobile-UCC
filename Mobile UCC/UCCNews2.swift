@@ -31,8 +31,6 @@ class UCCNews2: BaseViewController, WKUIDelegate {
         let newsContentRaw = (passedData[2] as! String)
         newsContent.loadHTMLString(newsContentRaw, baseURL: Bundle.main.bundleURL)
         
- 
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {

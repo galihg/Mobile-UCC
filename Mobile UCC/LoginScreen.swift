@@ -101,7 +101,6 @@ class LoginScreen: BaseViewController, UITextFieldDelegate {
                 return
             }
             
-            
             if let data_block = server_response["status"] as? String
             {
                 
@@ -161,6 +160,5 @@ class LoginScreen: BaseViewController, UITextFieldDelegate {
         
         return true
     }
-    
   
 }
