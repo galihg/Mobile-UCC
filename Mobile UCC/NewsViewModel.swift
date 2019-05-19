@@ -25,9 +25,7 @@ class NewsViewModel: NSObject
                     
                     self.news = newsData.news
 
-                    DispatchQueue.main.async {
-                        completion()
-                    }
+                    completion()
                     
                 }
             }

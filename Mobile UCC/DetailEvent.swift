@@ -75,11 +75,10 @@ class DetailEvent: BaseViewController {
         {
             print("Connected")
         }
+            
         else
         {
             Alert.showMessage(title: "No Internet Detected", msg: "This app requires an Internet connection")
-            
-            //HUD.hide()
         }
         
     }

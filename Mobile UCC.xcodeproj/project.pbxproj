@@ -73,6 +73,7 @@
 		FA00A1922004B64300F3970A /* Skill.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00A1912004B64300F3970A /* Skill.swift */; };
 		FA04A4EF228C5C2700AF5427 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04A4EE228C5C2700AF5427 /* Router.swift */; };
 		FA04A4F1228C796200AF5427 /* EventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04A4F0228C796200AF5427 /* EventsViewModel.swift */; };
+		FA04A4F3229033C100AF5427 /* MerchantsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04A4F2229033C100AF5427 /* MerchantsViewModel.swift */; };
 		FA17224320600D6C00A6ECA9 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17224220600D6C00A6ECA9 /* Alert.swift */; };
 		FA1722452060106D00A6ECA9 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1722442060106D00A6ECA9 /* Auth.swift */; };
 		FA1C4D05200C88DE00A88A04 /* CTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4D04200C88DE00A88A04 /* CTC.swift */; };
@@ -203,6 +204,7 @@
 		FA00A1912004B64300F3970A /* Skill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skill.swift; sourceTree = "<group>"; };
 		FA04A4EE228C5C2700AF5427 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		FA04A4F0228C796200AF5427 /* EventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModel.swift; sourceTree = "<group>"; };
+		FA04A4F2229033C100AF5427 /* MerchantsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantsViewModel.swift; sourceTree = "<group>"; };
 		FA17224220600D6C00A6ECA9 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		FA1722442060106D00A6ECA9 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		FA1C4D04200C88DE00A88A04 /* CTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTC.swift; sourceTree = "<group>"; };
@@ -554,6 +556,7 @@
 			children = (
 				FA618C7A2261FAA500BEEA43 /* NewsViewModel.swift */,
 				FA04A4F0228C796200AF5427 /* EventsViewModel.swift */,
+				FA04A4F2229033C100AF5427 /* MerchantsViewModel.swift */,
 			);
 			name = "View Model";
 			sourceTree = "<group>";
@@ -823,6 +826,7 @@
 				FA219E37223655AC0042192B /* ClearSession.swift in Sources */,
 				462CE93F1FDC173F00974399 /* educationCell.swift in Sources */,
 				FA2778D921AA702A00143D2F /* ContainerViewController.swift in Sources */,
+				FA04A4F3229033C100AF5427 /* MerchantsViewModel.swift in Sources */,
 				FA5FBF8C214D4457008AEFE4 /* JobType.swift in Sources */,
 				FA8F1C5D21AD4DA600A9A2D9 /* CoverViewController.swift in Sources */,
 				FA68E24C20656DD4002880AE /* Course.swift in Sources */,

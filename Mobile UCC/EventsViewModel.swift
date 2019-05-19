@@ -31,9 +31,7 @@ class EventsViewModel: NSObject
                     
                     self.events = eventsData.events
                     
-                    DispatchQueue.main.async {
-                        completion()
-                    }
+                    completion()
                     
                 }
             }

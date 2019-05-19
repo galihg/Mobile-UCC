@@ -9,12 +9,10 @@
 import UIKit
 import PKHUD
 
-class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+class MerchantView: BaseViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var merchant = [Merchant]()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,8 +22,6 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
 
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.dataSource = self
-        tableView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,77 +56,20 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
  
     func downloadAllMerchants() {
         HUD.show(.progress)
+        let viewModel = MerchantsViewModel(tableView: tableView)
+        tableView.dataSource = viewModel
+        tableView.delegate = viewModel
         
-        let urlString = "http://api.career.undip.ac.id/v1/merchant/list"
-        
-        NetworkService.parseJSONFromURL(urlString, "GET", parameter: ""){ (server_response) in
-            
-            if let status = server_response["status"] as? String {
-                if (status == "ok"){
-                    let merchantDictionaries = server_response["data"] as! [[String:Any]]
-                    
-                    for merchantDictionary in merchantDictionaries {
-                        let eachMerchant = merchantDictionary
-                        let valid = eachMerchant["date_expired"] as? String ?? ""
-                        let id_merchant = eachMerchant["id_merchant"] as! String
-                        let name = eachMerchant["name"] as! String
-                        let address = eachMerchant["address"] as? String ?? ""
-                        let desc = eachMerchant["promo_desc"] as? String ?? ""
-                        let joined = eachMerchant["date_registered"] as? String ?? ""
-                        let contact = eachMerchant["contact"] as? String ?? ""
-                        let email = eachMerchant["email"] as? String ?? ""
-                        let web = eachMerchant["website"] as? String ?? ""
-                        
-                        // image URL
-                        let banner = URL(string: eachMerchant["banner_img_url"] as! String)
-                        let logo = URL(string: eachMerchant["logo_url"] as! String)
-                        
-                        self.merchant.append(Merchant(banner: banner!, valid: valid, id_merchant: id_merchant, logo: logo!, name: name, address: address, desc: desc, joined: joined, contact: contact, email: email, web: web))
-                    }
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        HUD.hide()
-                    }
-                } 
-            }
+        viewModel.requestData {
+            self.tableView.reloadData()
+            HUD.hide()
         }
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int
-    {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        if merchant.count > 0 {
-            return merchant.count
-        } else {
-            let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-            noDataLabel.text          = "No Merchant"
-            noDataLabel.textColor     = UIColor.black
-            noDataLabel.textAlignment = .center
-            tableView.backgroundView  = noDataLabel
-            tableView.separatorStyle  = .none
-            return 0
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "merchantCell", for: indexPath) as! merchantCell
-        let merchant = self.merchant[indexPath.row]
-        
-        cell.merchant = merchant
-        cell.detailMerchant.tag = indexPath.row
-        cell.detailMerchant.addTarget(self, action: #selector(MerchantView.buttonPass(_:)), for: .touchUpInside)
-        
-        return cell
     }
     
     @IBAction func buttonPass(_ sender: Any) {
-        let data = merchant[(sender as AnyObject).tag]
+         let viewModel = MerchantsViewModel(tableView: tableView)
+        
+        let data = viewModel.merchants[(sender as AnyObject).tag]
         
         let merchantName = data.name
         let merchantAddress = data.address
@@ -146,7 +85,6 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
         let passedArray = [merchantName!, merchantAddress!, merchantLogo!, joined!, merchantContact!, merchantEmail!, merchantWeb!, merchantValid!, merchantBanner!, merchantPromo!] as [Any]
         
         self.performSegue(withIdentifier: "detailMerchant", sender: passedArray)
-        
     }
    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -156,14 +94,10 @@ class MerchantView: BaseViewController, UITableViewDataSource, UITableViewDelega
             let pass = sender as! [Any]
             Merchant2VC.passedData = pass
             navigationItem.title = nil
-            
         }
     }
     
-
-    
-    
-    
 }
+
 
 

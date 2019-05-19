@@ -15,3 +15,7 @@ protocol Router {
         parameters: Any?
     )
 }
+
+Class ViewRouter: Router {
+    
+}
